@@ -176,9 +176,9 @@ class Device:
         )
 
 
-def get_all_disks(*, raise_errors=False) -> Iterable[Device]:
+def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
     """
-    Yields all the block devices detected on the host.
+    Yields all the devices detected on the host.
 
     :param raise_errors: If True, errors that occur while looking for disks
                          will be raised. If False (the default), errors will be

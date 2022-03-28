@@ -2,14 +2,17 @@ import os
 import stat
 import ctypes
 import platform
-from typing import Optional, Union
+from typing import Optional, Union, TYPE_CHECKING
 
-from smartie import device, util, structures, constants
+from smartie import util, structures, constants
 from smartie.errors import SenseError
+
+if TYPE_CHECKING:
+    from smartie.device import Device
 
 
 class DeviceIO:
-    disk: device.Device
+    disk: 'Device'
     fd: Optional[int]
 
     def __new__(cls, *args, **kwargs):
@@ -26,7 +29,7 @@ class DeviceIO:
                 'DeviceIO not implemented for this platform.'
             )
 
-    def __init__(self, disk: device.Device):
+    def __init__(self, disk: 'Device'):
         """
         Used for performing low-level disk IO on the given device.
 
