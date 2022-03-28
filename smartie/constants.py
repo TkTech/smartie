@@ -84,7 +84,17 @@ class SenseErrorCode(enum.IntEnum):
     DEFERRED_ERROR = 0x71
 
 
-class SGIODirection(enum.IntEnum):
+class Direction(enum.IntEnum):
+    """
+    The direction of the command being sent by a call to
+    DeviceIO.issue_command.
+
+    .. note::
+
+        These are really the constants for the direction in SG_IO calls, but we
+        map them for other platforms.
+    """
+    TO = -2
     FROM = -3
 
 

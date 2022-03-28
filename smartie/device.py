@@ -25,216 +25,57 @@ References:
     - https://sg.danny.cz/sg/p/scsi-generic_v3.txt
     - https://wiki.osdev.org/ATAPI
 """
+import os.path
+import itertools
 import os
-import stat
 import ctypes
 import platform
 from functools import cached_property
 from pathlib import Path
-from typing import Iterable, Optional, Union, Dict
+from typing import Iterable, Union, Dict
 
-from smartie import smart
-from smartie.constants import (
-    OperationCode,
-    ATAProtocol,
-    ATACommands,
-    SGIODirection,
-    IOCTL_SG_IO,
-    StatusCode, ATASmartFeature
-)
+from smartie import smart, device_io
+from smartie.constants import DeviceType
 from smartie.errors import SenseError
 from smartie.structures import (
-    Command16,
-    SGIOHeader,
-    FixedFormatSense,
-    DescriptorFormatSense,
     IdentifyResponse,
-    InquiryCommand,
-    InquiryResponse, SmartDataResponse
+    InquiryResponse
 )
+from smartie.util import swap_bytes
 
 
-class DiskIO:
-    disk: 'DiskInfo'
-    fd: Optional[int]
+class Device:
+    path: str
 
-    def __init__(self, disk: 'DiskInfo'):
+    def __init__(self, path: Union[Path, str]):
         """
-        Used for performing low-level disk IO on the given device.
-
-        :param disk: The block device for all IO operations.
-        """
-        self.disk = disk
-        self.fd = None
-
-    def issue_command(self, direction: 'SGIODirection',
-                      command: ctypes.Structure,
-                      data: Union[ctypes.Array, ctypes.Structure], *,
-                      timeout: int = 3000):
-        """
-        Issues an ATA passthrough command to the disk.
-
-        :param direction: Direction for this command.
-        :param command: Command to be sent to the device.
-        :param data: Command data to be sent/received to/from the device.
-        :param timeout: SG_IO timeout in milliseconds. Setting this to MAX_INT
-                        results in no timeout.
-        """
-        # The Sense response can be in multiple formats, and we won't know
-        # what it is until we see the first byte.
-        raw_sense = ctypes.create_string_buffer(max(
-            ctypes.sizeof(FixedFormatSense),
-            ctypes.sizeof(DescriptorFormatSense)
-        ))
-
-        sg_io_header = SGIOHeader(
-            interface_id=83,  # Always 'S'
-            dxfer_direction=direction,
-            cmd_len=ctypes.sizeof(command),
-            cmdp=ctypes.addressof(command),
-            dxfer_len=ctypes.sizeof(data),
-            dxferp=ctypes.addressof(data),
-            mx_sb_len=ctypes.sizeof(raw_sense),
-            sbp=ctypes.addressof(raw_sense),
-            timeout=timeout
-        )
-
-        self.sg_io(sg_io_header)
-
-        # I'm not 100% sure the logic here is even remotely correct. Seems to
-        # work!
-        if sg_io_header.masked_status == StatusCode.CHECK_CONDITION:
-            error_code = int.from_bytes(raw_sense[0], byteorder='little') & 0x7F
-            if error_code in (0x70, 0x71):
-                sense = FixedFormatSense.from_buffer(raw_sense)
-                if sense.sense_key not in (0x01, 0x0F):
-                    raise SenseError(sense.sense_key, sense=sense)
-                return sense
-            elif error_code in (0x72, 0x73):
-                sense = DescriptorFormatSense.from_buffer(raw_sense)
-                if sense.sense_key not in (0x01, 0x0F):
-                    raise SenseError(sense.sense_key, sense=sense)
-                return sense
-            else:
-                raise SenseError(0, sense=raw_sense)
-
-    def sg_io(self, sg_io_header: 'SGIOHeader'):
-        """
-        Sends an SCSI command to the Disk.
-
-        :param sg_io_header: the SGIOHeader to send to the device.
-        """
-        system = platform.system()
-        if system == 'Linux':
-            # We use libc instead of the builtin ioctl as the builtin can have
-            # issues with 64-bit pointers.
-            libc = ctypes.CDLL('libc.so.6', use_errno=True)
-
-            result = libc.ioctl(
-                self.fd,
-                IOCTL_SG_IO,
-                ctypes.byref(sg_io_header)
-            )
-
-            if result != 0:
-                raise OSError(ctypes.get_errno())
-        else:
-            raise NotImplementedError('platform not supported')
-
-    def inquiry(self):
-        """
-        Issues an SCSI INQUIRY command and returns a tuple of (result, sense).
-        """
-        inquiry = InquiryResponse()
-
-        inquiry_command = InquiryCommand(
-            operation_code=OperationCode.INQUIRY,
-            allocation_length=96
-        )
-
-        sense = self.issue_command(SGIODirection.FROM, inquiry_command, inquiry)
-        return inquiry, sense
-
-    def identify(self):
-        """
-        Issues an ATA IDENTIFY command and returns a tuple of (result, sense).
-        """
-        identity = ctypes.create_string_buffer(512)
-
-        command16 = Command16(
-            operation_code=OperationCode.COMMAND_16,
-            protocol=ATAProtocol.PIO_DATA_IN << 1,
-            flags=0x2E,
-            command=ATACommands.IDENTIFY
-        )
-
-        sense = self.issue_command(SGIODirection.FROM, command16, identity)
-        return IdentifyResponse.from_buffer(identity), sense
-
-    def smart_data(self):
-        """
-        Issues an ATA SMART command and returns a tuple of (result, sense).
-        """
-        smart_result = SmartDataResponse()
-
-        command16 = Command16(
-            operation_code=OperationCode.COMMAND_16,
-            protocol=ATAProtocol.PIO_DATA_IN << 1,
-            command=ATACommands.SMART,
-            flags=0x2E,
-            features=swap_int(2, ATASmartFeature.SMART_READ_DATA)
-        ).set_lba(0xC24F00)
-
-        sense = self.issue_command(SGIODirection.FROM, command16, smart_result)
-        return smart_result, sense
-
-    def is_a_block_device(self):
-        return stat.S_ISBLK(os.fstat(self.fd).st_mode)
-
-    def __enter__(self):
-        self.fd = os.open(self.disk.path, os.O_RDONLY | os.O_NONBLOCK)
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.fd is not None:
-            os.close(self.fd)
-            self.fd = None
-        return False
-
-
-class DiskInfo:
-    path: Path
-
-    def __init__(self, path: Path):
-        """
-        A DiskInfo represents a high-level abstraction over a system block
+        A Device represents a high-level abstraction over a system block
         device.
 
         :param path: The filesystem path to the device (such as /dev/sda).
         """
-        self.path = path
+        self.path = str(path)
 
         # Is there every a time when we _want_ users to be able to reference
         # a non-existent drive?
-        if not path.exists():
+        if not os.path.exists(self.path):
             raise IOError(f'{path!s} does not exist')
 
         with self.io as dio:
-            st = os.fstat(dio.fd)
-            if not stat.S_ISBLK(st.st_mode):
+            if not dio.is_a_block_device():
                 raise IOError(f'{path!s} is not a block device')
 
     @property
     def io(self):
         """
-        Returns a DiskIO which can be used as a context manager for IO
+        Returns a DeviceIO which can be used as a context manager for IO
         operations. Ex:
 
-        >>> disk = DiskInfo(Path('/dev/sr0'))
+        >>> disk = Device(Path('/dev/sr0'))
         >>> with disk.io as dio:
         ...     identify, sense = dio.identify()
         """
-        return DiskIO(self)
+        return device_io.DeviceIO(self)
 
     @cached_property
     def identity(self) -> IdentifyResponse:
@@ -312,7 +153,7 @@ class DiskInfo:
         """
         Get the device's type, if available.
         """
-        return self.inquiry.peripheral_device_type
+        return DeviceType(self.inquiry.peripheral_device_type)
 
     @property
     def temperature(self):
@@ -335,27 +176,7 @@ class DiskInfo:
         )
 
 
-def swap_bytes(src):
-    # Weirdly, all the strings in the IDENTIFY response are byte swapped.
-    src = bytearray(src)
-
-    for i in range(0, len(src) - 1, 2):
-        src[i] ^= src[i+1]
-        src[i+1] ^= src[i]
-        src[i] ^= src[i+1]
-
-    return src
-
-
-def swap_int(c: int, n: int) -> int:
-    return int.from_bytes(
-        n.to_bytes(c, byteorder='little'),
-        byteorder='big',
-        signed=False
-    )
-
-
-def get_all_disks(*, raise_errors=False) -> Iterable[DiskInfo]:
+def get_all_disks(*, raise_errors=False) -> Iterable[Device]:
     """
     Yields all the block devices detected on the host.
 
@@ -370,12 +191,46 @@ def get_all_disks(*, raise_errors=False) -> Iterable[DiskInfo]:
         # but the below gimmick works on the latest beta kernels and the
         # oldest linux kernels I could get my hands on.
         p = Path('/sys/block')
-        if p.exists and p.is_dir():
-            for child in p.iterdir():
-                try:
-                    yield DiskInfo(Path('/dev') / child.name)
-                except IOError as e:
-                    if raise_errors:
-                        raise e
+        if not p.exists or not p.is_dir():
+            return
+
+        for child in p.iterdir():
+            try:
+                yield Device(Path('/dev') / child.name)
+            except IOError as e:
+                if raise_errors:
+                    raise e
+    elif system == 'Windows':
+        k32 = ctypes.WinDLL('kernel32', use_last_error=True)
+
+        devices = ctypes.create_unicode_buffer(65536)
+        # QueryDosDevice will return a list of NULL-terminated strings as a
+        # binary blob. Each string is the name of a device (usually hundreds
+        # on the typical desktop) that we may or may not care about.
+        # The function returns the number of bytes it actually wrote to
+        # `devices`.
+        bytes_written = k32.QueryDosDeviceW(
+            None,
+            devices,
+            ctypes.sizeof(devices)
+        )
+        if bytes_written == 0:
+            raise RuntimeError('')
+
+        i = 0
+        while i < bytes_written:
+            # Grab all the characters in the path until we get to the NULL
+            # (0x00) byte.
+            device_path = ''.join(itertools.takewhile(  # noqa
+                lambda c: c != '\x00', devices[i:]
+            ))
+            i += len(device_path) + 1
+            # Ignore every device that doesn't look like PhysicalDrive0, CdRom0,
+            # PhysicalDrive1, etc...
+            if device_path.startswith(('PhysicalDrive', 'CdRom')):
+                # PathLib cannot be used here, there's an option CPython ticket
+                # for errors resolving device paths. This is unfortunate,
+                # it forced us to revert to a string as the base path type.
+                yield Device(f'\\\\.\\{device_path}')
     else:
         raise NotImplementedError('platform not supported')
