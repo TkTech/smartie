@@ -204,7 +204,7 @@ class _LinuxDeviceIO(DeviceIO):
         self.sg_io(sg_io_header)
 
         if sg_io_header.masked_status == constants.StatusCode.CHECK_CONDITION:
-            self._parse_sense(raw_sense)
+            self._parse_sense(bytearray(raw_sense))  # noqa
 
 
 class _WinDeviceIO(DeviceIO):
