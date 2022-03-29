@@ -33,11 +33,6 @@ class Device:
         """
         self.path = str(path)
 
-        # Is there every a time when we _want_ users to be able to reference
-        # a non-existent drive?
-        if not os.path.exists(self.path):
-            raise IOError(f'{path!s} does not exist')
-
         with self.io as dio:
             if not dio.is_a_block_device():
                 raise IOError(f'{path!s} is not a block device')
@@ -209,5 +204,44 @@ def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
                 # for errors resolving device paths. This is unfortunate,
                 # it forced us to revert to a string as the base path type.
                 yield Device(f'\\\\.\\{device_path}')
+    elif system == 'Darwin':
+        from smartie._osx import iokit, cf, kCFBooleanTrue
+
+        io_iterator = ctypes.c_void_p()
+
+        query = iokit.IOServiceMatching(b'IOBlockStorageDevice')
+        cf.CFDictionaryAddValue(
+            query,
+            cf.CFStringCreateWithCString(
+                None,
+                b'SMART Capable',
+                0
+            ),
+            kCFBooleanTrue
+        )
+
+        result = iokit.IOServiceGetMatchingServices(
+            0,  # kIOMasterPortDefault
+            query,
+            ctypes.byref(io_iterator)
+        )
+
+        if result != 0:
+            raise OSError(ctypes.get_errno())
+
+        while iokit.IOIteratorIsValid(io_iterator):
+            io_device = iokit.IOIteratorNext(io_iterator)
+            if not io_device:
+                break
+
+            name = ctypes.create_string_buffer(512)
+
+            iokit.IORegistryEntryGetPath(
+                io_device,
+                b'IOService',
+                name
+            )
+
+            yield Device(name.value)
     else:
         raise NotImplementedError('platform not supported')
