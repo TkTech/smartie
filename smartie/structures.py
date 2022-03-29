@@ -1,7 +1,18 @@
+"""
+This file contains the various low-level structure definitions used for sending
+and receiving SCSI commands, as well as the structures required for
+platform-specific APIs.
+
+Where reasonable, the names of fields have been taken from the specifications
+to ease reference searches.
+"""
 import ctypes
 
 
 class InquiryCommand(ctypes.Structure):
+    """
+    An SCSI INQUIRY command.
+    """
     _pack_ = 1
     _fields_ = [
         ('operation_code', ctypes.c_ubyte),
@@ -14,6 +25,9 @@ class InquiryCommand(ctypes.Structure):
 
 
 class InquiryResponse(ctypes.Structure):
+    """
+    The response to an SCSI INQUIRY command.
+    """
     _pack_ = 1
     _fields_ = [
         ('peripheral_device_type', ctypes.c_ubyte, 4),
@@ -64,7 +78,7 @@ class InquiryResponse(ctypes.Structure):
 
 class Command12(ctypes.Structure):
     """
-    A 12-byte ATA passthrough command.
+    A 12-byte SCSI/ATA passthrough command.
 
     .. note::
 
@@ -94,7 +108,7 @@ class Command12(ctypes.Structure):
 
 class Command16(ctypes.Structure):
     """
-    A 16-byte ATA passthrough command.
+    A 16-byte SCSI/ATA passthrough command.
 
     .. note::
 
@@ -196,6 +210,12 @@ class SCSIPassThroughDirectWithBuffer(ctypes.Structure):
 
 
 class FixedFormatSense(ctypes.Structure):
+    """
+    The SENSE response may be in of two formats - this one, or
+    :class:`DescriptorFormatSense`. The exact format depends on the value of
+    the first byte, `error_code`.
+    """
+
     _fields_ = [
         ('error_code', ctypes.c_ubyte, 7),
         ('valid', ctypes.c_ubyte, 1),
@@ -216,6 +236,11 @@ class FixedFormatSense(ctypes.Structure):
 
 
 class DescriptorFormatSense(ctypes.Structure):
+    """
+    The SENSE response may be in of two formats - this one, or
+    :class:`FixedFormatSense`. The exact format depends on the value of
+    the first byte, `error_code`.
+    """
     _fields_ = [
         ('error_code', ctypes.c_ubyte, 7),
         ('valid', ctypes.c_ubyte, 1),
@@ -227,10 +252,16 @@ class DescriptorFormatSense(ctypes.Structure):
 
 
 class IdentifyResponse(ctypes.Structure):
+    """
+    The response to an SCSI/ATA IDENTIFY command.
+
+    .. note::
+
+        This is a large structure, and has only been partially implemented. The
+        full response is 512 bytes.
+    """
     # I don't have the willpower to implement this entire structure. If you
     # need a field, add it.
-    # Oddly, Microsoft's Miniport documentation was the best reference for this
-    # structure.
     _fields_ = [
         # ('general_config', ctypes.c_ushort),
         ('reserved_1', ctypes.c_ushort, 1),
@@ -252,6 +283,19 @@ class IdentifyResponse(ctypes.Structure):
 
 
 class SmartDataResponse(ctypes.Structure):
+    """
+    The result of a SMART READ_DATA command.
+
+    .. note::
+
+        The most interesting field in here is likely `vendor_specific_1`,
+        which contains the SMART attribute table that encodes values such as
+        the current device temperature.
+
+        Although the specification calls this field vendor specific, its
+        format is very consistent. See
+        :func:`smartie.smart.parse_smart_read_data()` for an example.
+    """
     _fields_ = [
         ('vendor_specific_1', ctypes.c_ubyte * 362),
         ('offline_data_collection_status', ctypes.c_ubyte),

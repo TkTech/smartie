@@ -1,29 +1,6 @@
 """
-This library does not aim to implement the entire specification, just parts of
-it that are useful to PortableHardwareMonitor. However, contributions that
-expand support to more devices or implement new commands are extremely welcome.
-
-Support:
-
-- Linux kernel versions > 2.6.6 (required for the SG_IO IOCTL)
-
-.. note::
-
-    Sometimes, I regret my choice of limiting native dependencies. Like the day,
-    I wrote this file, for example.
-
-.. warning::
-
-    Uninformed usage of this library can result in data loss or even physical
-    destruction of devices. Use low-level commands at your own risk, as they
-    will not stop you from sending bad or harmful values.
-
-References:
-    - From t10.org (unfortunately can't direct link):
-        - spc6r06.pdf
-        - 04-262r8.pdf
-    - https://sg.danny.cz/sg/p/scsi-generic_v3.txt
-    - https://wiki.osdev.org/ATAPI
+High-level abstractions for enumerating devices and getting basic device
+information.
 """
 import os.path
 import itertools
@@ -75,7 +52,7 @@ class Device:
         >>> with disk.io as dio:
         ...     identify, sense = dio.identify()
         """
-        return device_io.DeviceIO(self)
+        return device_io.DeviceIO(self.path)
 
     @cached_property
     def identity(self) -> IdentifyResponse:
@@ -111,7 +88,7 @@ class Device:
     def smart_data(self) -> Dict[int, smart.Attribute]:
         with self.io as dio:
             try:
-                smart_result, sense = dio.smart_data()
+                smart_result, sense = dio.smart_read_data()
             except (OSError, SenseError):
                 return {}
 

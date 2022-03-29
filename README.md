@@ -3,6 +3,45 @@
 This is a portable, pure-python library for getting basic disk information such
 as model, serial number, disk health, temperature, etc...
 
+It provides a high-level abstraction to enumerate devices and retrieve basic
+details:
+
+```python
+from smartie.device import get_all_devices
+
+for device in get_all_devices():
+    print(device.path)
+    print(device.model_number)
+    print(device.temperature)
+```
+
+... as well as a lower-level interface for sending SCSI messages:
+
+```python
+from smartie import structures, constants
+from smartie.device import Device
+
+device = Device('\\.\PhysicalDrive0')  # or /dev/sda on Linux
+with device.io as dio:
+    # Send an SCSI INQUIRY command, and get back both the result data and the
+    # sense response.
+    result, sense = dio.inquiry()
+
+    # ... or send a raw INQUIRY yourself:
+    inquiry = structures.InquiryResponse()
+
+    inquiry_command = structures.InquiryCommand(
+        operation_code=constants.OperationCode.INQUIRY,
+        allocation_length=96
+    )
+
+    sense = dio.issue_command(
+        constants.Direction.FROM,
+        inquiry_command,
+        inquiry
+    )
+```
+
 ## Why?
 
 This library is extracted from [PortableHardwareMonitor][phm]
@@ -10,7 +49,7 @@ monitor, where I don't want to force users to install something like
 smartmontools just to support showing disk temperature!
 
 This library ended up being great for poking, prodding, testing and debugging
-with quick iteration, so hopefully it'll be useful to others.
+SCSI/ATA with quick iteration, so hopefully it'll be useful to others.
 
 ## Contributing
 
@@ -23,7 +62,7 @@ learning resource, and readability is a priority.
 
 ## FAQ
 
-### This library isn't returning any of my drives!?
+### This library isn't returning any of my drives?
 
 The APIs this library uses to communicate with devices typically require
 root (on Linux) or administrator (on Windows) access to work.

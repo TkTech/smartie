@@ -1,18 +1,25 @@
+"""
+    Low-level interfaces for sending and receiving SCSI command.
+
+    .. warning::
+
+        Uninformed usage of this library can result in data loss or even
+        physical destruction of devices. Use low-level commands at your own
+        risk, as they will not stop you from sending bad or harmful values.
+"""
 import os
 import stat
 import ctypes
 import platform
-from typing import Optional, Union, TYPE_CHECKING
+from pathlib import Path
+from typing import Optional, Union
 
 from smartie import util, structures, constants
 from smartie.errors import SenseError
 
-if TYPE_CHECKING:
-    from smartie.device import Device
-
 
 class DeviceIO:
-    disk: 'Device'
+    path: str
     fd: Optional[int]
 
     def __new__(cls, *args, **kwargs):
@@ -29,13 +36,25 @@ class DeviceIO:
                 'DeviceIO not implemented for this platform.'
             )
 
-    def __init__(self, disk: 'Device'):
+    def __init__(self, path: Union[str, Path]):
         """
-        Used for performing low-level disk IO on the given device.
+        A DeviceIO object is used for performing low-level device IO on the
+        device specified by `path`.
 
-        :param disk: The block device for all IO operations.
+        >>> from smartie.device_io import DeviceIO
+        >>> with DeviceIO('/dev/sda') as dio:
+        ...     result, sense = dio.inquiry()
+
+        .. note::
+
+            When you create this object, what you actually get back will be
+            a platform-specific variant such as :class:`_WinDeviceIO` or
+            :class:`_LinuxDeviceIO`.
+
+        :param path: The filesystem path to the device, such as `/dev/sda` or
+                     `\\.\PhysicalDevice0`.
         """
-        self.disk = disk
+        self.path = str(path)
         self.fd = None
 
     def issue_command(self, direction: constants.Direction,
@@ -93,9 +112,10 @@ class DeviceIO:
 
         return structures.IdentifyResponse.from_buffer(identity), sense
 
-    def smart_data(self):
+    def smart_read_data(self):
         """
-        Issues an ATA SMART command and returns a tuple of (result, sense).
+        Issues an ATA SMART READ_DATA command and returns a tuple of
+        (result, sense).
         """
         smart_result = structures.SmartDataResponse()
 
@@ -115,11 +135,25 @@ class DeviceIO:
 
         return smart_result, sense
 
-    def is_a_block_device(self):
+    def is_a_block_device(self) -> bool:
+        """
+        Returns `True` if the device is really a block device, `False`
+        otherwise.
+        """
         return stat.S_ISBLK(os.fstat(self.fd).st_mode)
 
     @classmethod
     def _parse_sense(cls, sense_blob):
+        """
+        Parses the sense response from an SCSI command, raising a
+        :class:`smartie.errors.SenseError` if an error occurred.
+
+        Will return either a :class:`structures.FixedFormatSense` or a
+        :class:`structures.DescriptorFormatSense` depending on the error code.
+
+        :param sense_blob: A bytearray (or similar) object containing the
+                           unparsed sense response.
+        """
         error_code = sense_blob[0] & 0x7F
         if error_code == 0x00:
             return None
@@ -153,7 +187,7 @@ class _LinuxDeviceIO(DeviceIO):
         return object.__new__(cls)
 
     def __enter__(self):
-        self.fd = os.open(self.disk.path, os.O_RDONLY | os.O_NONBLOCK)
+        self.fd = os.open(self.path, os.O_RDONLY | os.O_NONBLOCK)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -164,7 +198,7 @@ class _LinuxDeviceIO(DeviceIO):
 
     def sg_io(self, sg_io_header: structures.SGIOHeader):
         """
-        Sends an SCSI command to the Disk.
+        Sends an SCSI command to the device.
 
         :param sg_io_header: the SGIOHeader to send to the device.
         """
@@ -232,7 +266,7 @@ class _WinDeviceIO(DeviceIO):
         # various Python APIs can't handle a device opened without specific
         # flags, see (https://bugs.python.org/issue37074)
         self.fd = self._kernel32().CreateFileW(
-            self.disk.path,
+            self.path,
             0x80000000 | 0x40000000,  # GENERIC_READ | GENERIC_WRITE
             0x00000001,  # FILE_SHARE_READ
             None,
@@ -253,6 +287,8 @@ class _WinDeviceIO(DeviceIO):
         return False
 
     def is_a_block_device(self):
+        # FIXME: We need an implementation of this for Windows. Haven't yet
+        #        found an API that wasn't convoluted.
         return True
 
     def issue_command(self, direction: constants.Direction,
