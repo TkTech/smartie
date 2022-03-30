@@ -11,7 +11,7 @@ with open(os.path.join(root, 'README.md'), 'rb') as readme:
 setup(
     name='smartie',
     packages=find_packages(),
-    version='0.1.0',
+    version='1.0.0',
     description='Pure-python S.M.A.R.T library.',
     long_description=long_description,
     long_description_content_type='text/markdown',
