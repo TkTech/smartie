@@ -5,7 +5,7 @@ information.
 import itertools
 import ctypes
 import platform
-from functools import cached_property
+from functools import cache
 from pathlib import Path
 from typing import Iterable, Union, Dict
 
@@ -43,7 +43,8 @@ class Device:
         """
         return device_io.DeviceIO(self.path)
 
-    @cached_property
+    @property
+    @cache
     def identity(self) -> IdentifyResponse:
         """
         The raw, unprocessed response of an ATA IDENTIFY command.
@@ -58,7 +59,8 @@ class Device:
                 return IdentifyResponse()
             return identity_cache
 
-    @cached_property
+    @property
+    @cache
     def inquiry(self) -> InquiryResponse:
         """
         The raw, unprocessed response of an SCSI INQUIRY command to this device.
@@ -86,7 +88,8 @@ class Device:
                 for attr in smart.parse_smart_read_data(smart_result)
             }
 
-    @cached_property
+    @property
+    @cache
     def model_number(self):
         """
         Get the device's model number, if available.
@@ -100,7 +103,8 @@ class Device:
             ).strip(b' \x00').decode()
         return v
 
-    @cached_property
+    @property
+    @cache
     def serial_number(self):
         """
         Get the device's serial number, if available.
@@ -114,7 +118,8 @@ class Device:
             ).strip(b' \x00').decode()
         return v
 
-    @cached_property
+    @property
+    @cache
     def device_type(self):
         """
         Get the device's type, if available.
