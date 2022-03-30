@@ -18,6 +18,9 @@ setup(
     author='Tyler Kennedy',
     author_email='tk@tkte.ch',
     url='https://github.com/TkTech/smartie',
+    project_urls={
+        'Bug Tracker': 'https://github.com/TkTech/smartie/issues'
+    },
     keywords=['sensors', 'hardware', 'monitor'],
     classifiers=[
         'Development Status :: 4 - Beta',

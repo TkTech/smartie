@@ -52,7 +52,7 @@ class DeviceIO:
             :class:`_LinuxDeviceIO`.
 
         :param path: The filesystem path to the device, such as `/dev/sda` or
-                     `\\.\PhysicalDevice0`.
+                     `\\.\\PhysicalDevice0` (note the escaped slashes).
         """
         self.path = str(path)
         self.fd = None
