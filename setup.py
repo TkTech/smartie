@@ -37,6 +37,10 @@ setup(
         'test': [
             'pytest',
             'pytest-mock'
+        ],
+        'release': [
+            'sphinx',
+            'bump2version'
         ]
     }
 )
