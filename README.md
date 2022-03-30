@@ -57,6 +57,7 @@ and some SMART-related commands, so this is all we can support. Work for OS X
 is currently in-progress.
 
 ## Installation
+SMARTie requires Python 3.8 or greater (due to the use of `@cached_property`).
 
 ```
 pip install smartie
