@@ -20,14 +20,21 @@ setup(
     url='https://github.com/TkTech/smartie',
     keywords=['sensors', 'hardware', 'monitor'],
     classifiers=[
-        'Programming Language :: Python :: 3',
+        'Development Status :: 4 - Beta',
         'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
+        'Operating System :: MacOS :: MacOS X',
+        'Operating System :: Microsoft :: Windows',
+        'Operating System :: POSIX:: Linux',
         'Intended Audience :: Developers',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10'
     ],
     extras_require={
         'test': [
-            'pytest'
+            'pytest',
+            'pytest-mock'
         ]
     }
 )

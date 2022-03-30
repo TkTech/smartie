@@ -2,9 +2,7 @@
 High-level abstractions for enumerating devices and getting basic device
 information.
 """
-import os.path
 import itertools
-import os
 import ctypes
 import platform
 from functools import cached_property
@@ -32,10 +30,6 @@ class Device:
         :param path: The filesystem path to the device (such as /dev/sda).
         """
         self.path = str(path)
-
-        with self.io as dio:
-            if not dio.is_a_block_device():
-                raise IOError(f'{path!s} is not a block device')
 
     @property
     def io(self):

@@ -1,7 +1,9 @@
 # SMARTie
 
-This is a portable, pure-python library for getting basic disk information such
-as model, serial number, disk health, temperature, etc...
+**Note:** This library is in beta. _Please_, create a ticket if you run into an issue.
+
+This is a pure-python library for getting basic disk information such as model,
+serial number, disk health, temperature, etc...
 
 It provides a high-level abstraction to enumerate devices and retrieve basic
 details:
@@ -40,6 +42,24 @@ with device.io as dio:
         inquiry_command,
         inquiry
     )
+```
+
+## Support
+
+| OS      | SCSI/ATA Supported | NVME Supported | Notes                                      |
+|---------|--------------------|----------------|--------------------------------------------|
+| Linux   | Yes                | In-progress    | SG_IO v3 (Linux 2.6+)                      |
+| Windows | Yes                | In-progress    |                                            |
+| OS X    | In-progress*       | N/A            | *IDENTITY and SMART-related commands only. |
+
+OS X explicitly denies access to SCSI/ATA pass-through, _except_ for IDENTITY
+and some SMART-related commands, so this is all we can support. Work for OS X
+is currently in-progress.
+
+## Installation
+
+```
+pip install smartie
 ```
 
 ## Why?
