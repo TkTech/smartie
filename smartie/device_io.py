@@ -240,7 +240,7 @@ class _LinuxDeviceIO(DeviceIO):
         if result != 0:
             raise OSError(ctypes.get_errno())
 
-        self._parse_sense(bytearray(raw_sense))  # noqa
+        return self._parse_sense(raw_sense.raw)
 
 
 class _WinDeviceIO(DeviceIO):
@@ -296,9 +296,8 @@ class _WinDeviceIO(DeviceIO):
                       timeout: int = 3000):
 
         # On Windows, the command block is always 16 bytes, but we may be
-        # sending a smaller command. We use a temporary mutable bytearray to
-        # pad the command out the right length so that ctypes doesn't complain
-        # about mismatched types.
+        # sending a smaller command. We use a temporary mutable bytearray for
+        # this.
         cdb = (ctypes.c_ubyte * 16).from_buffer_copy(
             bytearray(command).ljust(16, b'\x00')  # noqa
         )
@@ -335,7 +334,7 @@ class _WinDeviceIO(DeviceIO):
             None
         )
 
-        self._parse_sense(bytes(header_with_buffer.sense))
+        self._parse_sense(bytearray(header_with_buffer.sense))
 
         if result == 0:
             raise ctypes.WinError(ctypes.get_last_error())
