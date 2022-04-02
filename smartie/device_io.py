@@ -183,6 +183,16 @@ class _LinuxDeviceIO(DeviceIO):
     """
     The backend for DeviceIO on Linux.
     """
+    @classmethod
+    def _get_libc(cls):
+        # Opens the libc.so, which can be quite a slow process, and
+        # saves it for future use.
+        libc = getattr(cls, '_libc', None)
+        if libc is None:
+            libc = ctypes.CDLL('libc.so.6', use_errno=True)
+            cls._libc = libc
+        return libc
+
     def __new__(cls, *args, **kwargs):
         return object.__new__(cls)
 
@@ -195,25 +205,6 @@ class _LinuxDeviceIO(DeviceIO):
             os.close(self.fd)
             self.fd = None
         return False
-
-    def sg_io(self, sg_io_header: structures.SGIOHeader):
-        """
-        Sends an SCSI command to the device.
-
-        :param sg_io_header: the SGIOHeader to send to the device.
-        """
-        # We use libc instead of the builtin ioctl as the builtin can have
-        # issues with 64-bit pointers.
-        libc = ctypes.CDLL('libc.so.6', use_errno=True)
-
-        result = libc.ioctl(
-            self.fd,
-            constants.IOCTL_SG_IO,
-            ctypes.byref(sg_io_header)
-        )
-
-        if result != 0:
-            raise OSError(ctypes.get_errno())
 
     def issue_command(self, direction: constants.Direction,
                       command: ctypes.Structure,
@@ -238,10 +229,18 @@ class _LinuxDeviceIO(DeviceIO):
             timeout=timeout
         )
 
-        self.sg_io(sg_io_header)
+        # We use libc instead of the builtin ioctl as the builtin can have
+        # issues with 64-bit pointers.
+        result = self._get_libc().ioctl(
+            self.fd,
+            constants.IOCTL_SG_IO,
+            ctypes.byref(sg_io_header)
+        )
 
-        if sg_io_header.masked_status == constants.StatusCode.CHECK_CONDITION:
-            self._parse_sense(bytearray(raw_sense))  # noqa
+        if result != 0:
+            raise OSError(ctypes.get_errno())
+
+        self._parse_sense(bytearray(raw_sense))  # noqa
 
 
 class _WinDeviceIO(DeviceIO):
@@ -296,6 +295,10 @@ class _WinDeviceIO(DeviceIO):
                       data: Union[ctypes.Array, ctypes.Structure], *,
                       timeout: int = 3000):
 
+        # On Windows, the command block is always 16 bytes, but we may be
+        # sending a smaller command. We use a temporary mutable bytearray to
+        # pad the command out the right length so that ctypes doesn't complain
+        # about mismatched types.
         cdb = (ctypes.c_ubyte * 16).from_buffer_copy(
             bytearray(command).ljust(16, b'\x00')  # noqa
         )
