@@ -23,5 +23,12 @@ if __name__ == '__main__':
                         f'    {command} ='
                         f' {embed_bytes(bytearray(response)).lstrip()}'
                     )
-        except (OSError, SenseError):
+        except SenseError as e:
+            print('Sense error occurred:')
+            print(f'    {e!r}')
+            print(
+                f'    sense ='
+                f' {embed_bytes(bytearray(e.sense)).lstrip()}'
+            )
+        except OSError:
             continue
