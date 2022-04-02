@@ -19,9 +19,9 @@ if __name__ == '__main__':
                 for command in commands:
                     response, _ = getattr(dio, command)()
 
-                print(
-                    f'    {command} ='
-                    f' {embed_bytes(bytearray(response)).lstrip()}'
-                )
+                    print(
+                        f'    {command} ='
+                        f' {embed_bytes(bytearray(response)).lstrip()}'
+                    )
         except (OSError, SenseError):
             continue
