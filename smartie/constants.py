@@ -66,6 +66,13 @@ class ATACommands(enum.IntEnum):
     RETURN_STATUS = 0xDA
 
 
+class ATAPICommands(enum.IntEnum):
+    """
+    The possible values for `Command16.command` when targeting an ATAPI device.
+    """
+    IDENTIFY = 0xA1
+
+
 class StatusCode(enum.IntEnum):
     """
     The possible values for `SGIOHeader.status`.

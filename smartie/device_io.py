@@ -91,7 +91,7 @@ class DeviceIO:
 
         return inquiry, sense
 
-    def identify(self):
+    def identify(self, try_atapi_on_failure=True):
         """
         Issues an ATA IDENTIFY command and returns a tuple of (result, sense).
         """
@@ -104,11 +104,25 @@ class DeviceIO:
             command=constants.ATACommands.IDENTIFY
         )
 
-        sense = self.issue_command(
-            constants.Direction.FROM,
-            command16,
-            identity
-        )
+        try:
+            sense = self.issue_command(
+                constants.Direction.FROM,
+                command16,
+                identity
+            )
+        except SenseError as err:
+            # If an error occured, we try to see if this is really an ATAPI
+            # device, such as a CD-ROM. We can handle the response exactly
+            # the same, it's just a different command.
+            if not try_atapi_on_failure:
+                raise
+
+            command16.command = constants.ATAPICommands.IDENTIFY
+            sense = self.issue_command(
+                constants.Direction.FROM,
+                command16,
+                identity
+            )
 
         return structures.IdentifyResponse.from_buffer(identity), sense
 
@@ -340,4 +354,3 @@ class _WinDeviceIO(DeviceIO):
             raise ctypes.WinError(ctypes.get_last_error())
 
         return header_with_buffer.sense
-
