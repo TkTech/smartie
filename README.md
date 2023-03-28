@@ -1,3 +1,5 @@
+![SMARTie logo](misc/logo-sm.png)
+
 # SMARTie
 
 **Note:** This library is in beta. _Please_, create a ticket if you run into an issue.
