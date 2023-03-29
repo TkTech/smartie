@@ -38,7 +38,7 @@ def enumerate_command():
 
 
 @cli.command('details')
-@click.argument('path', type=click.Path(exists=True))
+@click.argument('path')
 def details_command(path: str):
     """
     Show detailed information for a specific device.
