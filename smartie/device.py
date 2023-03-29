@@ -20,7 +20,7 @@ class Device:
         system = platform.system()
         if system == 'Windows':
             from smartie.scsi.windows import WindowsSCSIDevice
-            return WindowsSCSIDevice(*args, **kwargs)
+            return WindowsSCSIDevice(path, *args, **kwargs)
         elif system == 'Linux':
             if 'nvme' in str(path):
                 from smartie.nvme.linux import LinuxNVMEDevice
