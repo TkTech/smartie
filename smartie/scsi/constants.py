@@ -4,9 +4,12 @@ The various enums and constants encountered in the specs.
 import enum
 
 
-#: The linux IOCTL for SG_IO, which is the driver we use to send and receive
+#: The Linux IOCTL for SG_IO, which is the driver we use to send and receive
 #: SCSI commands.
 IOCTL_SG_IO = 0x2285
+#: The Windows IOCTL for SCSI pass-through, which is what we use to send and
+#: receive SCSI commands.
+IOCTL_SCSI_PASS_THROUGH_DIRECT = 0x4D014
 
 
 class DeviceType(enum.IntEnum):

@@ -4,7 +4,7 @@ from typing import Union
 import smartie.scsi
 from smartie.scsi import SCSIDevice
 from smartie._win32 import _kernel32
-from smartie.scsi.constants import Direction
+from smartie.scsi.constants import Direction, IOCTL_SCSI_PASS_THROUGH_DIRECT
 from smartie.scsi.structures import (
     SCSIPassThroughDirect,
     SCSIPassThroughDirectWithBuffer
@@ -13,12 +13,12 @@ from smartie.scsi.structures import (
 
 class WindowsSCSIDevice(SCSIDevice):
     def __enter__(self):
-        # We can't use the normal approach to opening a file on Windows, as
-        # various Python APIs can't handle a device opened without specific
-        # flags, see (https://bugs.python.org/issue37074)
         if self.fd is not None:
             raise IOError('Device is already open.')
 
+        # We can't use the normal approach to opening a file on Windows, as
+        # various Python APIs can't handle a device opened without specific
+        # flags, see (https://bugs.python.org/issue37074)
         self.fd = _kernel32().CreateFileW(
             self.path,
             0x80000000 | 0x40000000,  # GENERIC_READ | GENERIC_WRITE
@@ -75,7 +75,7 @@ class WindowsSCSIDevice(SCSIDevice):
 
         result = _kernel32().DeviceIoControl(
             self.fd,
-            0x4D014,  # IOCTL_SCSI_PASS_THROUGH_DIRECT,
+            IOCTL_SCSI_PASS_THROUGH_DIRECT,
             ctypes.pointer(header_with_buffer),
             ctypes.sizeof(header_with_buffer),
             ctypes.pointer(header_with_buffer),
