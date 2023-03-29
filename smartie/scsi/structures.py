@@ -318,23 +318,3 @@ class SmartDataResponse(ctypes.Structure):
         ('vendor_specific_2', ctypes.c_ubyte * 124),
         ('data_checksum_structure', ctypes.c_ubyte)
     ]
-
-
-def pprint_structure(s: ctypes.Structure):
-    """
-    Debugging utility method to pretty-print a `ctypes.Structure`.
-    """
-    offset = 0
-    bit = 0
-
-    for field in s._fields_:  # noqa
-        if len(field) == 3:
-            # Found a bitfield.
-            name, type_, bitcount = field
-        else:
-            name, type_ = field
-            bitcount = ctypes.sizeof(type_) * 8
-
-        value = getattr(s, name)
-        print(f'{name}[{offset}:{offset + bitcount}] = {value!r}')
-        offset += bitcount

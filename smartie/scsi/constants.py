@@ -4,6 +4,11 @@ The various enums and constants encountered in the specs.
 import enum
 
 
+#: The linux IOCTL for SG_IO, which is the driver we use to send and receive
+#: SCSI commands.
+IOCTL_SG_IO = 0x2285
+
+
 class DeviceType(enum.IntEnum):
     """
     Common device types returned by the SCSI INQUIRY command.
@@ -118,8 +123,3 @@ class ATASmartFeature(enum.IntEnum):
     SMART_ENABLE_OPERATIONS = 0xD8
     SMART_DISABLE_OPERATIONS = 0xD9
     SMART_RETURN_STATUS = 0xDA
-
-
-#: The linux IOCTL for SG_IO, which is the driver we use to send and receive
-#: SCSI commands.
-IOCTL_SG_IO = 0x2285

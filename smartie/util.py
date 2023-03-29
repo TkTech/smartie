@@ -1,3 +1,4 @@
+import ctypes
 import itertools
 
 
@@ -55,3 +56,29 @@ def embed_bytes(data: bytes, *, line_prefix='    ', max_width=80) -> str:
         ) for row in grouper_it(line_length // 6, data)
     )
     return f'{line_prefix}bytearray([\n{lines}\n{line_prefix}])'
+
+
+def pprint_structure(s: ctypes.Structure):
+    """
+    Debugging utility method to pretty-print a `ctypes.Structure`.
+    """
+    offset = 0
+    bit = 0
+
+    for field in s._fields_:  # noqa
+        if len(field) == 3:
+            # Found a bitfield.
+            name, type_, bitcount = field
+        else:
+            name, type_ = field
+            bitcount = ctypes.sizeof(type_) * 8
+
+        value = getattr(s, name)
+        if isinstance(value, ctypes.Array):
+            print(
+                f'{name}[{offset}:{offset + bitcount}] = {bytes(value)[:20]!r}'
+                f' ({len(value)} bytes)'
+            )
+        else:
+            print(f'{name}[{offset}:{offset + bitcount}] = {value!r}')
+        offset += bitcount

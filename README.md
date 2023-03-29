@@ -4,7 +4,7 @@
 
 **Note:** This library is in beta. _Please_, create a ticket if you run into an issue.
 
-This is a pure-python library for getting basic disk information such as model,
+This is a pure-python, 0-dependency library for getting basic disk information such as model,
 serial number, disk health, temperature, etc...
 
 It provides a high-level abstraction to enumerate devices and retrieve basic
@@ -22,7 +22,9 @@ for device in get_all_devices():
 ... as well as a lower-level interface for sending SCSI messages:
 
 ```python
-from smartie import structures, constants
+import smartie.scsi.structures
+from smartie import structures
+from smartie.scsi import constants
 from smartie.device import Device
 
 device = Device('\\.\PhysicalDrive0')  # or /dev/sda on Linux
@@ -32,9 +34,9 @@ with device.io as dio:
     result, sense = dio.inquiry()
 
     # ... or send a raw INQUIRY yourself:
-    inquiry = structures.InquiryResponse()
+    inquiry = smartie.scsi.structures.InquiryResponse()
 
-    inquiry_command = structures.InquiryCommand(
+    inquiry_command = smartie.scsi.structures.InquiryCommand(
         operation_code=constants.OperationCode.INQUIRY,
         allocation_length=96
     )
@@ -50,7 +52,7 @@ with device.io as dio:
 
 | OS      | SCSI/ATA Supported | NVME Supported | Notes                                      |
 |---------|--------------------|----------------|--------------------------------------------|
-| Linux   | Yes                | In-progress    | SG_IO v3 (Linux 2.6+)                      |
+| Linux   | Yes                | Yes            | SG_IO v3 (Linux 2.6+)                      |
 | Windows | Yes                | In-progress    |                                            |
 | OS X    | In-progress*       | N/A            | *IDENTITY and SMART-related commands only. |
 
@@ -63,6 +65,12 @@ SMARTie requires Python 3.8 or greater (due to the use of `@cached_property`).
 
 ```
 pip install smartie
+```
+
+If you want the command line tools, you'll also want to do:
+
+```
+pip install smartie[cli]
 ```
 
 ## Why?

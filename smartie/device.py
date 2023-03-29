@@ -5,22 +5,33 @@ information.
 import itertools
 import ctypes
 import platform
-from functools import cached_property
 from pathlib import Path
-from typing import Iterable, Union, Dict
-
-from smartie import smart, device_io
-from smartie.constants import DeviceType
-from smartie.errors import SenseError
-from smartie.structures import (
-    IdentifyResponse,
-    InquiryResponse
-)
-from smartie.util import swap_bytes
+from typing import Iterable, Union
 
 
 class Device:
     path: str
+    fd: int | None
+
+    def __new__(cls, path, *args, **kwargs):
+        # This muckery replaces Device with a platform-specific variant
+        # whenever Device is used. It's the same trick used by Python's
+        # built-in pathlib.Path().
+        system = platform.system()
+        if system == 'Windows':
+            from smartie.scsi.windows import WindowsSCSIDevice
+            return WindowsSCSIDevice(*args, **kwargs)
+        elif system == 'Linux':
+            if 'nvme' in str(path):
+                from smartie.nvme.linux import LinuxNVMEDevice
+                return LinuxNVMEDevice(path, *args, **kwargs)
+
+            from smartie.scsi.linux import LinuxSCSIDevice
+            return LinuxSCSIDevice(path, *args, **kwargs)
+        else:
+            raise NotImplementedError(
+                'Device not implemented for this platform.'
+            )
 
     def __init__(self, path: Union[Path, str]):
         """
@@ -30,116 +41,38 @@ class Device:
         :param path: The filesystem path to the device (such as /dev/sda).
         """
         self.path = str(path)
+        self.fd = None
 
     @property
-    def io(self):
+    def model(self) -> str | None:
         """
-        Returns a DeviceIO which can be used as a context manager for IO
-        operations. Ex:
-
-        >>> disk = Device(Path('/dev/sr0'))
-        >>> with disk.io as dio:
-        ...     identify, sense = dio.identify()
+        Returns the model name of the device.
         """
-        return device_io.DeviceIO(self.path)
-
-    @cached_property
-    def identity(self) -> IdentifyResponse:
-        """
-        The raw, unprocessed response of an ATA IDENTIFY command.
-
-        This property will return an empty :class:`IdentifyResponse` if an
-        error occurred.
-        """
-        with self.io as dio:
-            try:
-                identity_cache, sense = dio.identify()
-            except (OSError, SenseError):
-                return IdentifyResponse()
-            return identity_cache
-
-    @cached_property
-    def inquiry(self) -> InquiryResponse:
-        """
-        The raw, unprocessed response of an SCSI INQUIRY command to this device.
-
-        This property will return an empty :class:`InquiryResponse` if an
-        error occurred.
-        """
-        with self.io as dio:
-            try:
-                inquiry_cache, sense = dio.inquiry()
-            except (OSError, SenseError):
-                return InquiryResponse()
-            return inquiry_cache
+        return None
 
     @property
-    def smart_data(self) -> Dict[int, smart.Attribute]:
-        with self.io as dio:
-            try:
-                smart_result, sense = dio.smart_read_data()
-            except (OSError, SenseError):
-                return {}
-
-            return {
-                attr.id: attr
-                for attr in smart.parse_smart_read_data(smart_result)
-            }
-
-    @cached_property
-    def model_number(self):
+    def serial(self) -> str | None:
         """
-        Get the device's model number, if available.
+        Returns the serial number of the device.
         """
-        v = swap_bytes(self.identity.model_number).strip(b' \x00').decode()
-        # If we didn't get anything at all back from an ATA IDENTIFY, try an
-        # old fashion SCSI INQUIRY.
-        if not v:
-            v = bytearray(
-                self.inquiry.product_identification
-            ).strip(b' \x00').decode()
-        return v
-
-    @cached_property
-    def serial_number(self):
-        """
-        Get the device's serial number, if available.
-        """
-        v = swap_bytes(self.identity.serial_number).strip(b' \x00').decode()
-        if not v:
-            v = bytearray(
-                # This vendor-specific field (almost?) always has the serial
-                # number in it.
-                self.inquiry.vendor_specific_1
-            ).strip(b' \x00').decode()
-        return v
-
-    @cached_property
-    def device_type(self):
-        """
-        Get the device's type, if available.
-        """
-        return DeviceType(self.inquiry.peripheral_device_type)
+        return None
 
     @property
-    def temperature(self):
+    def temperature(self) -> int | None:
         """
-        Returns the device's temperature in celsius, if available.
-        :return:
+        Returns the temperature of the device in degrees Celsius.
         """
-        temp = self.smart_data.get(0xBE)
-        if temp is not None:
-            return temp.p_value, temp.p_worst_value
+        return None
 
-        temp = self.smart_data.get(0xC2)
-        if temp is not None:
-            return temp.p_value, temp.p_worst_value
+    @property
+    def smart_table(self):
+        return {}
 
-    def __repr__(self):
-        return (
-            f'<{self.__class__.__name__}(path={self.path!r}, model_number='
-            f'{self.model_number!r}>'
-        )
+    def __enter__(self):
+        raise NotImplementedError()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        raise NotImplementedError()
 
 
 def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
@@ -161,6 +94,13 @@ def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
             return
 
         for child in p.iterdir():
+            # This whitelist is guaranteed to be the cause of a headache or
+            # two, but I can't currently find a portable way of getting the
+            # device "type". We don't want to get encrypted volumes or memory
+            # disks, for example.
+            if not child.name.startswith(('sd', 'nvme')):
+                continue
+
             try:
                 yield Device(Path('/dev') / child.name)
             except IOError as e:

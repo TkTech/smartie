@@ -6,7 +6,7 @@ import struct
 from dataclasses import dataclass, replace
 from typing import Optional
 
-from smartie.structures import SmartDataResponse
+from smartie.scsi.structures import SmartDataResponse
 
 
 class Units(enum.IntEnum):

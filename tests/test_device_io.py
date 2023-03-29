@@ -3,7 +3,7 @@ from typing import Union, Optional
 
 from pytest_mock import MockerFixture
 
-from smartie import constants
+from smartie.scsi import constants
 from smartie.device import Device
 from smartie.device_io import DeviceIO
 
