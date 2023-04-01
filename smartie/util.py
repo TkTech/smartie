@@ -76,9 +76,10 @@ def pprint_structure(s: ctypes.Structure):
         value = getattr(s, name)
         if isinstance(value, ctypes.Array):
             print(
-                f'{name}[{offset}:{offset + bitcount}] = {bytes(value)[:20]!r}'
+                f'{name}[{offset}:{offset + bitcount}] = {bytes(value)[:15]!r}'
                 f' ({len(value)} bytes)'
             )
+            print(embed_bytes(bytes(value)))
         else:
             print(f'{name}[{offset}:{offset + bitcount}] = {value!r}')
         offset += bitcount

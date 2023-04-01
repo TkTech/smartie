@@ -1,9 +1,17 @@
+import ctypes
+from ctypes import Structure
+
 import click
 from rich import box
-from rich.console import Console
+from rich.console import Console, Group, group
+from rich.padding import Padding
+from rich.panel import Panel
 from rich.table import Table
+from rich.text import Text
 
 from smartie.device import get_all_devices, get_device
+from smartie.scsi import SCSIDevice
+from smartie.util import grouper_it, pprint_structure
 
 
 @click.group()
@@ -96,3 +104,80 @@ def details_command(path: str):
 
     console = Console()
     console.print(details_table)
+
+
+@group()
+def print_structure(structure: ctypes.Structure) -> Table:
+    offset = 0
+
+    for field in structure._fields_:  # noqa
+        if len(field) == 3:
+            # If the field has a 3rd part, it's a bitfield, with the 3rd part
+            # being the bit count.
+            name, type_, bitcount = field
+        else:
+            name, type_ = field
+            bitcount = ctypes.sizeof(type_) * 8
+
+        value = getattr(structure, name)
+        label = (
+            (f'[{offset:03}:{offset + bitcount:03}]', 'white italic'),
+            (f' {name}', 'magenta'),
+            (f' = ', 'green')
+        )
+
+        yield Text.assemble(*label)
+
+        if isinstance(value, ctypes.Array):
+            array_table = Table(show_header=False)
+            array_table.add_column('Hex', no_wrap=True, style='green')
+            array_table.add_column('ASCII', no_wrap=True, style='white')
+
+            for chunk in grouper_it(20, bytearray(value)):
+                chunk = list(chunk)
+
+                array_table.add_row(
+                    ' '.join(f'{byte:02X}' for byte in chunk),
+                    ''.join(
+                        chr(byte) if 32 <= byte <= 126 else '.'
+                        for byte in chunk
+                    )
+                )
+
+            yield Padding(array_table, (0, 0, 0, 4))
+        else:
+            yield Padding(
+                Text.assemble(
+                    ('Dec: ', 'white'),
+                    (str(value), 'green'),
+                    (' | ', 'white'),
+                    ('Hex: ', 'white'),
+                    (f'0x{value:02X}', 'green'),
+                    (' | ', 'white'),
+                    ('Bin: ', 'white'),
+                    (f'0b{value:08b}', 'green')
+                ),
+                (0, 0, 0, 4)
+            )
+
+        offset += bitcount
+
+
+@cli.command('debug')
+@click.argument('path')
+@click.argument('command', type=click.Choice(['inquiry', 'identify']))
+def debug_command(path: str, command: str):
+    """
+    Debug a device by sending a command and displaying the response as a raw
+    structure.
+    """
+    console = Console()
+
+    with get_device(path) as device:
+        if isinstance(device, SCSIDevice):
+            console.print(
+                print_structure({
+                    'inquiry': device.inquiry,
+                    'identify': device.identify
+                }[command]()[0])
+            )
