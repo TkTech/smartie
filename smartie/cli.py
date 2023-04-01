@@ -10,6 +10,7 @@ from rich.table import Table
 from rich.text import Text
 
 from smartie.device import get_all_devices, get_device
+from smartie.nvme import NVMEDevice
 from smartie.scsi import SCSIDevice
 from smartie.util import grouper_it, pprint_structure
 
@@ -175,9 +176,23 @@ def debug_command(path: str, command: str):
 
     with get_device(path) as device:
         if isinstance(device, SCSIDevice):
-            console.print(
-                print_structure({
-                    'inquiry': device.inquiry,
-                    'identify': device.identify
-                }[command]()[0])
-            )
+            result = {
+                'inquiry': device.inquiry,
+                'identify': device.identify
+            }.get(command)
+            if result is None:
+                console.print('Command unknown or unsupported by this device.')
+                return
+
+            console.print(print_structure(result()[0]))
+        elif isinstance(device, NVMEDevice):
+            result = {
+                'identify': device.identify
+            }.get(command)
+            if result is None:
+                console.print('Command unknown or unsupported by this device.')
+                return
+
+            console.print(print_structure(result()))
+        else:
+            raise NotImplementedError('Unknown device type.')

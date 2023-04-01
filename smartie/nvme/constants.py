@@ -1,7 +1,7 @@
 import enum
 
 
-class NVMEAdminCommand(enum.IntEnum):
+class NVMEAdminCommands(enum.IntEnum):
     IDENTIFY = 0x06
 
 

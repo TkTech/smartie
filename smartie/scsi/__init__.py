@@ -20,9 +20,6 @@ from smartie.util import swap_bytes
 
 
 class SCSIDevice(Device, abc.ABC):
-    def __new__(cls, *args, **kwargs):
-        return object.__new__(cls)
-
     @classmethod
     def parse_sense(cls, sense_blob):
         """
@@ -190,7 +187,7 @@ class SCSIDevice(Device, abc.ABC):
             features=util.swap_int(2, constants.ATASmartFeature.SMART_READ_DATA)
         ).set_lba(0xC24F00)
 
-        sense = self.issue_command(
+        self.issue_command(
             constants.Direction.FROM,
             command16,
             smart_result

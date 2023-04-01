@@ -4,7 +4,7 @@ import os
 import smartie.nvme.constants
 from smartie.nvme import NVMEDevice
 from smartie.platforms.linux import _get_libc
-from smartie.nvme.structures import NVMEAdminCommand, NVMEIdentifyResponse
+from smartie.nvme.structures import NVMEAdminCommand
 
 
 class LinuxNVMEDevice(NVMEDevice):
@@ -31,28 +31,12 @@ class LinuxNVMEDevice(NVMEDevice):
         if result != 0:
             raise OSError(ctypes.get_errno())
 
-    def identify_controller(self) -> NVMEIdentifyResponse:
-        """
-        Returns the parsed IDENTIFY results for CNS 01h, which contains
-        the controller information.
-        """
-        data = ctypes.create_string_buffer(b'\x00', 4096)
-        self.issue_admin_command(
-            NVMEAdminCommand(
-                opcode=smartie.nvme.constants.NVMEAdminCommand.IDENTIFY,
-                addr=ctypes.addressof(data),
-                data_len=4096,
-                cdw10=1,
-            )
-        )
-        return NVMEIdentifyResponse.from_buffer(data)
-
     @property
     def model(self) -> str | None:
-        identify = self.identify_controller()
+        identify = self.identify()
         return bytearray(identify.mn).strip(b' \x00').decode()
 
     @property
     def serial(self) -> str | None:
-        identify = self.identify_controller()
+        identify = self.identify()
         return bytearray(identify.sn).strip(b' \x00').decode()

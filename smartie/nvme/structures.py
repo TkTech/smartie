@@ -32,4 +32,5 @@ class NVMEIdentifyResponse(ctypes.Structure):
         ('sn', ctypes.c_ubyte * 20),
         ('mn', ctypes.c_ubyte * 40),
         ('fr', ctypes.c_ubyte * 8),
+        ('unknown', ctypes.c_ubyte * 4024),
     ]
