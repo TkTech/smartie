@@ -282,6 +282,26 @@ class IdentifyResponse(ctypes.Structure):
     ]
 
 
+class SmartDataEntry(ctypes.Structure):
+    """
+    An entry in the SMART attribute table.
+
+    .. note::
+
+        The specification calls this field vendor specific, but its format is
+        very consistent.
+    """
+    _pack_ = 1
+    _fields_ = [
+        ('id', ctypes.c_ubyte),
+        ('flags', ctypes.c_ushort),
+        ('current', ctypes.c_ubyte),
+        ('worst', ctypes.c_ubyte),
+        ('vendor_specific_1', ctypes.c_ubyte * 6),
+        ('reserved', ctypes.c_ubyte)
+    ]
+
+
 class SmartDataResponse(ctypes.Structure):
     """
     The result of a SMART READ_DATA command.
@@ -297,7 +317,8 @@ class SmartDataResponse(ctypes.Structure):
         :func:`smartie.smart.parse_smart_read_data()` for an example.
     """
     _fields_ = [
-        ('vendor_specific_1', ctypes.c_ubyte * 362),
+        ('version', ctypes.c_ushort),
+        ('attributes', SmartDataEntry * 30),
         ('offline_data_collection_status', ctypes.c_ubyte),
         ('self_test_execution_status_buyte', ctypes.c_ubyte),
         ('vendor_specific_2', ctypes.c_ubyte * 2),
@@ -317,4 +338,32 @@ class SmartDataResponse(ctypes.Structure):
         ('reserved_1', ctypes.c_ubyte * 8),
         ('vendor_specific_2', ctypes.c_ubyte * 124),
         ('data_checksum_structure', ctypes.c_ubyte)
+    ]
+
+
+class SmartThresholdEntry(ctypes.Structure):
+    """
+    A single entry in the SMART READ_THRESHOLDS response.
+    """
+    _fields_ = [
+        ('attribute_id', ctypes.c_ubyte),
+        ('value', ctypes.c_ubyte),
+        ('reserved_1', ctypes.c_ubyte * 10)
+    ]
+
+
+class SmartThresholdResponse(ctypes.Structure):
+    """
+    The result of a SMART READ_THRESHOLDS command.
+
+    .. note::
+        The most interesting field in here is likely `vendor_specific_1`,
+        which contains the SMART threshold table that encodes values such as
+        the temperature at which the device will start throttling.
+    """
+    _fields_ = [
+        ('revision_number', ctypes.c_ushort),
+        ('entries', SmartThresholdEntry * 30),
+        ('reserved_1', ctypes.c_ubyte * 149),
+        ('checksum', ctypes.c_ubyte)
     ]

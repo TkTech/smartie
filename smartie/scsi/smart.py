@@ -4,9 +4,10 @@ Higher level utilities for working with S.M.A.R.T.
 import enum
 import struct
 from dataclasses import dataclass, replace
-from typing import Optional
+from typing import Dict, Optional
 
-from smartie.scsi.structures import SmartDataResponse
+from smartie.scsi.structures import SmartDataResponse, SmartThresholdEntry, \
+    SmartThresholdResponse
 
 
 class Units(enum.IntEnum):
@@ -38,6 +39,8 @@ class Attribute:
     current_value: Optional[int] = None
     #: The worst known value of the attribute.
     worst_value: Optional[int] = None
+    #: The maximum acceptable value of the attribute.
+    threshold: Optional[int] = None
 
     @property
     def p_value(self):
@@ -158,33 +161,41 @@ SMART_ATTRIBUTE_TABLE = {
 }
 
 
-def parse_smart_read_data(data: SmartDataResponse):
+def parse_smart_read_data(data: SmartDataResponse, *,
+                          threshold: Optional[SmartThresholdResponse] = None)\
+        -> Dict[int, Attribute]:
     """
     Parses the SMART attributes out of a SMART READ_DATA command, returning
     an iterable of high-level :class:`SmartAttribute`.
     """
-    data = memoryview(bytearray(data.vendor_specific_1))
+    thresholds = {}
+    if threshold:
+        for entry in threshold.entries:
+            if entry.attribute_id == 0x00:
+                break
+            thresholds[entry.attribute_id] = entry.value
 
-    for i in range(30):
-        d = data[2 + (i * 12):]
+    result = {}
+    for entry in data.attributes:
+        if entry.id == 0x00:
+            break
 
-        if d[0] == 0x00:
-            continue
+        result[entry.id] = replace(
+            SMART_ATTRIBUTE_TABLE.get(
+                entry.id,
+                Attribute(
+                    'UNKNOWN',
+                    id=entry.id,
+                    flags=entry.flags,
+                    current_value=entry.current,
+                    worst_value=entry.worst,
+                    threshold=thresholds.get(entry.id)
+                )
+            ),
+            flags=entry.flags,
+            current_value=entry.current,
+            worst_value=entry.worst,
+            threshold=thresholds.get(entry.id)
+        )
 
-        id_, flags, current, worst = struct.unpack_from('<BHBB', d)
-        attr = SMART_ATTRIBUTE_TABLE.get(id_)
-        if attr is None:
-            yield Attribute(
-                'UNKNOWN',
-                id=id_,
-                flags=flags,
-                current_value=current,
-                worst_value=worst
-            )
-        else:
-            yield replace(
-                attr,
-                flags=flags,
-                current_value=current,
-                worst_value=worst
-            )
+    return result

@@ -14,7 +14,8 @@ from smartie.scsi.structures import (
     IdentifyResponse,
     InquiryCommand,
     InquiryResponse,
-    SmartDataResponse
+    SmartDataResponse,
+    SmartThresholdResponse
 )
 from smartie.util import swap_bytes
 
@@ -178,6 +179,7 @@ class SCSIDevice(Device, abc.ABC):
         Returns a dictionary of SMART attributes.
         """
         smart_result = SmartDataResponse()
+        threshold_result = SmartThresholdResponse()
 
         command16 = Command16(
             operation_code=constants.OperationCode.COMMAND_16,
@@ -193,7 +195,24 @@ class SCSIDevice(Device, abc.ABC):
             smart_result
         )
 
-        return {
-            attr.id: attr
-            for attr in smart.parse_smart_read_data(smart_result)
-        }
+        command16 = Command16(
+            operation_code=constants.OperationCode.COMMAND_16,
+            protocol=constants.ATAProtocol.PIO_DATA_IN << 1,
+            command=constants.ATACommands.SMART,
+            flags=0x2E,
+            features=util.swap_int(
+                2,
+                constants.ATASmartFeature.SMART_READ_THRESHOLDS
+            )
+        ).set_lba(0xC24F00)
+
+        self.issue_command(
+            constants.Direction.FROM,
+            command16,
+            threshold_result
+        )
+
+        return smart.parse_smart_read_data(
+            smart_result,
+            threshold=threshold_result
+        )
