@@ -3,7 +3,7 @@ import os
 from typing import Union
 
 from smartie.scsi import SCSIDevice, constants
-from smartie._linux import _get_libc
+from smartie.platforms.linux import _get_libc
 from smartie.scsi.structures import (
     DescriptorFormatSense,
     FixedFormatSense,

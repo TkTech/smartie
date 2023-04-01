@@ -10,6 +10,10 @@ from smartie.scsi.structures import SmartDataResponse
 
 
 class Units(enum.IntEnum):
+    """
+    Hints for the possible measurement unit of a SMART attribute, primarily
+    used for display purposes.
+    """
     UNKNOWN = 0
     CELSIUS = 10
     MILLISECONDS = 20

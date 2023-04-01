@@ -3,7 +3,7 @@ from rich import box
 from rich.console import Console
 from rich.table import Table
 
-from smartie.device import Device, get_all_devices
+from smartie.device import get_all_devices, get_device
 
 
 @click.group()
@@ -47,7 +47,7 @@ def details_command(path: str):
     details_table.add_column('Key', style='magenta')
     details_table.add_column('Value', style='green')
 
-    with Device(path) as device:
+    with get_device(path) as device:
         details_table.add_row(
             'Model Number',
             device.model

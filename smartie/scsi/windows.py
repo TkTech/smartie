@@ -3,7 +3,7 @@ from typing import Union
 
 import smartie.scsi
 from smartie.scsi import SCSIDevice
-from smartie._win32 import _kernel32
+from smartie.platforms.win32 import _kernel32
 from smartie.scsi.constants import Direction, IOCTL_SCSI_PASS_THROUGH_DIRECT
 from smartie.scsi.structures import (
     SCSIPassThroughDirect,

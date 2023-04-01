@@ -2,6 +2,7 @@
 High-level abstractions for enumerating devices and getting basic device
 information.
 """
+import abc
 import itertools
 import ctypes
 import platform
@@ -9,29 +10,9 @@ from pathlib import Path
 from typing import Iterable, Union
 
 
-class Device:
+class Device(abc.ABC):
     path: str
     fd: int | None
-
-    def __new__(cls, path, *args, **kwargs):
-        # This muckery replaces Device with a platform-specific variant
-        # whenever Device is used. It's the same trick used by Python's
-        # built-in pathlib.Path().
-        system = platform.system()
-        if system == 'Windows':
-            from smartie.scsi.windows import WindowsSCSIDevice
-            return WindowsSCSIDevice(path, *args, **kwargs)
-        elif system == 'Linux':
-            if 'nvme' in str(path):
-                from smartie.nvme.linux import LinuxNVMEDevice
-                return LinuxNVMEDevice(path, *args, **kwargs)
-
-            from smartie.scsi.linux import LinuxSCSIDevice
-            return LinuxSCSIDevice(path, *args, **kwargs)
-        else:
-            raise NotImplementedError(
-                'Device not implemented for this platform.'
-            )
 
     def __init__(self, path: Union[Path, str]):
         """
@@ -68,11 +49,41 @@ class Device:
     def smart_table(self):
         return {}
 
+    @abc.abstractmethod
     def __enter__(self):
         raise NotImplementedError()
 
+    @abc.abstractmethod
     def __exit__(self, exc_type, exc_val, exc_tb):
         raise NotImplementedError()
+
+
+def get_device(path: Union[Path, str]) -> Device:
+    """
+    Returns a Device instance for the given path. This is a convenience
+    function for the Device constructor which tries to automatically
+    determine the correct subclass to use.
+
+    :param path: The filesystem path to the device (such as /dev/sda).
+    """
+    # Remember, we always need to use delayed imports here as these imports
+    # depend on the platform and may import things that aren't available on
+    # all platforms.
+    system = platform.system()
+    if system == 'Windows':
+        from smartie.scsi.windows import WindowsSCSIDevice
+        return WindowsSCSIDevice(path)
+    elif system == 'Linux':
+        from smartie.nvme.linux import LinuxNVMEDevice
+        from smartie.scsi.linux import LinuxSCSIDevice
+
+        if 'nvme' in str(path):
+            return LinuxNVMEDevice(path)
+        return LinuxSCSIDevice(path)
+    else:
+        raise NotImplementedError(
+            'Device not implemented for this platform.'
+        )
 
 
 def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
@@ -102,7 +113,7 @@ def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
                 continue
 
             try:
-                yield Device(Path('/dev') / child.name)
+                yield get_device(Path('/dev') / child.name)
             except IOError as e:
                 if raise_errors:
                     raise e
@@ -137,9 +148,9 @@ def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
                 # PathLib cannot be used here, there's an option CPython ticket
                 # for errors resolving device paths. This is unfortunate,
                 # it forced us to revert to a string as the base path type.
-                yield Device(f'\\\\.\\{device_path}')
+                yield get_device(f'\\\\.\\{device_path}')
     elif system == 'Darwin':
-        from smartie._osx import iokit, cf, kCFBooleanTrue
+        from smartie.platforms.osx import iokit, cf, kCFBooleanTrue
 
         io_iterator = ctypes.c_void_p()
 
@@ -176,6 +187,6 @@ def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
                 name
             )
 
-            yield Device(name.value)
+            yield get_device(name.value)
     else:
         raise NotImplementedError('platform not supported')

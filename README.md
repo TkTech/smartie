@@ -2,10 +2,8 @@
 
 # SMARTie
 
-**Note:** This library is in beta. _Please_, create a ticket if you run into an issue.
-
 This is a pure-python, 0-dependency library for getting basic disk information such as model,
-serial number, disk health, temperature, etc...
+serial number, disk health, temperature, and SMART data. It supports both SCSI/ATA and NVMe devices.
 
 It provides a high-level abstraction to enumerate devices and retrieve basic
 details:
@@ -15,33 +13,34 @@ from smartie.device import get_all_devices
 
 for device in get_all_devices():
     print(device.path)
-    print(device.model_number)
+    print(device.model)
+    print(device.serial)
     print(device.temperature)
+
+    for attribute in device.smart_table:
+        print(attribute.name, attribute.value)
 ```
 
-... as well as a lower-level interface for sending SCSI messages:
+... as well as a lower-level interface for sending raw messages to devices, such as an SCSI INQUIRY:
 
 ```python
-import smartie.scsi.structures
-from smartie import structures
-from smartie.scsi import constants
-from smartie.device import Device
+from smartie.scsi import constants, structures
+from smartie.device import get_device
 
-device = Device('\\.\PhysicalDrive0')  # or /dev/sda on Linux
-with device.io as dio:
-    # Send an SCSI INQUIRY command, and get back both the result data and the
-    # sense response.
-    result, sense = dio.inquiry()
+with get_device('\\.\PhysicalDrive0') as device:
+    # The structure that will be populated with the response.
+    inquiry = structures.InquiryResponse()
 
-    # ... or send a raw INQUIRY yourself:
-    inquiry = smartie.scsi.structures.InquiryResponse()
-
-    inquiry_command = smartie.scsi.structures.InquiryCommand(
+    # The command we're going to send to the device.
+    inquiry_command = structures.InquiryCommand(
         operation_code=constants.OperationCode.INQUIRY,
         allocation_length=96
     )
 
-    sense = dio.issue_command(
+    # And finally issue the command. The response will be populated into the
+    # `inquiry` structure, and the `sense` structure will contain any error
+    # information.
+    sense = device.issue_command(
         constants.Direction.FROM,
         inquiry_command,
         inquiry
@@ -61,7 +60,7 @@ and some SMART-related commands, so this is all we can support. Work for OS X
 is currently in-progress.
 
 ## Installation
-SMARTie requires Python 3.8 or greater (due to the use of `@cached_property`).
+SMARTie currently requires Python 3.8 or greater.
 
 ```
 pip install smartie
@@ -72,24 +71,6 @@ If you want the command line tools, you'll also want to do:
 ```
 pip install smartie[cli]
 ```
-
-## Why?
-
-This library is extracted from [PortableHardwareMonitor][phm]
-monitor, where I don't want to force users to install something like
-smartmontools just to support showing disk temperature!
-
-This library ended up being great for poking, prodding, testing and debugging
-SCSI/ATA with quick iteration, so hopefully it'll be useful to others.
-
-## Contributing
-
-Compatibility contributions are welcome and greatly encouraged, especially
-considering the sheer number of variations of devices out there.
-
-Changes that severely impact readability in exchange for a bit of performance
-may be rejected or rewritten. I'm hopeful this library will develop as a
-learning resource, and readability is a priority.
 
 ## FAQ
 
@@ -113,6 +94,12 @@ LGPL, so you need to avoid them when contributing to this project. Instead:
 - Use the SG_IO documentation by Danny (https://sg.danny.cz/sg/).
 - Use the _conversations_ in mailing lists and bug trackers, while avoiding the
   code.
+
+### Does this library support RAID controllers?
+
+Sometimes. It hasn't been thoroughly tested with RAID controllers, as the target audience
+for the main program that uses this library is consumer desktops. Patches happily
+accepted if you have one to test with!
 
 [S.M.A.R.T]: https://en.wikipedia.org/wiki/S.M.A.R.T.
 [phm]: https://github.com/TkTech/PortableHardwareMonitor

@@ -2,9 +2,8 @@ import ctypes
 import os
 
 import smartie.nvme.constants
-from smartie.scsi import constants
 from smartie.nvme import NVMEDevice
-from smartie._linux import _get_libc
+from smartie.platforms.linux import _get_libc
 from smartie.nvme.structures import NVMEAdminCommand, NVMEIdentifyResponse
 
 

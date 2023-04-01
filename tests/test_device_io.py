@@ -5,7 +5,6 @@ from pytest_mock import MockerFixture
 
 from smartie.scsi import constants
 from smartie.device import Device
-from smartie.device_io import DeviceIO
 
 
 VALID_IDENTIFY_RESPONSE = bytes([
