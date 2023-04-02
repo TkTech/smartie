@@ -1,20 +1,25 @@
+__all__ = ('SCSIDevice',)
+
 import abc
 import ctypes
 from typing import Dict, Union
 
 from smartie import util
-from smartie.scsi.constants import DeviceType
 from smartie.device import Device
 from smartie.errors import SenseError
-from smartie.scsi import constants, smart
+from smartie.scsi import smart
 from smartie.scsi.structures import (
-    Command16,
+    ATACommands, ATAPICommands,
+    ATAProtocol, ATASmartFeature, Command16,
+    CommandFlags,
     DescriptorFormatSense,
+    DeviceType,
+    Direction,
     FixedFormatSense,
     IdentifyResponse,
     InquiryCommand,
     InquiryResponse,
-    SmartDataResponse,
+    OperationCode, SmartDataResponse,
     SmartThresholdResponse
 )
 from smartie.util import swap_bytes
@@ -51,7 +56,7 @@ class SCSIDevice(Device, abc.ABC):
         else:
             raise SenseError(0, sense=sense_blob)
 
-    def issue_command(self, direction: constants.Direction,
+    def issue_command(self, direction: structures.Direction,
                       command: ctypes.Structure,
                       data: Union[ctypes.Array, ctypes.Structure], *,
                       timeout: int = 3000):
@@ -73,12 +78,12 @@ class SCSIDevice(Device, abc.ABC):
         inquiry = InquiryResponse()
 
         inquiry_command = InquiryCommand(
-            operation_code=constants.OperationCode.INQUIRY,
+            operation_code=OperationCode.INQUIRY,
             allocation_length=96
         )
 
         sense = self.issue_command(
-            constants.Direction.FROM,
+            Direction.FROM,
             inquiry_command,
             inquiry
         )
@@ -92,15 +97,20 @@ class SCSIDevice(Device, abc.ABC):
         identity = ctypes.create_string_buffer(b'\x00', 512)
 
         command16 = Command16(
-            operation_code=constants.OperationCode.COMMAND_16,
-            protocol=constants.ATAProtocol.PIO_DATA_IN << 1,
-            flags=0x2E,
-            command=constants.ATACommands.IDENTIFY
+            operation_code=OperationCode.COMMAND_16,
+            protocol=ATAProtocol.PIO_DATA_IN << 1,
+            flags=CommandFlags(
+                t_length=CommandFlags.Length.IN_SECTOR_COUNT,
+                byt_blok=True,
+                t_dir=True,
+                ck_cond=True
+            ),
+            command=ATACommands.IDENTIFY
         )
 
         try:
             sense = self.issue_command(
-                constants.Direction.FROM,
+                Direction.FROM,
                 command16,
                 identity
             )
@@ -111,9 +121,9 @@ class SCSIDevice(Device, abc.ABC):
             if not try_atapi_on_failure:
                 raise
 
-            command16.command = constants.ATAPICommands.IDENTIFY
+            command16.command = ATAPICommands.IDENTIFY
             sense = self.issue_command(
-                constants.Direction.FROM,
+                Direction.FROM,
                 command16,
                 identity
             )
@@ -182,35 +192,37 @@ class SCSIDevice(Device, abc.ABC):
         threshold_result = SmartThresholdResponse()
 
         command16 = Command16(
-            operation_code=constants.OperationCode.COMMAND_16,
-            protocol=constants.ATAProtocol.PIO_DATA_IN << 1,
-            command=constants.ATACommands.SMART,
-            flags=0x2E,
-            features=util.swap_int(2, constants.ATASmartFeature.SMART_READ_DATA)
+            operation_code=OperationCode.COMMAND_16,
+            protocol=ATAProtocol.PIO_DATA_IN << 1,
+            command=ATACommands.SMART,
+            flags=CommandFlags(
+                t_length=CommandFlags.Length.IN_SECTOR_COUNT,
+                byt_blok=True,
+                t_dir=True,
+                ck_cond=True
+            ),
+            features=util.swap_int(2, ATASmartFeature.SMART_READ_DATA)
         ).set_lba(0xC24F00)
 
-        self.issue_command(
-            constants.Direction.FROM,
-            command16,
-            smart_result
-        )
+        self.issue_command(Direction.FROM, command16, smart_result)
 
         command16 = Command16(
-            operation_code=constants.OperationCode.COMMAND_16,
-            protocol=constants.ATAProtocol.PIO_DATA_IN << 1,
-            command=constants.ATACommands.SMART,
-            flags=0x2E,
+            operation_code=OperationCode.COMMAND_16,
+            protocol=ATAProtocol.PIO_DATA_IN << 1,
+            command=ATACommands.SMART,
+            flags=CommandFlags(
+                t_length=CommandFlags.Length.IN_SECTOR_COUNT,
+                byt_blok=True,
+                t_dir=True,
+                ck_cond=True
+            ),
             features=util.swap_int(
                 2,
-                constants.ATASmartFeature.SMART_READ_THRESHOLDS
+                ATASmartFeature.SMART_READ_THRESHOLDS
             )
         ).set_lba(0xC24F00)
 
-        self.issue_command(
-            constants.Direction.FROM,
-            command16,
-            threshold_result
-        )
+        self.issue_command(Direction.FROM, command16, threshold_result)
 
         return smart.parse_smart_read_data(
             smart_result,

@@ -3,7 +3,7 @@ import os
 
 import smartie.nvme.constants
 from smartie.nvme import NVMEDevice
-from smartie.platforms.linux import _get_libc
+from smartie.platforms.linux import get_libc
 from smartie.nvme.structures import NVMEAdminCommand
 
 
@@ -22,7 +22,7 @@ class LinuxNVMEDevice(NVMEDevice):
         return False
 
     def issue_admin_command(self, command: NVMEAdminCommand):
-        result = _get_libc().ioctl(
+        result = get_libc().ioctl(
             self.fd,
             smartie.nvme.constants.IOCTL_NVME_ADMIN_CMD,
             ctypes.byref(command)

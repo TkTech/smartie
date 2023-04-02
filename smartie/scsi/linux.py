@@ -2,12 +2,14 @@ import ctypes
 import os
 from typing import Union
 
-from smartie.scsi import SCSIDevice, constants
-from smartie.platforms.linux import _get_libc
+from smartie.scsi import SCSIDevice
+from smartie.platforms.linux import get_libc
 from smartie.scsi.structures import (
     DescriptorFormatSense,
     FixedFormatSense,
-    SGIOHeader
+    IOCTL_SG_IO,
+    SGIOHeader,
+    Direction
 )
 
 
@@ -25,7 +27,7 @@ class LinuxSCSIDevice(SCSIDevice):
             self.fd = None
         return False
 
-    def issue_command(self, direction: constants.Direction,
+    def issue_command(self, direction: Direction,
                       command: ctypes.Structure,
                       data: Union[ctypes.Array, ctypes.Structure], *,
                       timeout: int = 3000):
@@ -50,9 +52,9 @@ class LinuxSCSIDevice(SCSIDevice):
 
         # We use libc instead of the builtin ioctl as the builtin can have
         # issues with 64-bit pointers.
-        result = _get_libc().ioctl(
+        result = get_libc().ioctl(
             self.fd,
-            constants.IOCTL_SG_IO,
+            IOCTL_SG_IO,
             ctypes.byref(sg_io_header)
         )
 

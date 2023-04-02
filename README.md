@@ -24,27 +24,28 @@ for device in get_all_devices():
 ... as well as a lower-level interface for sending raw messages to devices, such as an SCSI INQUIRY:
 
 ```python
+import smartie.scsi.structures
 from smartie.scsi import constants, structures
 from smartie.device import get_device
 
 with get_device('\\.\PhysicalDrive0') as device:
-    # The structure that will be populated with the response.
-    inquiry = structures.InquiryResponse()
+  # The structure that will be populated with the response.
+  inquiry = structures.InquiryResponse()
 
-    # The command we're going to send to the device.
-    inquiry_command = structures.InquiryCommand(
-        operation_code=constants.OperationCode.INQUIRY,
-        allocation_length=96
-    )
+  # The command we're going to send to the device.
+  inquiry_command = structures.InquiryCommand(
+    operation_code=smartie.scsi.structures.OperationCode.INQUIRY,
+    allocation_length=96
+  )
 
-    # And finally issue the command. The response will be populated into the
-    # `inquiry` structure, and the `sense` structure will contain any error
-    # information.
-    sense = device.issue_command(
-        constants.Direction.FROM,
-        inquiry_command,
-        inquiry
-    )
+  # And finally issue the command. The response will be populated into the
+  # `inquiry` structure, and the `sense` structure will contain any error
+  # information.
+  sense = device.issue_command(
+    smartie.scsi.structures.Direction.FROM,
+    inquiry_command,
+    inquiry
+  )
 ```
 
 ## Support

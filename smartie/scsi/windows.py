@@ -1,11 +1,11 @@
 import ctypes
 from typing import Union
 
-import smartie.scsi
 from smartie.scsi import SCSIDevice
-from smartie.platforms.win32 import _kernel32
-from smartie.scsi.constants import Direction, IOCTL_SCSI_PASS_THROUGH_DIRECT
+from smartie.platforms.win32 import get_kernel32
 from smartie.scsi.structures import (
+    Direction,
+    IOCTL_SCSI_PASS_THROUGH_DIRECT,
     SCSIPassThroughDirect,
     SCSIPassThroughDirectWithBuffer
 )
@@ -19,7 +19,7 @@ class WindowsSCSIDevice(SCSIDevice):
         # We can't use the normal approach to opening a file on Windows, as
         # various Python APIs can't handle a device opened without specific
         # flags, see (https://bugs.python.org/issue37074)
-        self.fd = _kernel32().CreateFileW(
+        self.fd = get_kernel32().CreateFileW(
             self.path,
             0x80000000 | 0x40000000,  # GENERIC_READ | GENERIC_WRITE
             0x00000001,  # FILE_SHARE_READ
@@ -36,7 +36,7 @@ class WindowsSCSIDevice(SCSIDevice):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.fd is not None:
-            _kernel32().CloseHandle(self.fd)
+            get_kernel32().CloseHandle(self.fd)
             self.fd = None
         return False
 
@@ -53,7 +53,7 @@ class WindowsSCSIDevice(SCSIDevice):
         )
 
         header_with_buffer = SCSIPassThroughDirectWithBuffer(
-            sptd=smartie.scsi.structures.SCSIPassThroughDirect(
+            sptd=SCSIPassThroughDirect(
                 length=ctypes.sizeof(SCSIPassThroughDirect),
                 data_in={
                     Direction.TO: 0,
@@ -73,7 +73,7 @@ class WindowsSCSIDevice(SCSIDevice):
             )
         )
 
-        result = _kernel32().DeviceIoControl(
+        result = get_kernel32().DeviceIoControl(
             self.fd,
             IOCTL_SCSI_PASS_THROUGH_DIRECT,
             ctypes.pointer(header_with_buffer),

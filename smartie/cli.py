@@ -107,7 +107,7 @@ def details_command(path: str):
     """
     Show detailed information for a specific device.
     """
-    details_table = Table(show_header=False, box=box.MINIMAL)
+    details_table = Table(show_header=False, box=box.SIMPLE)
     details_table.add_column('Key', style='magenta')
     details_table.add_column('Value', style='green')
 

@@ -1,3 +1,4 @@
+__all__ = ('NVMEDevice',)
 import abc
 import ctypes
 from abc import ABCMeta, abstractmethod

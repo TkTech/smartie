@@ -3,6 +3,7 @@ from typing import Union, Optional
 
 from pytest_mock import MockerFixture
 
+import smartie.scsi.structures
 from smartie.scsi import constants
 from smartie.device import Device
 
@@ -26,7 +27,7 @@ class MockedDeviceIO(DeviceIO):
         self._return_data = return_data
         self._return_sense = return_sense
 
-    def issue_command(self, direction: constants.Direction,
+    def issue_command(self, direction: smartie.scsi.structures.Direction,
                       command: ctypes.Structure,
                       data: Union[ctypes.Array, ctypes.Structure], *,
                       timeout: int = 3000):
