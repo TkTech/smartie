@@ -4,8 +4,8 @@ import ctypes
 from abc import ABCMeta, abstractmethod
 
 from smartie.device import Device
-from smartie.nvme.constants import NVMEAdminCommands
-from smartie.nvme.structures import NVMEAdminCommand, NVMEIdentifyResponse
+from smartie.nvme.structures import NVMEAdminCommand, NVMEAdminCommands, \
+    NVMEIdentifyResponse
 
 
 class NVMEDevice(Device, abc.ABC, metaclass=ABCMeta):
