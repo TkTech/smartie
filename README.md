@@ -126,6 +126,28 @@ Untested. It hasn't been thoroughly tested with RAID controllers, as the target 
 for the main program that uses this library is consumer desktops. Patches happily
 accepted if you have one to test with!
 
+
+### ATA, ATAPI, SCSI, NVMe, what?
+
+Acronyms, acronyms everywhere! What does any of this mean?
+
+- [ATA]: Advanced Technology Attachment.
+- [ATAPI]: AT Attachment Packet Interface.
+- [SCSI]: Small Computer System Interface. 
+- [NVMe]: Non-Volatile Memory Express. The standard for connecting "modern" solid-state
+  drives to a computer, typically through [PCI-e].
+- [SATA]: Serial ATA. 
+- [PATA]: Parallel ATA.
+- [S.M.A.R.T]: Self-Monitoring, Analysis, and Reporting Technology. A standard for
+  hard drives and solid-state drives to report their health and status.
+
+[ATA]: https://en.wikipedia.org/wiki/ATA
+[ATAPI]: https://en.wikipedia.org/wiki/ATAPI
+[SCSI]: https://en.wikipedia.org/wiki/SCSI
+[NVMe]: https://en.wikipedia.org/wiki/NVMe
+[PCI-e]: https://en.wikipedia.org/wiki/PCI_Express
+[SATA]: https://en.wikipedia.org/wiki/SATA
+[PATA]: https://en.wikipedia.org/wiki/Parallel_ATA
 [S.M.A.R.T]: https://en.wikipedia.org/wiki/S.M.A.R.T.
 [phm]: https://github.com/TkTech/PortableHardwareMonitor
 [issue]: https://github.com/TkTech/smartie/issues/new.
