@@ -40,10 +40,12 @@ class NVMEAdminCommand(ctypes.Structure):
 
 class NVMEIdentifyResponse(ctypes.Structure):
     _fields_ = [
-        ('vid', ctypes.c_uint16),
+        ('vendor_id', ctypes.c_uint16),
         ('ssvid', ctypes.c_uint16),
-        ('sn', ctypes.c_ubyte * 20),
-        ('mn', ctypes.c_ubyte * 40),
-        ('fr', ctypes.c_ubyte * 8),
+        ('serial_number', ctypes.c_ubyte * 20),
+        ('model_number', ctypes.c_ubyte * 40),
+        ('firmware_revision', ctypes.c_ubyte * 8),
+        # The majority of this structure has yet to be implemented. Add fields
+        # as ya need em.
         ('unknown', ctypes.c_ubyte * 4024),
     ]

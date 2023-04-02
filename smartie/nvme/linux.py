@@ -1,11 +1,9 @@
 import ctypes
 import os
 
-import smartie.nvme.constants
-import smartie.nvme.structures
 from smartie.nvme import NVMEDevice
 from smartie.platforms.linux import get_libc
-from smartie.nvme.structures import NVMEAdminCommand
+from smartie.nvme.structures import IOCTL_NVME_ADMIN_CMD, NVMEAdminCommand
 
 
 class LinuxNVMEDevice(NVMEDevice):
@@ -25,19 +23,9 @@ class LinuxNVMEDevice(NVMEDevice):
     def issue_admin_command(self, command: NVMEAdminCommand):
         result = get_libc().ioctl(
             self.fd,
-            smartie.nvme.structures.IOCTL_NVME_ADMIN_CMD,
+            IOCTL_NVME_ADMIN_CMD,
             ctypes.byref(command)
         )
 
         if result != 0:
             raise OSError(ctypes.get_errno())
-
-    @property
-    def model(self) -> str | None:
-        identify = self.identify()
-        return bytearray(identify.mn).strip(b' \x00').decode()
-
-    @property
-    def serial(self) -> str | None:
-        identify = self.identify()
-        return bytearray(identify.sn).strip(b' \x00').decode()

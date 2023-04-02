@@ -4,11 +4,14 @@ import ctypes
 from abc import ABCMeta, abstractmethod
 
 from smartie.device import Device
-from smartie.nvme.structures import NVMEAdminCommand, NVMEAdminCommands, \
+from smartie.nvme.structures import (
+    NVMEAdminCommand,
+    NVMEAdminCommands,
     NVMEIdentifyResponse
+)
 
 
-class NVMEDevice(Device, abc.ABC, metaclass=ABCMeta):
+class NVMEDevice(Device, abc.ABC):
     @abstractmethod
     def issue_admin_command(self, command):
         pass
@@ -23,8 +26,18 @@ class NVMEDevice(Device, abc.ABC, metaclass=ABCMeta):
             NVMEAdminCommand(
                 opcode=NVMEAdminCommands.IDENTIFY,
                 addr=ctypes.addressof(data),
-                data_len=4096,
+                data_len=ctypes.sizeof(data),
                 cdw10=1,
             )
         )
         return data
+
+    @property
+    def serial(self) -> str | None:
+        identify = self.identify()
+        return bytearray(identify.serial_number).strip(b' \x00').decode()
+
+    @property
+    def model(self) -> str | None:
+        identify = self.identify()
+        return bytearray(identify.model_number).strip(b' \x00').decode()
