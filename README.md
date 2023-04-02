@@ -6,7 +6,12 @@ This is a pure-python, 0-dependency library for getting basic disk information s
 serial number, disk health, temperature, and SMART data. It supports both SCSI/ATA and NVMe devices.
 
 It provides a high-level abstraction to enumerate devices and retrieve basic
-details:
+details, a low-level interface for sending raw SCSI/ATA commands, and a
+command-line tool for quickly getting information about your disks.
+
+## Usage
+
+High-level usage is simple:
 
 ```python
 from smartie.device import get_all_devices
@@ -21,31 +26,50 @@ for device in get_all_devices():
         print(attribute.name, attribute.value)
 ```
 
-... as well as a lower-level interface for sending raw messages to devices, such as an SCSI INQUIRY:
+Drop down a level if you want and send raw SCSI commands, such as an `INQUIRY`:
 
 ```python
-import smartie.scsi.structures
-from smartie.scsi import constants, structures
+import ctypes
+
+from smartie.scsi import structures
 from smartie.device import get_device
 
 with get_device('\\.\PhysicalDrive0') as device:
-  # The structure that will be populated with the response.
-  inquiry = structures.InquiryResponse()
+    # The structure that will be populated with the response.
+    inquiry = structures.InquiryResponse()
+  
+    sense = device.issue_command(
+        structures.Direction.FROM,
+        structures.InquiryCommand(
+            operation_code=structures.OperationCode.INQUIRY,
+            allocation_length=ctypes.sizeof(inquiry)
+        ),
+        inquiry
+    )
+  
+    print(inquiry.product_identification)
+```
 
-  # The command we're going to send to the device.
-  inquiry_command = structures.InquiryCommand(
-    operation_code=smartie.scsi.structures.OperationCode.INQUIRY,
-    allocation_length=96
-  )
+Or send an NVME `IDENTIFY` command:
 
-  # And finally issue the command. The response will be populated into the
-  # `inquiry` structure, and the `sense` structure will contain any error
-  # information.
-  sense = device.issue_command(
-    smartie.scsi.structures.Direction.FROM,
-    inquiry_command,
-    inquiry
-  )
+```python
+import ctypes
+
+from smartie.nvme import structures
+from smartie.device import get_device
+
+with get_device('/dev/nvme0') as device:
+    # The structure that will be populated with the response.
+    data = structures.NVMEIdentifyResponse()
+    device.issue_admin_command(
+        structures.NVMEAdminCommand(
+            opcode=structures.NVMEAdminCommands.IDENTIFY,
+            addr=ctypes.addressof(data),
+            data_len=ctypes.sizeof(data),
+            cdw10=1
+        )
+    )
+    print(data.model_number)
 ```
 
 ## Support
@@ -98,7 +122,7 @@ LGPL, so you need to avoid them when contributing to this project. Instead:
 
 ### Does this library support RAID controllers?
 
-Sometimes. It hasn't been thoroughly tested with RAID controllers, as the target audience
+Untested. It hasn't been thoroughly tested with RAID controllers, as the target audience
 for the main program that uses this library is consumer desktops. Patches happily
 accepted if you have one to test with!
 
