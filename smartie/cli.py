@@ -2,7 +2,7 @@ import ctypes
 
 import click
 from rich import box
-from rich.console import Console, group
+from rich.console import Console, Group, group
 from rich.padding import Padding
 from rich.table import Table
 from rich.text import Text
@@ -10,11 +10,12 @@ from rich.text import Text
 from smartie.device import get_all_devices, get_device
 from smartie.nvme import NVMEDevice
 from smartie.scsi import SCSIDevice
+from smartie.structures import c_uint128
 from smartie.util import grouper_it
 
 
 @group()
-def print_structure(structure: ctypes.Structure) -> Table:
+def print_structure(structure: ctypes.Structure, *, indent=0) -> Table:
     offset = 0
 
     for field in structure._fields_:  # noqa
@@ -33,7 +34,7 @@ def print_structure(structure: ctypes.Structure) -> Table:
             (f' = ', 'green')
         )
 
-        yield Text.assemble(*label)
+        yield Padding(Text.assemble(*label), (0, 0, 0, indent))
 
         if isinstance(value, ctypes.Array):
             array_table = Table(show_header=False)
@@ -51,12 +52,28 @@ def print_structure(structure: ctypes.Structure) -> Table:
                     )
                 )
 
-            yield Padding(array_table, (0, 0, 0, 4))
+            yield Padding(array_table, (0, 0, 0, indent + 2))
+        elif isinstance(value, c_uint128):
+            yield Padding(
+                Text.assemble(
+                    ('Dec: ', 'white'),
+                    (f'{int(value)}\n', 'green'),
+                    ('Hex: ', 'white'),
+                    (f'0x{value:02X}\n', 'green'),
+                    ('Bin: ', 'white'),
+                    (f'0b{value:08b}', 'green')
+                ),
+                (0, 0, 0, indent + 2)
+            )
+        elif isinstance(value, ctypes.Structure):
+            yield Padding(
+                Group(print_structure(value, indent=indent + 2))
+            )
         else:
             yield Padding(
                 Text.assemble(
                     ('Dec: ', 'white'),
-                    (str(value), 'green'),
+                    (f'{int(value)}', 'green'),
                     (' | ', 'white'),
                     ('Hex: ', 'white'),
                     (f'0x{value:02X}', 'green'),
@@ -64,7 +81,7 @@ def print_structure(structure: ctypes.Structure) -> Table:
                     ('Bin: ', 'white'),
                     (f'0b{value:08b}', 'green')
                 ),
-                (0, 0, 0, 4)
+                (0, 0, 0, indent + 2)
             )
 
         offset += bitcount
@@ -170,7 +187,7 @@ def details_command(path: str):
 
 @cli.command('debug')
 @click.argument('path')
-@click.argument('command', type=click.Choice(['inquiry', 'identify']))
+@click.argument('command', type=click.Choice(['inquiry', 'identify', 'smart']))
 def debug_command(path: str, command: str):
     """
     Debug a device by sending a command and displaying the response as a raw
@@ -191,7 +208,8 @@ def debug_command(path: str, command: str):
             console.print(print_structure(result()[0]))
         elif isinstance(device, NVMEDevice):
             result = {
-                'identify': device.identify
+                'identify': device.identify,
+                'smart': device.smart
             }.get(command)
             if result is None:
                 console.print('Command unknown or unsupported by this device.')

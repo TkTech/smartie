@@ -2,12 +2,13 @@
 Higher level utilities for working with S.M.A.R.T.
 """
 import enum
-import struct
 from dataclasses import dataclass, replace
 from typing import Dict, Optional
 
-from smartie.scsi.structures import SmartDataResponse, SmartThresholdEntry, \
+from smartie.scsi.structures import (
+    SmartDataResponse,
     SmartThresholdResponse
+)
 
 
 class Units(enum.IntEnum):
@@ -24,6 +25,9 @@ class Units(enum.IntEnum):
 
 @dataclass
 class Attribute:
+    """
+    An Attribute represents a single parsed SMART attribute.
+    """
     #: A human-readable identifier, if known.
     name: str
     #: The SMART Attribute ID.
@@ -165,8 +169,10 @@ def parse_smart_read_data(data: SmartDataResponse, *,
                           threshold: Optional[SmartThresholdResponse] = None)\
         -> Dict[int, Attribute]:
     """
-    Parses the SMART attributes out of a SMART READ_DATA command, returning
-    an iterable of high-level :class:`SmartAttribute`.
+    Parses the SMART attributes out of a SMART READ_DATA command, optionally
+    with the corresponding SMART READ_THRESHOLDS data.
+
+    Returns a dictionary of attribute IDs to Attribute objects.
     """
     thresholds = {}
     if threshold:

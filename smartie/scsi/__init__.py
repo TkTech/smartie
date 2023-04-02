@@ -167,11 +167,13 @@ class SCSIDevice(Device, abc.ABC):
         """
         Returns the temperature of the device in degrees Celsius.
         """
-        temp = self.smart_table.get(0xBE)
+        smart_table = self.smart_table
+
+        temp = smart_table.get(0xBE)
         if temp is not None:
             return temp.p_value
 
-        temp = self.smart_table.get(0xC2)
+        temp = smart_table.get(0xC2)
         if temp is not None:
             return temp.p_value
 
@@ -216,10 +218,7 @@ class SCSIDevice(Device, abc.ABC):
                 t_dir=True,
                 ck_cond=True
             ),
-            features=util.swap_int(
-                2,
-                ATASmartFeature.SMART_READ_THRESHOLDS
-            )
+            features=util.swap_int(2, ATASmartFeature.SMART_READ_THRESHOLDS)
         ).set_lba(0xC24F00)
 
         self.issue_command(Direction.FROM, command16, threshold_result)

@@ -7,7 +7,7 @@ from smartie.device import Device
 from smartie.nvme.structures import (
     NVMEAdminCommand,
     NVMEAdminCommands,
-    NVMEIdentifyResponse
+    NVMEIdentifyResponse, SMARTPageResponse
 )
 
 
@@ -41,3 +41,22 @@ class NVMEDevice(Device, abc.ABC):
     def model(self) -> str | None:
         identify = self.identify()
         return bytearray(identify.model_number).strip(b' \x00').decode()
+
+    @property
+    def temperature(self) -> int | None:
+        return int(self.smart().temperature - 273.15)
+
+    def read_log_page(self, log_page_id: int, data: ctypes.Structure):
+        self.issue_admin_command(
+            NVMEAdminCommand(
+                opcode=NVMEAdminCommands.GET_LOG_PAGE,
+                addr=ctypes.addressof(data),
+                data_len=ctypes.sizeof(data),
+                nsid=0xFFFFFFFF,
+                cdw10=log_page_id | (((ctypes.sizeof(data) // 4) - 1) << 16)
+            )
+        )
+        return data
+
+    def smart(self):
+        return self.read_log_page(0x02, SMARTPageResponse())

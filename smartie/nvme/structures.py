@@ -6,11 +6,14 @@ platform-specific APIs.
 import ctypes
 import enum
 
+from smartie.structures import c_uint128
+
 #: IOCTL for NVMe Admin commands on Linux.
 IOCTL_NVME_ADMIN_CMD = 0xC0484E41
 
 
 class NVMEAdminCommands(enum.IntEnum):
+    GET_LOG_PAGE = 0x02
     IDENTIFY = 0x06
 
 
@@ -48,4 +51,64 @@ class NVMEIdentifyResponse(ctypes.Structure):
         # The majority of this structure has yet to be implemented. Add fields
         # as ya need em.
         ('unknown', ctypes.c_ubyte * 4024),
+    ]
+
+
+class SMARTCriticalWarning(ctypes.Structure):
+    _pack_ = 1
+    _fields_ = [
+        ('available_spare', ctypes.c_ubyte, 1),
+        ('temperature', ctypes.c_ubyte, 1),
+        ('degraded_nvm', ctypes.c_ubyte, 1),
+        ('read_only', ctypes.c_ubyte, 1),
+        ('volatile_memory_backup', ctypes.c_ubyte, 1),
+        ('reserved_1', ctypes.c_ubyte, 3)
+    ]
+
+
+class SMARTPageResponse(ctypes.Structure):
+    """
+    This structure represents the response from the SMART Log Page (0x02).
+
+    .. note::
+
+        Defined in the NVMe 1.4 specification as figure 194.
+    """
+    _pack_ = 1
+    _fields_ = [
+        # Flags for any critical warnings.
+        ('critical_warning', SMARTCriticalWarning),
+        # A composite of the temperature in Kelvin. How this is calculated is
+        # not really defined, and may be an average of multiple sensors.
+        ('temperature', ctypes.c_ushort),
+        ('available_spare', ctypes.c_ubyte),
+        ('spare_threshold', ctypes.c_ubyte),
+        ('percent_used', ctypes.c_ubyte),
+        ('endurance_group_critical_warning_summary', ctypes.c_ubyte),
+        ('reserved_1', ctypes.c_ubyte * 25),
+        ('data_units_read', c_uint128),
+        ('data_units_written', c_uint128),
+        ('host_read_commands', c_uint128),
+        ('host_write_commands', c_uint128),
+        ('controller_busy_time', c_uint128),
+        ('power_cycles', c_uint128),
+        ('power_on_hours', c_uint128),
+        ('unsafe_shutdowns', c_uint128),
+        ('media_errors', c_uint128),
+        ('num_err_log_entries', c_uint128),
+        ('warning_temp_time', ctypes.c_uint32),
+        ('critical_temp_time', ctypes.c_uint32),
+        ('temperature_sensor_1', ctypes.c_uint16),
+        ('temperature_sensor_2', ctypes.c_uint16),
+        ('temperature_sensor_3', ctypes.c_uint16),
+        ('temperature_sensor_4', ctypes.c_uint16),
+        ('temperature_sensor_5', ctypes.c_uint16),
+        ('temperature_sensor_6', ctypes.c_uint16),
+        ('temperature_sensor_7', ctypes.c_uint16),
+        ('temperature_sensor_8', ctypes.c_uint16),
+        ('thermal_transition_count_1', ctypes.c_uint32),
+        ('thermal_transition_count_2', ctypes.c_uint32),
+        ('total_time_for_thermal_management_1', ctypes.c_uint32),
+        ('total_time_for_thermal_management_2', ctypes.c_uint32),
+        ('reserved_2', ctypes.c_ubyte * 280)
     ]
