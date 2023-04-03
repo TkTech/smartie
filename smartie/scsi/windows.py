@@ -64,7 +64,7 @@ class WindowsSCSIDevice(SCSIDevice):
                 cdb_length=ctypes.sizeof(command),
                 cdb=cdb,
                 timeout_value=timeout,
-                sense_info_length=(SCSIPassThroughDirectWithBuffer.sense.size),
+                sense_info_length=SCSIPassThroughDirectWithBuffer.sense.size,
                 sense_info_offset=(
                     SCSIPassThroughDirectWithBuffer.sense.offset
                 ),

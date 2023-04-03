@@ -2,6 +2,7 @@ __all__ = ("NVMEDevice",)
 import abc
 import ctypes
 from abc import ABCMeta, abstractmethod
+from typing import Optional
 
 from smartie.device import Device
 from smartie.nvme.structures import (
@@ -35,17 +36,17 @@ class NVMEDevice(Device, abc.ABC):
         return data
 
     @property
-    def serial(self) -> str | None:
+    def serial(self) -> Optional[str]:
         identify = self.identify()
         return bytearray(identify.serial_number).strip(b" \x00").decode()
 
     @property
-    def model(self) -> str | None:
+    def model(self) -> Optional[str]:
         identify = self.identify()
         return bytearray(identify.model_number).strip(b" \x00").decode()
 
     @property
-    def temperature(self) -> int | None:
+    def temperature(self) -> Optional[int]:
         return int(self.smart().temperature - 273.15)
 
     def read_log_page(self, log_page_id: int, data: ctypes.Structure):

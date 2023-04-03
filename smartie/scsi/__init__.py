@@ -3,7 +3,7 @@ __all__ = ("SCSIDevice",)
 import abc
 import ctypes
 from dataclasses import replace
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 import smartie.structures
 from smartie import util
@@ -126,7 +126,7 @@ class SCSIDevice(Device, abc.ABC):
         return IdentifyResponse.from_buffer(identity), sense
 
     @property
-    def model(self) -> str | None:
+    def model(self) -> Optional[str]:
         """
         Returns the model name of the device.
         """
@@ -144,7 +144,7 @@ class SCSIDevice(Device, abc.ABC):
         return v
 
     @property
-    def serial(self) -> str | None:
+    def serial(self) -> Optional[str]:
         """
         Returns the serial number of the device.
         """
@@ -158,7 +158,7 @@ class SCSIDevice(Device, abc.ABC):
         return v
 
     @property
-    def temperature(self) -> int | None:
+    def temperature(self) -> Optional[int]:
         """
         Returns the temperature of the device in degrees Celsius.
         """
