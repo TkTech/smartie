@@ -10,6 +10,7 @@ from smartie.nvme.structures import (
     NVMEIdentifyResponse,
     SMARTPageResponse,
 )
+from smartie.util import structure_to_dict
 
 
 class NVMEDevice(Device, abc.ABC):
@@ -61,3 +62,7 @@ class NVMEDevice(Device, abc.ABC):
 
     def smart(self):
         return self.read_log_page(0x02, SMARTPageResponse())
+
+    @property
+    def smart_table(self):
+        return structure_to_dict(self.smart())

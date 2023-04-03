@@ -1,5 +1,8 @@
 import ctypes
 import itertools
+from typing import Any, Dict
+
+from smartie.structures import c_uint128
 
 
 def swap_bytes(src):
@@ -82,3 +85,25 @@ def pprint_structure(s: ctypes.Structure):
         else:
             print(f"{name}[{offset}:{offset + bitcount}] = {value!r}")
         offset += bitcount
+
+
+def structure_to_dict(s: ctypes.Structure) -> Dict[str, Any]:
+    """
+    Converts a `ctypes.Structure` into a dictionary.
+    """
+    result = {}
+
+    for field in s._fields_:  # noqa
+        name = field[0]
+        value = getattr(s, name)
+
+        if isinstance(value, ctypes.Array):
+            result[name] = [v for v in value]
+        elif isinstance(value, c_uint128):
+            result[name] = int(value)
+        elif isinstance(value, ctypes.Structure):
+            result[name] = structure_to_dict(value)
+        else:
+            result[name] = value
+
+    return result

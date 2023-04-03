@@ -289,7 +289,7 @@ def get_drive_entry(filters: List[str]) -> DriveEntry:
     """
     Get a merged DriveEntry that matches all the given filters.
     """
-    entry = DriveEntry()
+    entry = DriveEntry(name="_merged_")
     entry.filters = filters
 
     for matching_entry in get_matching_drive_entries(filters):

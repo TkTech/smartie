@@ -118,7 +118,11 @@ def details_command(path: str):
     """
     Show detailed information for a specific device.
     """
-    details_table = Table(show_header=False, box=box.SIMPLE)
+
+    def blocks_to_gb(blocks: int) -> float:
+        return blocks * 1000 * 512 / 1000 / 1000 / 1000
+
+    details_table = Table(show_header=False)
     details_table.add_column("Key", style="magenta")
     details_table.add_column("Value", style="green")
 
@@ -127,25 +131,83 @@ def details_command(path: str):
         details_table.add_row("Serial Number", device.serial)
         details_table.add_row("Temperature", f"{device.temperature}°C")
 
-        smart_table = Table(
-            title="SMART Attributes", title_style="magenta", box=box.SIMPLE
-        )
-        smart_table.add_column("ID", style="white")
-        smart_table.add_column("Name", style="magenta")
-        smart_table.add_column("Current", style="green", justify="right")
-        smart_table.add_column("Worst", style="blue", justify="right")
-        smart_table.add_column("Threshold", style="yellow", justify="right")
-        smart_table.add_column("Unit", style="italic white")
+        smart_table = Table(title="SMART Attributes", title_style="magenta")
+        if isinstance(device, SCSIDevice):
+            smart_table.add_column("ID", style="white")
+            smart_table.add_column("Name", style="magenta")
+            smart_table.add_column("Current", style="green", justify="right")
+            smart_table.add_column("Worst", style="blue", justify="right")
+            smart_table.add_column("Threshold", style="yellow", justify="right")
+            smart_table.add_column("Unit", style="italic white")
 
-        for entry in device.smart_table.values():
+            for entry in device.smart_table.values():
+                smart_table.add_row(
+                    str(entry.id),
+                    entry.name,
+                    str(entry.current_value),
+                    str(entry.worst_value),
+                    str(entry.threshold),
+                    entry.unit.name,
+                )
+        elif isinstance(device, NVMEDevice):
+            smart_table.add_column("Name", style="magenta")
+            smart_table.add_column("Value", style="green", justify="right")
+
+            smart = device.smart()
+
+            # We only show a selection of attributes, as the full list is
+            # not terribly useful.
             smart_table.add_row(
-                str(entry.id),
-                entry.name,
-                str(entry.current_value),
-                str(entry.worst_value),
-                str(entry.threshold),
-                entry.unit.name,
+                "Critical Warning",
+                print_structure(smart.critical_warning),
             )
+            smart_table.add_row(
+                "Temperature", f"{smart.temperature - 273.15:.2f}°C"
+            )
+            smart_table.add_row("Available Spare", f"{smart.available_spare}%")
+            smart_table.add_row(
+                "Available Spare Threshold",
+                f"{smart.available_spare_threshold}%",
+            )
+            smart_table.add_row("Percentage Used", f"{smart.percent_used}%")
+            smart_table.add_row(
+                "Data Units Read",
+                f"{blocks_to_gb(int(smart.data_units_read)):.2f}GB",
+            )
+            smart_table.add_row(
+                "Data Units Written",
+                f"{blocks_to_gb(int(smart.data_units_written)):.2f}GB",
+            )
+            smart_table.add_row(
+                "Host Read Commands", f"{smart.host_read_commands}"
+            )
+            smart_table.add_row(
+                "Host Write Commands", f"{smart.host_write_commands}"
+            )
+            smart_table.add_row(
+                "Controller Busy Time", f"{smart.controller_busy_time}"
+            )
+            smart_table.add_row("Power Cycles", f"{smart.power_cycles}")
+            smart_table.add_row("Power On Hours", f"{smart.power_on_hours}")
+            smart_table.add_row("Unsafe Shutdowns", f"{smart.unsafe_shutdowns}")
+            smart_table.add_row(
+                "Media and Data Integrity Errors", f"{smart.media_errors}"
+            )
+            smart_table.add_row(
+                "Error Information Log Entries", f"{smart.num_err_log_entries}"
+            )
+
+            temp_table = Table(expand=True)
+            temp_table.add_column("Sensor", style="magenta", justify="center")
+            temp_table.add_column(
+                "Temperature", style="magenta", justify="center"
+            )
+
+            for i, sensor in enumerate(smart.temperature_sensors):
+                if sensor != 0x00:
+                    temp_table.add_row(str(i), f"{int(sensor - 273.15)}°C")
+
+            smart_table.add_row("Temperature Sensors", temp_table)
 
         details_table.add_row("", smart_table)
 
@@ -268,9 +330,64 @@ def db_matches_command(path: str):
             for f in match.filters:
                 filter_table.add_row(
                     f.__class__.__name__,
-                    f if isinstance(f, str) else f.pattern  # noqa
+                    f if isinstance(f, str) else f.pattern,  # noqa
                 )
 
             t.add_row(match.name, filter_table)
 
     console.print(t)
+
+
+@cli.group("api")
+def api_group():
+    """
+    Commands for interacting with SMARTie from other applications, such as
+    shell scripts.
+    """
+
+
+@api_group.command("list")
+def api_list_command():
+    """
+    List all devices in the system.
+    """
+    results = []
+    for device in get_all_devices():
+        with device:
+            results.append(
+                {
+                    "path": device.path,
+                    "model": device.model,
+                    "serial": device.serial,
+                    "temperature": device.temperature,
+                }
+            )
+
+    print(json.dumps(results, indent=4, sort_keys=True))
+
+
+@api_group.command("get")
+@click.argument("path")
+def api_get_command(path: str):
+    result = {}
+    with get_device(path) as device:
+        result["path"] = device.path
+        result["model"] = device.model
+        result["serial"] = device.serial
+        result["temperature"] = device.temperature
+
+        if isinstance(device, SCSIDevice):
+            result["smart"] = {}
+            for entry in device.smart_table.values():
+                result["smart"][entry.id] = {
+                    "id": entry.id,
+                    "current": entry.current_value,
+                    "worst": entry.worst_value,
+                    "threshold": entry.threshold,
+                    "unit": entry.unit.name,
+                    "flags": entry.flags,
+                }
+        elif isinstance(device, NVMEDevice):
+            result["smart"] = device.smart_table
+
+    print(json.dumps(result, indent=4, sort_keys=True))
