@@ -33,7 +33,7 @@ def grouper_it(n, iterable):
         yield itertools.chain((first_el,), chunk_it)
 
 
-def embed_bytes(data: bytes, *, line_prefix='    ', max_width=80) -> str:
+def embed_bytes(data: bytes, *, indent=0, char='    ', max_width=80) -> str:
     """
     Pretty-prints `data` in such a way that it can be embedded cleanly in
     a Python file.
@@ -41,21 +41,23 @@ def embed_bytes(data: bytes, *, line_prefix='    ', max_width=80) -> str:
     This exists to embed SCSI commands and responses into tests.
 
     :param data: The binary data to be formatted.
-    :param line_prefix: The prefix to insert before each line.
+    :param indent: The number of characters to indent each line.
+    :param char: The character to use for indentation.
     :param max_width: The maximum length of each line.
     :return: The formatted result.
     """
-    line_length = max_width - len(line_prefix * 2)
+    prefix = char * indent
+    line_length = max_width - len(prefix)
 
     lines = '\n'.join(
         '{prefix}{line}'.format(
-            prefix=line_prefix * 2,
+            prefix=char * (indent + 1),
             line=', '.join(
                 f'0x{byte:02X}' for byte in row
             )
         ) for row in grouper_it(line_length // 6, data)
     )
-    return f'{line_prefix}bytearray([\n{lines}\n{line_prefix}])'
+    return f'{prefix}bytearray([\n{lines}\n{prefix}])'
 
 
 def pprint_structure(s: ctypes.Structure):

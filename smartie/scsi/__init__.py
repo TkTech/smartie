@@ -2,12 +2,13 @@ __all__ = ('SCSIDevice',)
 
 import abc
 import ctypes
-from typing import Dict, Union
+from dataclasses import replace
+from typing import Dict, Tuple, Union
 
 from smartie import util
+from smartie.database import SMARTAttribute, get_drive_entry
 from smartie.device import Device
 from smartie.errors import SenseError
-from smartie.scsi import smart
 from smartie.scsi.structures import (
     ATACommands, ATAPICommands,
     ATAProtocol, ATASmartFeature, Command16,
@@ -19,7 +20,8 @@ from smartie.scsi.structures import (
     IdentifyResponse,
     InquiryCommand,
     InquiryResponse,
-    OperationCode, SmartDataResponse,
+    OperationCode,
+    SmartDataResponse,
     SmartThresholdResponse
 )
 from smartie.util import swap_bytes
@@ -185,28 +187,12 @@ class SCSIDevice(Device, abc.ABC):
         inquiry, sense = self.inquiry()
         return DeviceType(inquiry.peripheral_device_type)
 
-    @property
-    def smart_table(self) -> Dict[int, smart.Attribute]:
+    def smart_thresholds(self) -> Tuple[SmartThresholdResponse, SenseError]:
         """
-        Returns a dictionary of SMART attributes.
+        Issues an ATA SMART READ_THRESHOLDS command and returns a tuple of
+        (result, sense).
         """
-        smart_result = SmartDataResponse()
-        threshold_result = SmartThresholdResponse()
-
-        command16 = Command16(
-            operation_code=OperationCode.COMMAND_16,
-            protocol=ATAProtocol.PIO_DATA_IN << 1,
-            command=ATACommands.SMART,
-            flags=CommandFlags(
-                t_length=CommandFlags.Length.IN_SECTOR_COUNT,
-                byt_blok=True,
-                t_dir=True,
-                ck_cond=True
-            ),
-            features=util.swap_int(2, ATASmartFeature.SMART_READ_DATA)
-        ).set_lba(0xC24F00)
-
-        self.issue_command(Direction.FROM, command16, smart_result)
+        thresholds = SmartThresholdResponse()
 
         command16 = Command16(
             operation_code=OperationCode.COMMAND_16,
@@ -221,9 +207,71 @@ class SCSIDevice(Device, abc.ABC):
             features=util.swap_int(2, ATASmartFeature.SMART_READ_THRESHOLDS)
         ).set_lba(0xC24F00)
 
-        self.issue_command(Direction.FROM, command16, threshold_result)
+        sense = self.issue_command(Direction.FROM, command16, thresholds)
+        return thresholds, sense
 
-        return smart.parse_smart_read_data(
-            smart_result,
-            threshold=threshold_result
-        )
+    def smart(self) -> Tuple[SmartDataResponse, SenseError]:
+        """
+        Issues an ATA SMART READ_DATA command and returns a tuple of
+        (result, sense).
+        """
+        smart = SmartDataResponse()
+
+        command16 = Command16(
+            operation_code=OperationCode.COMMAND_16,
+            protocol=ATAProtocol.PIO_DATA_IN << 1,
+            command=ATACommands.SMART,
+            flags=CommandFlags(
+                t_length=CommandFlags.Length.IN_SECTOR_COUNT,
+                byt_blok=True,
+                t_dir=True,
+                ck_cond=True
+            ),
+            features=util.swap_int(2, ATASmartFeature.SMART_READ_DATA)
+        ).set_lba(0xC24F00)
+
+        sense = self.issue_command(Direction.FROM, command16, smart)
+        return smart, sense
+
+    @property
+    def smart_table(self) -> Dict[int, SMARTAttribute]:
+        """
+        Returns a parsed and processed dictionary of SMART attributes.
+        """
+        drive_entry = get_drive_entry([
+            'type:ata',
+            f'model:{self.model}',
+        ])
+
+        thresholds, _ = self.smart_thresholds()
+        p_thresholds = {}
+        for entry in thresholds.entries:
+            if entry.attribute_id == 0x00:
+                break
+            p_thresholds[entry.attribute_id] = entry.value
+
+        smart, _ = self.smart()
+        result = {}
+        for entry in smart.attributes:
+            if entry.id == 0x00:
+                break
+
+            result[entry.id] = replace(
+                drive_entry.smart_attributes.get(
+                    entry.id,
+                    SMARTAttribute(
+                        'UNKNOWN',
+                        id=entry.id,
+                        flags=entry.flags,
+                        current_value=entry.current,
+                        worst_value=entry.worst,
+                        threshold=p_thresholds.get(entry.id)
+                    )
+                ),
+                flags=entry.flags,
+                current_value=entry.current,
+                worst_value=entry.worst,
+                threshold=p_thresholds.get(entry.id)
+            )
+
+        return result

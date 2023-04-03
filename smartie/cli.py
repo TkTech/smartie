@@ -1,4 +1,5 @@
 import ctypes
+import sys
 
 import click
 from rich import box
@@ -11,12 +12,20 @@ from smartie.device import get_all_devices, get_device
 from smartie.nvme import NVMEDevice
 from smartie.scsi import SCSIDevice
 from smartie.structures import c_uint128
-from smartie.util import grouper_it
+from smartie.util import embed_bytes, grouper_it
 
 
 @group()
-def print_structure(structure: ctypes.Structure, *, indent=0) -> Table:
+def print_structure(structure: ctypes.Structure, *, indent=0):
+    """
+    Pretty prints a ctypes.Structure.
+    """
     offset = 0
+
+    t = Table(show_lines=True)
+    t.add_column('Offset', style='white italic', justify='left')
+    t.add_column('Name', style='magenta')
+    t.add_column('Value')
 
     for field in structure._fields_:  # noqa
         if len(field) == 3:
@@ -28,13 +37,6 @@ def print_structure(structure: ctypes.Structure, *, indent=0) -> Table:
             bitcount = ctypes.sizeof(type_) * 8
 
         value = getattr(structure, name)
-        label = (
-            (f'[{offset:03}:{offset + bitcount:03}]', 'white italic'),
-            (f' {name}', 'magenta'),
-            (f' = ', 'green')
-        )
-
-        yield Padding(Text.assemble(*label), (0, 0, 0, indent))
 
         if isinstance(value, ctypes.Array):
             array_table = Table(show_header=False)
@@ -52,39 +54,33 @@ def print_structure(structure: ctypes.Structure, *, indent=0) -> Table:
                     )
                 )
 
-            yield Padding(array_table, (0, 0, 0, indent + 2))
+            t.add_row(
+                f'[{offset:03}:{offset + bitcount:03}]',
+                name,
+                array_table
+            )
         elif isinstance(value, c_uint128):
-            yield Padding(
-                Text.assemble(
-                    ('Dec: ', 'white'),
-                    (f'{int(value)}\n', 'green'),
-                    ('Hex: ', 'white'),
-                    (f'0x{value:02X}\n', 'green'),
-                    ('Bin: ', 'white'),
-                    (f'0b{value:08b}', 'green')
-                ),
-                (0, 0, 0, indent + 2)
+            t.add_row(
+                f'[{offset:03}:{offset + bitcount:03}]',
+                name,
+                f'0x{int(value):03X}'
             )
         elif isinstance(value, ctypes.Structure):
-            yield Padding(
+            t.add_row(
+                f'[{offset:03}:{offset + bitcount:03}]',
+                name,
                 Group(print_structure(value, indent=indent + 2))
             )
         else:
-            yield Padding(
-                Text.assemble(
-                    ('Dec: ', 'white'),
-                    (f'{int(value)}', 'green'),
-                    (' | ', 'white'),
-                    ('Hex: ', 'white'),
-                    (f'0x{value:02X}', 'green'),
-                    (' | ', 'white'),
-                    ('Bin: ', 'white'),
-                    (f'0b{value:08b}', 'green')
-                ),
-                (0, 0, 0, indent + 2)
+            t.add_row(
+                f'[{offset:03}:{offset + bitcount:03}]',
+                name,
+                f'0x{int(value):03X}'
             )
 
         offset += bitcount
+
+    yield t
 
 
 @click.group()
@@ -187,8 +183,18 @@ def details_command(path: str):
 
 @cli.command('debug')
 @click.argument('path')
-@click.argument('command', type=click.Choice(['inquiry', 'identify', 'smart']))
-def debug_command(path: str, command: str):
+@click.argument('command', type=click.Choice([
+    'inquiry',
+    'identify',
+    'smart',
+    'thresholds'
+]))
+@click.option('--display', default='pretty', type=click.Choice([
+    'pretty',
+    'raw',
+    'bytearray'
+]))
+def debug_command(path: str, command: str, display: str = 'pretty'):
     """
     Debug a device by sending a command and displaying the response as a raw
     structure.
@@ -199,13 +205,15 @@ def debug_command(path: str, command: str):
         if isinstance(device, SCSIDevice):
             result = {
                 'inquiry': device.inquiry,
-                'identify': device.identify
+                'identify': device.identify,
+                'smart': device.smart,
+                'thresholds': device.smart_thresholds
             }.get(command)
             if result is None:
                 console.print('Command unknown or unsupported by this device.')
                 return
 
-            console.print(print_structure(result()[0]))
+            structure = result()[0]
         elif isinstance(device, NVMEDevice):
             result = {
                 'identify': device.identify,
@@ -215,6 +223,13 @@ def debug_command(path: str, command: str):
                 console.print('Command unknown or unsupported by this device.')
                 return
 
-            console.print(print_structure(result()))
+            structure = result()
         else:
             raise NotImplementedError('Unknown device type.')
+
+        if display == 'pretty':
+            console.print(print_structure(structure))
+        elif display == 'raw':
+            sys.stdout.buffer.write(bytes(structure))  # noqa
+        elif display == 'bytearray':
+            print(embed_bytes(bytearray(structure)))  # noqa
