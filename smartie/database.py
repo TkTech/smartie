@@ -89,7 +89,7 @@ class DriveEntry:
 
     name: str
     # A list of filters that a drive must match to use this entry.
-    filters: list[str] = field(default_factory=lambda: ["*"])
+    filters: List[str] = field(default_factory=lambda: ["*"])
     # A list of smart attributes that are specific to this drive.
     smart_attributes: Dict[int, SMARTAttribute] = field(default_factory=dict)
     # Maintainer notes.
