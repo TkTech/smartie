@@ -92,13 +92,9 @@ def get_device(path: Union[Path, str]) -> Device:
         raise NotImplementedError("Device not implemented for this platform.")
 
 
-def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
+def get_all_devices() -> Iterable[Device]:
     """
     Yields all the devices detected on the host.
-
-    :param raise_errors: If True, errors that occur while looking for disks
-                         will be raised. If False (the default), errors will be
-                         ignored.
     """
     system = platform.system()
     if system == "Linux":
@@ -118,11 +114,7 @@ def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
             if not child.name.startswith(("sd", "nvme")):
                 continue
 
-            try:
-                yield get_device(Path("/dev") / child.name)
-            except IOError as e:
-                if raise_errors:
-                    raise e
+            yield get_device(Path("/dev") / child.name)
     elif system == "Windows":
         k32 = ctypes.WinDLL("kernel32", use_last_error=True)
 

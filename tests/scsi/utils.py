@@ -1,7 +1,8 @@
 import ctypes
 from typing import Optional, Union
 
-from smartie.scsi import Direction, SCSIDevice
+from smartie.scsi import SCSIDevice
+from smartie.scsi.structures import Direction
 
 
 class MockedSCSIDevice(SCSIDevice):
