@@ -7,12 +7,12 @@ import itertools
 import ctypes
 import platform
 from pathlib import Path
-from typing import Iterable, List, Union
+from typing import Iterable, List, Optional, Union
 
 
 class Device(abc.ABC):
     path: str
-    fd: int | None
+    fd: Optional[int]
 
     def __init__(self, path: Union[Path, str]):
         """
@@ -25,21 +25,21 @@ class Device(abc.ABC):
         self.fd = None
 
     @property
-    def model(self) -> str | None:
+    def model(self) -> Optional[str]:
         """
         Returns the model name of the device.
         """
         return None
 
     @property
-    def serial(self) -> str | None:
+    def serial(self) -> Optional[str]:
         """
         Returns the serial number of the device.
         """
         return None
 
     @property
-    def temperature(self) -> int | None:
+    def temperature(self) -> Optional[int]:
         """
         Returns the temperature of the device in degrees Celsius.
         """
