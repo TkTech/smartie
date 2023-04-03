@@ -8,6 +8,7 @@ class c_uint128(ctypes.Structure):  # noqa
     """
     Utility shim to make it easier to work with 128-bit integers.
     """
+
     _pack_ = 1
     _fields_ = [("low", ctypes.c_uint64), ("high", ctypes.c_uint64)]
 
