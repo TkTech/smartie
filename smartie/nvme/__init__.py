@@ -1,4 +1,4 @@
-__all__ = ('NVMEDevice',)
+__all__ = ("NVMEDevice",)
 import abc
 import ctypes
 from abc import ABCMeta, abstractmethod
@@ -7,7 +7,8 @@ from smartie.device import Device
 from smartie.nvme.structures import (
     NVMEAdminCommand,
     NVMEAdminCommands,
-    NVMEIdentifyResponse, SMARTPageResponse
+    NVMEIdentifyResponse,
+    SMARTPageResponse,
 )
 
 
@@ -35,12 +36,12 @@ class NVMEDevice(Device, abc.ABC):
     @property
     def serial(self) -> str | None:
         identify = self.identify()
-        return bytearray(identify.serial_number).strip(b' \x00').decode()
+        return bytearray(identify.serial_number).strip(b" \x00").decode()
 
     @property
     def model(self) -> str | None:
         identify = self.identify()
-        return bytearray(identify.model_number).strip(b' \x00').decode()
+        return bytearray(identify.model_number).strip(b" \x00").decode()
 
     @property
     def temperature(self) -> int | None:
@@ -53,7 +54,7 @@ class NVMEDevice(Device, abc.ABC):
                 addr=ctypes.addressof(data),
                 data_len=ctypes.sizeof(data),
                 nsid=0xFFFFFFFF,
-                cdw10=log_page_id | (((ctypes.sizeof(data) // 4) - 1) << 16)
+                cdw10=log_page_id | (((ctypes.sizeof(data) // 4) - 1) << 16),
             )
         )
         return data

@@ -70,20 +70,19 @@ def get_device(path: Union[Path, str]) -> Device:
     # depend on the platform and may import things that aren't available on
     # all platforms.
     system = platform.system()
-    if system == 'Windows':
+    if system == "Windows":
         from smartie.scsi.windows import WindowsSCSIDevice
+
         return WindowsSCSIDevice(path)
-    elif system == 'Linux':
+    elif system == "Linux":
         from smartie.nvme.linux import LinuxNVMEDevice
         from smartie.scsi.linux import LinuxSCSIDevice
 
-        if 'nvme' in str(path):
+        if "nvme" in str(path):
             return LinuxNVMEDevice(path)
         return LinuxSCSIDevice(path)
     else:
-        raise NotImplementedError(
-            'Device not implemented for this platform.'
-        )
+        raise NotImplementedError("Device not implemented for this platform.")
 
 
 def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
@@ -95,12 +94,12 @@ def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
                          ignored.
     """
     system = platform.system()
-    if system == 'Linux':
+    if system == "Linux":
         # There's gotta be a better way of doing this, but I haven't found
         # it yet. We could ask udisk via dbus, or look at /dev/disks/*,
         # but the below gimmick works on the latest beta kernels and the
         # oldest linux kernels I could get my hands on.
-        p = Path('/sys/block')
+        p = Path("/sys/block")
         if not p.exists or not p.is_dir():
             return
 
@@ -109,16 +108,16 @@ def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
             # two, but I can't currently find a portable way of getting the
             # device "type". We don't want to get encrypted volumes or memory
             # disks, for example.
-            if not child.name.startswith(('sd', 'nvme')):
+            if not child.name.startswith(("sd", "nvme")):
                 continue
 
             try:
-                yield get_device(Path('/dev') / child.name)
+                yield get_device(Path("/dev") / child.name)
             except IOError as e:
                 if raise_errors:
                     raise e
-    elif system == 'Windows':
-        k32 = ctypes.WinDLL('kernel32', use_last_error=True)
+    elif system == "Windows":
+        k32 = ctypes.WinDLL("kernel32", use_last_error=True)
 
         devices = ctypes.create_unicode_buffer(65536)
         # QueryDosDevice will return a list of NULL-terminated strings as a
@@ -127,48 +126,40 @@ def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
         # The function returns the number of bytes it actually wrote to
         # `devices`.
         bytes_written = k32.QueryDosDeviceW(
-            None,
-            devices,
-            ctypes.sizeof(devices)
+            None, devices, ctypes.sizeof(devices)
         )
         if bytes_written == 0:
-            raise RuntimeError('')
+            raise RuntimeError("")
 
         i = 0
         while i < bytes_written:
             # Grab all the characters in the path until we get to the NULL
             # (0x00) byte.
-            device_path = ''.join(itertools.takewhile(  # noqa
-                lambda c: c != '\x00', devices[i:]
-            ))
+            device_path = "".join(
+                itertools.takewhile(lambda c: c != "\x00", devices[i:])  # noqa
+            )
             i += len(device_path) + 1
             # Ignore every device that doesn't look like PhysicalDrive0, CdRom0,
             # PhysicalDrive1, etc...
-            if device_path.startswith(('PhysicalDrive', 'CdRom')):
+            if device_path.startswith(("PhysicalDrive", "CdRom")):
                 # PathLib cannot be used here, there's an option CPython ticket
                 # for errors resolving device paths. This is unfortunate,
                 # it forced us to revert to a string as the base path type.
-                yield get_device(f'\\\\.\\{device_path}')
-    elif system == 'Darwin':
+                yield get_device(f"\\\\.\\{device_path}")
+    elif system == "Darwin":
         from smartie.platforms.osx import iokit, cf, kCFBooleanTrue
 
         io_iterator = ctypes.c_void_p()
 
-        query = iokit.IOServiceMatching(b'IOBlockStorageDevice')
+        query = iokit.IOServiceMatching(b"IOBlockStorageDevice")
         cf.CFDictionaryAddValue(
             query,
-            cf.CFStringCreateWithCString(
-                None,
-                b'SMART Capable',
-                0
-            ),
-            kCFBooleanTrue
+            cf.CFStringCreateWithCString(None, b"SMART Capable", 0),
+            kCFBooleanTrue,
         )
 
         result = iokit.IOServiceGetMatchingServices(
-            0,  # kIOMasterPortDefault
-            query,
-            ctypes.byref(io_iterator)
+            0, query, ctypes.byref(io_iterator)  # kIOMasterPortDefault
         )
 
         if result != 0:
@@ -181,12 +172,8 @@ def get_all_devices(*, raise_errors=False) -> Iterable[Device]:
 
             name = ctypes.create_string_buffer(512)
 
-            iokit.IORegistryEntryGetPath(
-                io_device,
-                b'IOService',
-                name
-            )
+            iokit.IORegistryEntryGetPath(io_device, b"IOService", name)
 
             yield get_device(name.value)
     else:
-        raise NotImplementedError('platform not supported')
+        raise NotImplementedError("platform not supported")

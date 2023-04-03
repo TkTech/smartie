@@ -9,14 +9,14 @@ from smartie.scsi.structures import (
     FixedFormatSense,
     IOCTL_SG_IO,
     SGIOHeader,
-    Direction
+    Direction,
 )
 
 
 class LinuxSCSIDevice(SCSIDevice):
     def __enter__(self):
         if self.fd is not None:
-            raise IOError('Device already open.')
+            raise IOError("Device already open.")
 
         self.fd = os.open(self.path, os.O_RDONLY | os.O_NONBLOCK)
         return self
@@ -27,16 +27,23 @@ class LinuxSCSIDevice(SCSIDevice):
             self.fd = None
         return False
 
-    def issue_command(self, direction: Direction,
-                      command: ctypes.Structure,
-                      data: Union[ctypes.Array, ctypes.Structure], *,
-                      timeout: int = 3000):
+    def issue_command(
+        self,
+        direction: Direction,
+        command: ctypes.Structure,
+        data: Union[ctypes.Array, ctypes.Structure],
+        *,
+        timeout: int = 3000,
+    ):
         # The Sense response can be in multiple formats, and we won't know
         # what it is until we see the first byte.
-        raw_sense = ctypes.create_string_buffer(b'\x00', max(
-            ctypes.sizeof(FixedFormatSense),
-            ctypes.sizeof(DescriptorFormatSense)
-        ))
+        raw_sense = ctypes.create_string_buffer(
+            b"\x00",
+            max(
+                ctypes.sizeof(FixedFormatSense),
+                ctypes.sizeof(DescriptorFormatSense),
+            ),
+        )
 
         sg_io_header = SGIOHeader(
             interface_id=83,  # Always 'S'
@@ -47,15 +54,13 @@ class LinuxSCSIDevice(SCSIDevice):
             dxferp=ctypes.addressof(data),
             mx_sb_len=ctypes.sizeof(raw_sense),
             sbp=ctypes.addressof(raw_sense),
-            timeout=timeout
+            timeout=timeout,
         )
 
         # We use libc instead of the builtin ioctl as the builtin can have
         # issues with 64-bit pointers.
         result = get_libc().ioctl(
-            self.fd,
-            IOCTL_SG_IO,
-            ctypes.byref(sg_io_header)
+            self.fd, IOCTL_SG_IO, ctypes.byref(sg_io_header)
         )
 
         if result != 0:

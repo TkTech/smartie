@@ -27,6 +27,7 @@ class DeviceType(enum.IntEnum):
         Not all possible values are defined here due to lack of testable
         hardware.
     """
+
     #: Direct access block device (ex: disk)
     DIRECT_ACCESS_BLOCK_DEVICE = 0x00
     #: Sequential access device (ex: tape drive)
@@ -54,6 +55,7 @@ class ATAProtocol(enum.IntEnum):
     """
     The possible values for `Command16.protocol`.
     """
+
     HARD_RESET = 0
     SRST = 1
     NON_DATA = 3
@@ -73,6 +75,7 @@ class ATACommands(enum.IntEnum):
     """
     The possible values for `Command16.command`.
     """
+
     SMART = 0xB0
     IDENTIFY = 0xEC
     READ_DATA = 0xD0
@@ -84,6 +87,7 @@ class ATAPICommands(enum.IntEnum):
     """
     The possible values for `Command16.command` when targeting an ATAPI device.
     """
+
     IDENTIFY = 0xA1
 
 
@@ -91,6 +95,7 @@ class StatusCode(enum.IntEnum):
     """
     The possible values for `SGIOHeader.status`.
     """
+
     GOOD = 0x00
     CHECK_CONDITION = 0x01
     CONDITION_GOOD = 0x02
@@ -115,6 +120,7 @@ class Direction(enum.IntEnum):
         These are really the constants for the direction in SG_IO calls, but we
         map them for other platforms.
     """
+
     TO = -2
     FROM = -3
 
@@ -123,6 +129,7 @@ class ATASmartFeature(enum.IntEnum):
     """
     The possible values for the `feature` field on an ATA SMART command.
     """
+
     SMART_READ_DATA = 0xD0
     SMART_READ_THRESHOLDS = 0xD1
     SMART_TOGGLE_ATTRIBUTE_AUTOSAVE = 0xD2
@@ -138,14 +145,15 @@ class InquiryCommand(ctypes.Structure):
     """
     An SCSI INQUIRY command.
     """
+
     _pack_ = 1
     _fields_ = [
-        ('operation_code', ctypes.c_ubyte),
-        ('lun', ctypes.c_ubyte),
-        ('page_code', ctypes.c_ubyte),
-        ('reserved_1', ctypes.c_ubyte),
-        ('allocation_length', ctypes.c_ubyte),
-        ('control', ctypes.c_ubyte)
+        ("operation_code", ctypes.c_ubyte),
+        ("lun", ctypes.c_ubyte),
+        ("page_code", ctypes.c_ubyte),
+        ("reserved_1", ctypes.c_ubyte),
+        ("allocation_length", ctypes.c_ubyte),
+        ("control", ctypes.c_ubyte),
     ]
 
 
@@ -153,51 +161,52 @@ class InquiryResponse(ctypes.Structure):
     """
     The response to an SCSI INQUIRY command.
     """
+
     _pack_ = 1
     _fields_ = [
-        ('peripheral_device_type', ctypes.c_ubyte, 4),
-        ('peripheral_qualifier', ctypes.c_ubyte, 4),
-        ('reserved_1', ctypes.c_ubyte, 4),
-        ('hot_pluggable', ctypes.c_ubyte, 2),
-        ('lu_cong', ctypes.c_ubyte, 1),
-        ('rmb', ctypes.c_ubyte, 1),
-        ('version', ctypes.c_ubyte),
-        ('response_data_format', ctypes.c_ubyte, 4),
-        ('hi_sup', ctypes.c_ubyte, 1),
-        ('norm_aca', ctypes.c_ubyte, 1),
-        ('reserved_2', ctypes.c_ubyte, 1),
-        ('reserved_3', ctypes.c_ubyte, 1),
-        ('additional_length', ctypes.c_ubyte),
-        ('protect', ctypes.c_ubyte, 1),
-        ('reserved_4', ctypes.c_ubyte, 2),
-        ('three_pc', ctypes.c_ubyte, 1),
-        ('tpgs', ctypes.c_ubyte, 1),
-        ('obsolete_1', ctypes.c_ubyte, 1),
-        ('sccs', ctypes.c_ubyte, 1),
-        ('obsolete_2', ctypes.c_ubyte, 1),
-        ('reserved_5', ctypes.c_ubyte, 1),
-        ('reserved_6', ctypes.c_ubyte, 1),
-        ('obsolete_3', ctypes.c_ubyte, 1),
-        ('multi_p', ctypes.c_ubyte, 1),
-        ('vs_1', ctypes.c_ubyte, 1),
-        ('enc_serv', ctypes.c_ubyte, 1),
-        ('obsolete_4', ctypes.c_ubyte, 1),
-        ('vs_2', ctypes.c_ubyte, 1),
-        ('cmd_que', ctypes.c_ubyte, 1),
-        ('reserved_7', ctypes.c_ubyte, 1),
-        ('obsolete_5', ctypes.c_ubyte, 1),
-        ('obsolete_6', ctypes.c_ubyte, 2),
-        ('reserved_8', ctypes.c_ubyte, 1),
-        ('obsolete_7', ctypes.c_ubyte, 1),
-        ('t10_vendor_identification', ctypes.c_ubyte * 8),
-        ('product_identification', ctypes.c_ubyte * 16),
-        ('product_revision_level', ctypes.c_ubyte * 4),
-        ('vendor_specific_1', ctypes.c_ubyte * 20),
-        ('obsolete_8', ctypes.c_ubyte, 4),
-        ('reserved_9', ctypes.c_ubyte, 4),
-        ('reserved_10', ctypes.c_ubyte),
-        ('version_descriptors', ctypes.c_ushort * 16),
-        ('reserved_11', ctypes.c_ubyte * 22),
+        ("peripheral_device_type", ctypes.c_ubyte, 4),
+        ("peripheral_qualifier", ctypes.c_ubyte, 4),
+        ("reserved_1", ctypes.c_ubyte, 4),
+        ("hot_pluggable", ctypes.c_ubyte, 2),
+        ("lu_cong", ctypes.c_ubyte, 1),
+        ("rmb", ctypes.c_ubyte, 1),
+        ("version", ctypes.c_ubyte),
+        ("response_data_format", ctypes.c_ubyte, 4),
+        ("hi_sup", ctypes.c_ubyte, 1),
+        ("norm_aca", ctypes.c_ubyte, 1),
+        ("reserved_2", ctypes.c_ubyte, 1),
+        ("reserved_3", ctypes.c_ubyte, 1),
+        ("additional_length", ctypes.c_ubyte),
+        ("protect", ctypes.c_ubyte, 1),
+        ("reserved_4", ctypes.c_ubyte, 2),
+        ("three_pc", ctypes.c_ubyte, 1),
+        ("tpgs", ctypes.c_ubyte, 1),
+        ("obsolete_1", ctypes.c_ubyte, 1),
+        ("sccs", ctypes.c_ubyte, 1),
+        ("obsolete_2", ctypes.c_ubyte, 1),
+        ("reserved_5", ctypes.c_ubyte, 1),
+        ("reserved_6", ctypes.c_ubyte, 1),
+        ("obsolete_3", ctypes.c_ubyte, 1),
+        ("multi_p", ctypes.c_ubyte, 1),
+        ("vs_1", ctypes.c_ubyte, 1),
+        ("enc_serv", ctypes.c_ubyte, 1),
+        ("obsolete_4", ctypes.c_ubyte, 1),
+        ("vs_2", ctypes.c_ubyte, 1),
+        ("cmd_que", ctypes.c_ubyte, 1),
+        ("reserved_7", ctypes.c_ubyte, 1),
+        ("obsolete_5", ctypes.c_ubyte, 1),
+        ("obsolete_6", ctypes.c_ubyte, 2),
+        ("reserved_8", ctypes.c_ubyte, 1),
+        ("obsolete_7", ctypes.c_ubyte, 1),
+        ("t10_vendor_identification", ctypes.c_ubyte * 8),
+        ("product_identification", ctypes.c_ubyte * 16),
+        ("product_revision_level", ctypes.c_ubyte * 4),
+        ("vendor_specific_1", ctypes.c_ubyte * 20),
+        ("obsolete_8", ctypes.c_ubyte, 4),
+        ("reserved_9", ctypes.c_ubyte, 4),
+        ("reserved_10", ctypes.c_ubyte),
+        ("version_descriptors", ctypes.c_ushort * 16),
+        ("reserved_11", ctypes.c_ubyte * 22),
     ]
 
 
@@ -205,10 +214,12 @@ class CommandFlags(ctypes.Structure):
     """
     The flags used in the SCSI Command16 and Command12 structures.
     """
+
     class Length(enum.IntEnum):
         """
         Possible values for the `t_length` field.
         """
+
         #: The transfer length is in the FEATURE field.
         IN_FEATURE = 0b01
         #: The transfer length is in the SECTOR_COUNT field.
@@ -220,6 +231,7 @@ class CommandFlags(ctypes.Structure):
         """
         Possible values for the `off_line` field.
         """
+
         ZERO_SECONDS = 0b00
         TWO_SECONDS = 0b01
         SIX_SECONDS = 0b10
@@ -228,21 +240,21 @@ class CommandFlags(ctypes.Structure):
     _pack_ = 1
     _fields_ = [
         # If set, determines how the transfer length is specified.
-        ('t_length', ctypes.c_ubyte, 2),
+        ("t_length", ctypes.c_ubyte, 2),
         # 0 if the t_length is in bytes, 1 if the t_length is in blocks.
         # Ignored if t_length is 0.
-        ('byt_blok', ctypes.c_ubyte, 1),
+        ("byt_blok", ctypes.c_ubyte, 1),
         # If set to 0, the transfer is from the client to the ATA device.
         # If set to 1, the transfer is from the ATA device to the client.
-        ('t_dir', ctypes.c_ubyte, 1),
-        ('reserved_1', ctypes.c_ubyte, 1),
+        ("t_dir", ctypes.c_ubyte, 1),
+        ("reserved_1", ctypes.c_ubyte, 1),
         # If set, the ATA device will copy the ATA register information to the
         # sense data even when no error occurs.
-        ('ck_cond', ctypes.c_ubyte, 1),
+        ("ck_cond", ctypes.c_ubyte, 1),
         # The number of seconds to wait for the device to become ready after
         # issuing an ATA command to a PATA device that may cause it to be in
         # an unusable state.
-        ('off_line', ctypes.c_ubyte, 2)
+        ("off_line", ctypes.c_ubyte, 2),
     ]
 
 
@@ -255,24 +267,25 @@ class Command12(ctypes.Structure):
         The contents of this structure are documented in 04-262r8.pdf, section
         13.2.2.
     """
+
     _pack_ = 1
     _fields_ = [
-        ('operation_code', ctypes.c_ubyte),
-        ('protocol', ctypes.c_ubyte),
-        ('flags', CommandFlags),
-        ('features', ctypes.c_ubyte),
-        ('reserved_1', ctypes.c_ubyte, 1),
-        ('sector_count', ctypes.c_ubyte, 7),
-        ('reserved_2', ctypes.c_ubyte, 1),
-        ('lba_low', ctypes.c_ubyte, 7),
-        ('reserved_3', ctypes.c_ubyte, 1),
-        ('lba_mid', ctypes.c_ubyte, 7),
-        ('reserved_4', ctypes.c_ubyte, 1),
-        ('lba_high', ctypes.c_ubyte, 7),
-        ('device', ctypes.c_ubyte),
-        ('command', ctypes.c_ubyte),
-        ('reserved_5', ctypes.c_ubyte),
-        ('control', ctypes.c_ubyte)
+        ("operation_code", ctypes.c_ubyte),
+        ("protocol", ctypes.c_ubyte),
+        ("flags", CommandFlags),
+        ("features", ctypes.c_ubyte),
+        ("reserved_1", ctypes.c_ubyte, 1),
+        ("sector_count", ctypes.c_ubyte, 7),
+        ("reserved_2", ctypes.c_ubyte, 1),
+        ("lba_low", ctypes.c_ubyte, 7),
+        ("reserved_3", ctypes.c_ubyte, 1),
+        ("lba_mid", ctypes.c_ubyte, 7),
+        ("reserved_4", ctypes.c_ubyte, 1),
+        ("lba_high", ctypes.c_ubyte, 7),
+        ("device", ctypes.c_ubyte),
+        ("command", ctypes.c_ubyte),
+        ("reserved_5", ctypes.c_ubyte),
+        ("control", ctypes.c_ubyte),
     ]
 
 
@@ -285,26 +298,27 @@ class Command16(ctypes.Structure):
         The contents of this structure are documented in 04-262r8.pdf, section
         13.2.3.
     """
+
     _pack_ = 1
     _fields_ = [
-        ('operation_code', ctypes.c_ubyte),
-        ('protocol', ctypes.c_ubyte),
-        ('flags', CommandFlags),
-        ('features', ctypes.c_ushort),
-        ('sector_count', ctypes.c_ushort),
-        ('lba_high_low', ctypes.c_ubyte),
-        ('lba_low', ctypes.c_ubyte),
-        ('lba_high_mid', ctypes.c_ubyte),
-        ('lba_mid', ctypes.c_ubyte),
-        ('lba_high_high', ctypes.c_ubyte),
-        ('lba_high', ctypes.c_ubyte),
-        ('device', ctypes.c_ubyte),
-        ('command', ctypes.c_ubyte),
-        ('control', ctypes.c_ubyte)
+        ("operation_code", ctypes.c_ubyte),
+        ("protocol", ctypes.c_ubyte),
+        ("flags", CommandFlags),
+        ("features", ctypes.c_ushort),
+        ("sector_count", ctypes.c_ushort),
+        ("lba_high_low", ctypes.c_ubyte),
+        ("lba_low", ctypes.c_ubyte),
+        ("lba_high_mid", ctypes.c_ubyte),
+        ("lba_mid", ctypes.c_ubyte),
+        ("lba_high_high", ctypes.c_ubyte),
+        ("lba_high", ctypes.c_ubyte),
+        ("device", ctypes.c_ubyte),
+        ("command", ctypes.c_ubyte),
+        ("control", ctypes.c_ubyte),
     ]
 
     def set_lba(self, lba: int):
-        lba = lba.to_bytes(6, byteorder='little')
+        lba = lba.to_bytes(6, byteorder="little")
         self.lba_high_low = lba[3]
         self.lba_low = lba[0]
         self.lba_high_mid = lba[4]
@@ -319,29 +333,30 @@ class SGIOHeader(ctypes.Structure):
     """
     Corresponds to the compat_sg_io_hdr structure in <scsi/sg.h> on Linux.
     """
+
     _fields_ = [
-        ('interface_id', ctypes.c_int),
-        ('dxfer_direction', ctypes.c_int),
-        ('cmd_len', ctypes.c_ubyte),
-        ('mx_sb_len', ctypes.c_ubyte),
-        ('iovec_count', ctypes.c_ushort),
-        ('dxfer_len', ctypes.c_uint),
-        ('dxferp', ctypes.c_void_p),
-        ('cmdp', ctypes.c_void_p),
-        ('sbp', ctypes.c_void_p),
-        ('timeout', ctypes.c_uint),
-        ('flags', ctypes.c_uint),
-        ('pack_id', ctypes.c_int),
-        ('usr_ptr', ctypes.c_void_p),
-        ('status', ctypes.c_ubyte),
-        ('masked_status', ctypes.c_ubyte),
-        ('msg_status', ctypes.c_ubyte),
-        ('sb_len_wr', ctypes.c_ubyte),
-        ('host_status', ctypes.c_ushort),
-        ('driver_status', ctypes.c_ushort),
-        ('resid', ctypes.c_int),
-        ('duration', ctypes.c_uint),
-        ('info', ctypes.c_uint)
+        ("interface_id", ctypes.c_int),
+        ("dxfer_direction", ctypes.c_int),
+        ("cmd_len", ctypes.c_ubyte),
+        ("mx_sb_len", ctypes.c_ubyte),
+        ("iovec_count", ctypes.c_ushort),
+        ("dxfer_len", ctypes.c_uint),
+        ("dxferp", ctypes.c_void_p),
+        ("cmdp", ctypes.c_void_p),
+        ("sbp", ctypes.c_void_p),
+        ("timeout", ctypes.c_uint),
+        ("flags", ctypes.c_uint),
+        ("pack_id", ctypes.c_int),
+        ("usr_ptr", ctypes.c_void_p),
+        ("status", ctypes.c_ubyte),
+        ("masked_status", ctypes.c_ubyte),
+        ("msg_status", ctypes.c_ubyte),
+        ("sb_len_wr", ctypes.c_ubyte),
+        ("host_status", ctypes.c_ushort),
+        ("driver_status", ctypes.c_ushort),
+        ("resid", ctypes.c_int),
+        ("duration", ctypes.c_uint),
+        ("info", ctypes.c_uint),
     ]
 
 
@@ -350,20 +365,21 @@ class SCSIPassThroughDirect(ctypes.Structure):
     Corresponds to the SCSI_PASS_THROUGH_DIRECT structure in <ntddscsi.h> on
     Windows.
     """
+
     _fields_ = [
-        ('length', ctypes.c_ushort),
-        ('scsi_status', ctypes.c_ubyte),
-        ('path_id', ctypes.c_ubyte),
-        ('target_id', ctypes.c_ubyte),
-        ('lun', ctypes.c_ubyte),
-        ('cdb_length', ctypes.c_ubyte),
-        ('sense_info_length', ctypes.c_ubyte),
-        ('data_in', ctypes.c_ubyte),
-        ('data_transfer_length', ctypes.c_uint32),
-        ('timeout_value', ctypes.c_uint32),
-        ('data_buffer', ctypes.c_void_p),
-        ('sense_info_offset', ctypes.c_uint32),
-        ('cdb', ctypes.c_ubyte * 16)
+        ("length", ctypes.c_ushort),
+        ("scsi_status", ctypes.c_ubyte),
+        ("path_id", ctypes.c_ubyte),
+        ("target_id", ctypes.c_ubyte),
+        ("lun", ctypes.c_ubyte),
+        ("cdb_length", ctypes.c_ubyte),
+        ("sense_info_length", ctypes.c_ubyte),
+        ("data_in", ctypes.c_ubyte),
+        ("data_transfer_length", ctypes.c_uint32),
+        ("timeout_value", ctypes.c_uint32),
+        ("data_buffer", ctypes.c_void_p),
+        ("sense_info_offset", ctypes.c_uint32),
+        ("cdb", ctypes.c_ubyte * 16),
     ]
 
 
@@ -372,10 +388,11 @@ class SCSIPassThroughDirectWithBuffer(ctypes.Structure):
     Corresponds to the SCSI_PASS_THROUGH_DIRECT_WITH_BUFFER structure in
     <ntddscsi.h> on Windows.
     """
+
     _fields_ = [
-        ('sptd', SCSIPassThroughDirect),
-        ('filler', ctypes.c_uint32),
-        ('sense', ctypes.c_ubyte * 32)
+        ("sptd", SCSIPassThroughDirect),
+        ("filler", ctypes.c_uint32),
+        ("sense", ctypes.c_ubyte * 32),
     ]
 
 
@@ -387,21 +404,21 @@ class FixedFormatSense(ctypes.Structure):
     """
 
     _fields_ = [
-        ('error_code', ctypes.c_ubyte, 7),
-        ('valid', ctypes.c_ubyte, 1),
-        ('segment_number', ctypes.c_ubyte),
-        ('sense_key', ctypes.c_ubyte, 4),
-        ('reserved_1', ctypes.c_ubyte, 1),
-        ('ili', ctypes.c_ubyte, 1),
-        ('eom', ctypes.c_ubyte, 1),
-        ('filemark', ctypes.c_ubyte, 1),
-        ('information', ctypes.c_uint32),
-        ('additional_sense_length', ctypes.c_ubyte),
-        ('command_specific_information', ctypes.c_uint32),
-        ('additional_sense_code', ctypes.c_ubyte),
-        ('additional_sense_code_qualifier', ctypes.c_ubyte),
-        ('field_replaceable_unit_code', ctypes.c_ubyte),
-        ('sense_key_specific', ctypes.c_ubyte * 3)
+        ("error_code", ctypes.c_ubyte, 7),
+        ("valid", ctypes.c_ubyte, 1),
+        ("segment_number", ctypes.c_ubyte),
+        ("sense_key", ctypes.c_ubyte, 4),
+        ("reserved_1", ctypes.c_ubyte, 1),
+        ("ili", ctypes.c_ubyte, 1),
+        ("eom", ctypes.c_ubyte, 1),
+        ("filemark", ctypes.c_ubyte, 1),
+        ("information", ctypes.c_uint32),
+        ("additional_sense_length", ctypes.c_ubyte),
+        ("command_specific_information", ctypes.c_uint32),
+        ("additional_sense_code", ctypes.c_ubyte),
+        ("additional_sense_code_qualifier", ctypes.c_ubyte),
+        ("field_replaceable_unit_code", ctypes.c_ubyte),
+        ("sense_key_specific", ctypes.c_ubyte * 3),
     ]
 
 
@@ -411,13 +428,14 @@ class DescriptorFormatSense(ctypes.Structure):
     :class:`FixedFormatSense`. The exact format depends on the value of
     the first byte, `error_code`.
     """
+
     _fields_ = [
-        ('error_code', ctypes.c_ubyte, 7),
-        ('valid', ctypes.c_ubyte, 1),
-        ('sense_key', ctypes.c_ubyte, 4),
-        ('reserved_1', ctypes.c_ubyte, 4),
-        ('additional_sense_code', ctypes.c_ubyte),
-        ('additional_sense_code_qualifier', ctypes.c_ubyte)
+        ("error_code", ctypes.c_ubyte, 7),
+        ("valid", ctypes.c_ubyte, 1),
+        ("sense_key", ctypes.c_ubyte, 4),
+        ("reserved_1", ctypes.c_ubyte, 4),
+        ("additional_sense_code", ctypes.c_ubyte),
+        ("additional_sense_code_qualifier", ctypes.c_ubyte),
     ]
 
 
@@ -430,25 +448,26 @@ class IdentifyResponse(ctypes.Structure):
         This is a large structure, and has only been partially implemented. The
         full response is 512 bytes.
     """
+
     # I don't have the willpower to implement this entire structure. If you
     # need a field, add it.
     _fields_ = [
         # ('general_config', ctypes.c_ushort),
-        ('reserved_1', ctypes.c_ushort, 1),
-        ('retired_3', ctypes.c_ushort, 1),
-        ('response_incomplete', ctypes.c_ushort, 1),
-        ('retired_2', ctypes.c_ushort, 3),
-        ('fixed_device', ctypes.c_ushort, 1),
-        ('removable_media', ctypes.c_ushort, 1),
-        ('retired_1', ctypes.c_ushort, 7),
-        ('device_type', ctypes.c_ushort, 1),
+        ("reserved_1", ctypes.c_ushort, 1),
+        ("retired_3", ctypes.c_ushort, 1),
+        ("response_incomplete", ctypes.c_ushort, 1),
+        ("retired_2", ctypes.c_ushort, 3),
+        ("fixed_device", ctypes.c_ushort, 1),
+        ("removable_media", ctypes.c_ushort, 1),
+        ("retired_1", ctypes.c_ushort, 7),
+        ("device_type", ctypes.c_ushort, 1),
         # We don't use the following 18 bytes.
-        ('padding_1', ctypes.c_ubyte * 18),
-        ('serial_number', ctypes.c_ubyte * 20),
+        ("padding_1", ctypes.c_ubyte * 18),
+        ("serial_number", ctypes.c_ubyte * 20),
         # We don't use the following 6 bytes.
-        ('padding_2', ctypes.c_ubyte * 6),
-        ('firmware_revision', ctypes.c_ubyte * 8),
-        ('model_number', ctypes.c_ubyte * 40)
+        ("padding_2", ctypes.c_ubyte * 6),
+        ("firmware_revision", ctypes.c_ubyte * 8),
+        ("model_number", ctypes.c_ubyte * 40),
     ]
 
 
@@ -461,14 +480,15 @@ class SmartDataEntry(ctypes.Structure):
         The specification calls this field vendor specific, but its format is
         very consistent.
     """
+
     _pack_ = 1
     _fields_ = [
-        ('id', ctypes.c_ubyte),
-        ('flags', ctypes.c_ushort),
-        ('current', ctypes.c_ubyte),
-        ('worst', ctypes.c_ubyte),
-        ('vendor_specific_1', ctypes.c_ubyte * 6),
-        ('reserved', ctypes.c_ubyte)
+        ("id", ctypes.c_ubyte),
+        ("flags", ctypes.c_ushort),
+        ("current", ctypes.c_ubyte),
+        ("worst", ctypes.c_ubyte),
+        ("vendor_specific_1", ctypes.c_ubyte * 6),
+        ("reserved", ctypes.c_ubyte),
     ]
 
 
@@ -486,28 +506,29 @@ class SmartDataResponse(ctypes.Structure):
         format is very consistent. See
         :func:`smartie.smart.parse_smart_read_data()` for an example.
     """
+
     _fields_ = [
-        ('version', ctypes.c_ushort),
-        ('attributes', SmartDataEntry * 30),
-        ('offline_data_collection_status', ctypes.c_ubyte),
-        ('self_test_execution_status_buyte', ctypes.c_ubyte),
-        ('vendor_specific_2', ctypes.c_ubyte * 2),
-        ('vendor_specific_3', ctypes.c_ubyte),
-        ('offline_data_collection_capability', ctypes.c_ubyte),
-        ('smart_capability', ctypes.c_ushort),
-        ('error_logging_capability', ctypes.c_ubyte),
-        ('vendor_specific_4', ctypes.c_ubyte),
+        ("version", ctypes.c_ushort),
+        ("attributes", SmartDataEntry * 30),
+        ("offline_data_collection_status", ctypes.c_ubyte),
+        ("self_test_execution_status_buyte", ctypes.c_ubyte),
+        ("vendor_specific_2", ctypes.c_ubyte * 2),
+        ("vendor_specific_3", ctypes.c_ubyte),
+        ("offline_data_collection_capability", ctypes.c_ubyte),
+        ("smart_capability", ctypes.c_ushort),
+        ("error_logging_capability", ctypes.c_ubyte),
+        ("vendor_specific_4", ctypes.c_ubyte),
         # Recommended time is in minutes.
-        ('short_self_test_recommended_time', ctypes.c_ubyte),
+        ("short_self_test_recommended_time", ctypes.c_ubyte),
         # Recommended time is in minutes.
-        ('extended_self_test_recommended_time', ctypes.c_ubyte),
+        ("extended_self_test_recommended_time", ctypes.c_ubyte),
         # Recommended time is in minutes.
-        ('conveyance_self_test_recommended_time', ctypes.c_ubyte),
+        ("conveyance_self_test_recommended_time", ctypes.c_ubyte),
         # Recommended time is in minutes.
-        ('extended_self_test_recommended_time_wide', ctypes.c_short),
-        ('reserved_1', ctypes.c_ubyte * 8),
-        ('vendor_specific_2', ctypes.c_ubyte * 124),
-        ('data_checksum_structure', ctypes.c_ubyte)
+        ("extended_self_test_recommended_time_wide", ctypes.c_short),
+        ("reserved_1", ctypes.c_ubyte * 8),
+        ("vendor_specific_2", ctypes.c_ubyte * 124),
+        ("data_checksum_structure", ctypes.c_ubyte),
     ]
 
 
@@ -515,10 +536,11 @@ class SmartThresholdEntry(ctypes.Structure):
     """
     A single entry in the SMART READ_THRESHOLDS response.
     """
+
     _fields_ = [
-        ('attribute_id', ctypes.c_ubyte),
-        ('value', ctypes.c_ubyte),
-        ('reserved_1', ctypes.c_ubyte * 10)
+        ("attribute_id", ctypes.c_ubyte),
+        ("value", ctypes.c_ubyte),
+        ("reserved_1", ctypes.c_ubyte * 10),
     ]
 
 
@@ -531,9 +553,10 @@ class SmartThresholdResponse(ctypes.Structure):
         which contains the SMART threshold table that encodes values such as
         the temperature at which the device will start throttling.
     """
+
     _fields_ = [
-        ('revision_number', ctypes.c_ushort),
-        ('entries', SmartThresholdEntry * 30),
-        ('reserved_1', ctypes.c_ubyte * 149),
-        ('checksum', ctypes.c_ubyte)
+        ("revision_number", ctypes.c_ushort),
+        ("entries", SmartThresholdEntry * 30),
+        ("reserved_1", ctypes.c_ubyte * 149),
+        ("checksum", ctypes.c_ubyte),
     ]

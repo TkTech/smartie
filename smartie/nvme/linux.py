@@ -9,7 +9,7 @@ from smartie.nvme.structures import IOCTL_NVME_ADMIN_CMD, NVMEAdminCommand
 class LinuxNVMEDevice(NVMEDevice):
     def __enter__(self):
         if self.fd is not None:
-            raise IOError('Device already open.')
+            raise IOError("Device already open.")
 
         self.fd = os.open(self.path, os.O_RDONLY | os.O_NONBLOCK)
         return self
@@ -22,9 +22,7 @@ class LinuxNVMEDevice(NVMEDevice):
 
     def issue_admin_command(self, command: NVMEAdminCommand):
         result = get_libc().ioctl(
-            self.fd,
-            IOCTL_NVME_ADMIN_CMD,
-            ctypes.byref(command)
+            self.fd, IOCTL_NVME_ADMIN_CMD, ctypes.byref(command)
         )
 
         if result != 0:

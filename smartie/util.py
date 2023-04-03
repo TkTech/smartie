@@ -7,18 +7,16 @@ def swap_bytes(src):
     src = bytearray(src)
 
     for i in range(0, len(src) - 1, 2):
-        src[i] ^= src[i+1]
-        src[i+1] ^= src[i]
-        src[i] ^= src[i+1]
+        src[i] ^= src[i + 1]
+        src[i + 1] ^= src[i]
+        src[i] ^= src[i + 1]
 
     return src
 
 
 def swap_int(c: int, n: int) -> int:
     return int.from_bytes(
-        n.to_bytes(c, byteorder='little'),
-        byteorder='big',
-        signed=False
+        n.to_bytes(c, byteorder="little"), byteorder="big", signed=False
     )
 
 
@@ -33,7 +31,7 @@ def grouper_it(n, iterable):
         yield itertools.chain((first_el,), chunk_it)
 
 
-def embed_bytes(data: bytes, *, indent=0, char='    ', max_width=80) -> str:
+def embed_bytes(data: bytes, *, indent=0, char="    ", max_width=80) -> str:
     """
     Pretty-prints `data` in such a way that it can be embedded cleanly in
     a Python file.
@@ -49,15 +47,14 @@ def embed_bytes(data: bytes, *, indent=0, char='    ', max_width=80) -> str:
     prefix = char * indent
     line_length = max_width - len(prefix)
 
-    lines = '\n'.join(
-        '{prefix}{line}'.format(
+    lines = "\n".join(
+        "{prefix}{line}".format(
             prefix=char * (indent + 1),
-            line=', '.join(
-                f'0x{byte:02X}' for byte in row
-            )
-        ) for row in grouper_it(line_length // 6, data)
+            line=", ".join(f"0x{byte:02X}" for byte in row),
+        )
+        for row in grouper_it(line_length // 6, data)
     )
-    return f'{prefix}bytearray([\n{lines}\n{prefix}])'
+    return f"{prefix}bytearray([\n{lines}\n{prefix}])"
 
 
 def pprint_structure(s: ctypes.Structure):
@@ -78,10 +75,10 @@ def pprint_structure(s: ctypes.Structure):
         value = getattr(s, name)
         if isinstance(value, ctypes.Array):
             print(
-                f'{name}[{offset}:{offset + bitcount}] = {bytes(value)[:15]!r}'
-                f' ({len(value)} bytes)'
+                f"{name}[{offset}:{offset + bitcount}] = {bytes(value)[:15]!r}"
+                f" ({len(value)} bytes)"
             )
             print(embed_bytes(bytes(value)))
         else:
-            print(f'{name}[{offset}:{offset + bitcount}] = {value!r}')
+            print(f"{name}[{offset}:{offset + bitcount}] = {value!r}")
         offset += bitcount

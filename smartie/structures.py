@@ -3,10 +3,7 @@ import ctypes
 
 class c_uint128(ctypes.Structure):  # noqa
     _pack_ = 1
-    _fields_ = [
-        ('low', ctypes.c_uint64),
-        ('high', ctypes.c_uint64)
-    ]
+    _fields_ = [("low", ctypes.c_uint64), ("high", ctypes.c_uint64)]
 
     def __init__(self, value: int = 0):
         super().__init__()
