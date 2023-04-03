@@ -5,6 +5,7 @@ import ctypes
 from dataclasses import replace
 from typing import Dict, List, Tuple, Union
 
+import smartie.structures
 from smartie import util
 from smartie.database import SMARTAttribute, get_drive_entry
 from smartie.device import Device
@@ -27,7 +28,7 @@ from smartie.scsi.structures import (
     SmartDataResponse,
     SmartThresholdResponse,
 )
-from smartie.util import swap_bytes
+from smartie.structures import swap_bytes
 
 
 class SCSIDevice(Device, abc.ABC):
@@ -196,7 +197,7 @@ class SCSIDevice(Device, abc.ABC):
                 t_dir=True,
                 ck_cond=True,
             ),
-            features=util.swap_int(2, ATASmartFeature.SMART_READ_THRESHOLDS),
+            features=smartie.structures.swap_int(2, ATASmartFeature.SMART_READ_THRESHOLDS),
         ).set_lba(0xC24F00)
 
         sense = self.issue_command(Direction.FROM, command16, thresholds)
@@ -219,7 +220,7 @@ class SCSIDevice(Device, abc.ABC):
                 t_dir=True,
                 ck_cond=True,
             ),
-            features=util.swap_int(2, ATASmartFeature.SMART_READ_DATA),
+            features=smartie.structures.swap_int(2, ATASmartFeature.SMART_READ_DATA),
         ).set_lba(0xC24F00)
 
         sense = self.issue_command(Direction.FROM, command16, smart)

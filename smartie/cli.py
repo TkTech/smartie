@@ -11,8 +11,8 @@ from smartie.database import DRIVE_DATABASE, get_matching_drive_entries
 from smartie.device import get_all_devices, get_device
 from smartie.nvme import NVMEDevice
 from smartie.scsi import SCSIDevice
-from smartie.structures import c_uint128
-from smartie.util import embed_bytes, grouper_it
+from smartie.structures import c_uint128, embed_bytes
+from smartie.util import grouper_it
 
 
 @group()
@@ -369,6 +369,9 @@ def api_list_command():
 @api_group.command("get")
 @click.argument("path")
 def api_get_command(path: str):
+    """
+    Get detailed information about a specific device.
+    """
     result = {}
     with get_device(path) as device:
         result["path"] = device.path

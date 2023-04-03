@@ -10,7 +10,7 @@ from smartie.nvme.structures import (
     NVMEIdentifyResponse,
     SMARTPageResponse,
 )
-from smartie.util import structure_to_dict
+from smartie.structures import structure_to_dict
 
 
 class NVMEDevice(Device, abc.ABC):
