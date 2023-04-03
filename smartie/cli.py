@@ -267,7 +267,8 @@ def db_matches_command(path: str):
 
             for f in match.filters:
                 filter_table.add_row(
-                    f.__class__.__name__, f if isinstance(f, str) else f.pattern
+                    f.__class__.__name__,
+                    f if isinstance(f, str) else f.pattern  # noqa
                 )
 
             t.add_row(match.name, filter_table)
