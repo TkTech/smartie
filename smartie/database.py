@@ -87,6 +87,7 @@ class DriveEntry:
     and other drive-specific or manufacturer-specific information.
     """
 
+    name: str
     # A list of filters that a drive must match to use this entry.
     filters: list[str] = field(default_factory=lambda: ["*"])
     # A list of smart attributes that are specific to this drive.
@@ -96,12 +97,8 @@ class DriveEntry:
 
 
 DRIVE_DATABASE = [
-    # The "base" entry with common SMART attributes that are reasonable
-    # defaults. Remember, there is no guarantee that a drive will support
-    # any given attribute, so this is just a starting point. SMART is a
-    # specification for communicating with drives, not a specification for
-    # attributes that drives must support.
     DriveEntry(
+        name="Default",
         filters=["type:ata"],
         smart_attributes={
             0x01: SMARTAttribute("READ_ERROR_RATE", 0x01),
@@ -243,8 +240,15 @@ DRIVE_DATABASE = [
             0xFC: SMARTAttribute("NEWLY_ADDED_BAD_FLASH_BLOCk", 0xFC),
             0xFE: SMARTAttribute("FREE_FALL_EVENTS", 0xFE, unit=Units.COUNT),
         },
+        notes=[
+            "The default SMART attributes are based off relatively common"
+            " attributes across manufacturers. The attributes are not"
+            " guaranteed to be accurate for all drives. If you find any"
+            " discrepancies, please open an issue on GitHub."
+        ],
     ),
     DriveEntry(
+        name="Samsung SSDs",
         filters=[
             "type:ata",
             re.compile(r"model:Samsung SSD 8[56]0 EVO [12]TB"),
@@ -274,21 +278,21 @@ def _match(entry: DriveEntry, filters: List[str]) -> bool:
     return True
 
 
+def get_matching_drive_entries(filters: List[str]) -> List[DriveEntry]:
+    """
+    Get a list of DriveEntry that matches the given filters.
+    """
+    return [entry for entry in DRIVE_DATABASE if _match(entry, filters)]
+
+
 def get_drive_entry(filters: List[str]) -> DriveEntry:
     """
     Get a merged DriveEntry that matches all the given filters.
     """
-    matching_entries = []
-    for drive_entry in DRIVE_DATABASE:
-        if not _match(drive_entry, filters):
-            continue
-
-        matching_entries.append(drive_entry)
-
     entry = DriveEntry()
     entry.filters = filters
 
-    for matching_entry in matching_entries:
+    for matching_entry in get_matching_drive_entries(filters):
         entry.smart_attributes.update(matching_entry.smart_attributes)
 
     return entry

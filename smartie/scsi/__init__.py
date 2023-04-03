@@ -3,7 +3,7 @@ __all__ = ("SCSIDevice",)
 import abc
 import ctypes
 from dataclasses import replace
-from typing import Dict, Tuple, Union
+from typing import Dict, List, Tuple, Union
 
 from smartie import util
 from smartie.database import SMARTAttribute, get_drive_entry
@@ -225,17 +225,15 @@ class SCSIDevice(Device, abc.ABC):
         sense = self.issue_command(Direction.FROM, command16, smart)
         return smart, sense
 
+    def get_filters(self) -> List[str]:
+        return ["type:ata", f"model:{self.model}"]
+
     @property
     def smart_table(self) -> Dict[int, SMARTAttribute]:
         """
         Returns a parsed and processed dictionary of SMART attributes.
         """
-        drive_entry = get_drive_entry(
-            [
-                "type:ata",
-                f"model:{self.model}",
-            ]
-        )
+        drive_entry = get_drive_entry(self.get_filters())
 
         thresholds, _ = self.smart_thresholds()
         p_thresholds = {}

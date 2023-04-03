@@ -1,11 +1,13 @@
-import ctypes
 import sys
+import json
+import ctypes
 
 import click
 from rich import box
 from rich.console import Console, Group, group
 from rich.table import Table
 
+from smartie.database import DRIVE_DATABASE, get_matching_drive_entries
 from smartie.device import get_all_devices, get_device
 from smartie.nvme import NVMEDevice
 from smartie.scsi import SCSIDevice
@@ -151,7 +153,7 @@ def details_command(path: str):
     console.print(details_table)
 
 
-@cli.command("debug")
+@cli.command("dump")
 @click.argument("path")
 @click.argument(
     "command", type=click.Choice(["inquiry", "identify", "smart", "thresholds"])
@@ -161,10 +163,13 @@ def details_command(path: str):
     default="pretty",
     type=click.Choice(["pretty", "raw", "bytearray"]),
 )
-def debug_command(path: str, command: str, display: str = "pretty"):
+def dump_command(path: str, command: str, display: str = "pretty"):
     """
-    Debug a device by sending a command and displaying the response as a raw
-    structure.
+    Dump raw responses from an NVMe or ATA device.
+
+    This command can pretty-print rich structures, write raw bytes to stdout,
+    or write a bytearray ready for embedding in Python to stdout. Control the
+    output with the --display option.
     """
     console = Console()
 
@@ -199,3 +204,72 @@ def debug_command(path: str, command: str, display: str = "pretty"):
             sys.stdout.buffer.write(bytes(structure))  # noqa
         elif display == "bytearray":
             print(embed_bytes(bytearray(structure)))  # noqa
+
+
+@cli.group("db")
+def db_group():
+    """
+    Commands for querying the disk database.
+    """
+
+
+@db_group.command("export")
+def db_export_command():
+    """
+    Export the disk database as JSON to stdout.
+
+    This is useful for embedding the database in other applications.
+    """
+    print(
+        json.dumps(
+            [
+                {
+                    "name": entry.name,
+                    "filters": [
+                        f if isinstance(f, str) else f.pattern
+                        for f in entry.filters
+                    ],
+                    "smart_attributes": [
+                        {
+                            "id": attr.id,
+                            "name": attr.name,
+                            "unit": attr.unit.name,
+                        }
+                        for attr in entry.smart_attributes.values()
+                    ],
+                }
+                for entry in DRIVE_DATABASE
+            ],
+            indent=4,
+            sort_keys=True,
+        )
+    )
+
+
+@db_group.command("matches")
+@click.argument("path")
+def db_matches_command(path: str):
+    """
+    Show all matching entries in the disk database for a specific device.
+    """
+    console = Console()
+
+    t = Table(box=box.SIMPLE)
+    t.add_column("Name", style="magenta", vertical="middle")
+    t.add_column("Filters", style="green")
+
+    with get_device(path) as device:
+        matches = get_matching_drive_entries(device.get_filters())
+        for match in matches:
+            filter_table = Table(show_header=False)
+            filter_table.add_column("Type", style="white")
+            filter_table.add_column("Filter", style="green")
+
+            for f in match.filters:
+                filter_table.add_row(
+                    f.__class__.__name__, f if isinstance(f, str) else f.pattern
+                )
+
+            t.add_row(match.name, filter_table)
+
+    console.print(t)

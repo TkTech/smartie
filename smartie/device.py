@@ -7,7 +7,7 @@ import itertools
 import ctypes
 import platform
 from pathlib import Path
-from typing import Iterable, Union
+from typing import Iterable, List, Union
 
 
 class Device(abc.ABC):
@@ -48,6 +48,13 @@ class Device(abc.ABC):
     @property
     def smart_table(self):
         return {}
+
+    def get_filters(self) -> List[str]:
+        """
+        Returns a list of filters that should be used when looking up this
+        device in the device database.
+        """
+        return []
 
     @abc.abstractmethod
     def __enter__(self):
