@@ -11,6 +11,8 @@ command-line tool for quickly getting information about your disks.
 
 ## Usage
 
+### API Usage
+
 High-level usage is simple:
 
 ```python
@@ -71,6 +73,57 @@ with get_device('/dev/nvme0') as device:
     )
     print(data.model_number)
 ```
+
+### Command Line Usage
+
+Want to get JSON output to use with other programs? Use the command-line tools under
+`smartie api`, such as `list` to enumerate devices:
+
+```
+> sudo smartie api list
+[
+    {
+        "model": "WD_BLACK SN770 2TB",
+        "path": "/dev/nvme0n1",
+        "serial": "<redacted>",
+        "temperature": 52
+    },
+    {
+        "model": "Samsung SSD 860 EVO 1TB",
+        "path": "/dev/sdb",
+        "serial": "<redacted>",
+        "temperature": 27
+    },
+    {
+        "model": "Samsung SSD 860 EVO 1TB",
+        "path": "/dev/sdc",
+        "serial": "<redacted>",
+        "temperature": 28
+    },
+    {
+        "model": "WD_BLACK SN770 2TB",
+        "path": "/dev/nvme1n1",
+        "serial": "<redacted>",
+        "temperature": 46
+    },
+    {
+        "model": "Samsung SSD 860 EVO 1TB",
+        "path": "/dev/sda",
+        "serial": "<redacted>",
+        "temperature": 26
+    }
+]
+```
+
+Are you a human and just want to see your disk details? Take a look at
+`smartie enumerate` and `smartie details`:
+
+![cli_details_scsi.png](misc/cli_details_scsi.png)
+
+How about a developer trying to build a tool? You can use `smartie dump` to get
+access to raw responses from the disk as a table or binary:
+
+![cli_dump_nvme.png](misc/cli_dump_nvme.png)
 
 ## Support
 
