@@ -19,13 +19,15 @@ High-level usage is simple:
 from smartie.device import get_all_devices
 
 for device in get_all_devices():
-    print(device.path)
-    print(device.model)
-    print(device.serial)
-    print(device.temperature)
+    # open the device first
+    with device as d:
+        print(d.path)
+        print(d.model)
+        print(d.serial)
+        print(d.temperature)
 
-    for attribute in device.smart_table:
-        print(attribute.name, attribute.value)
+        for attribute in d.smart_table.values():
+            print(attribute.name, attribute.current_value)
 ```
 
 Drop down a level if you want and send raw SCSI commands, such as an `INQUIRY`:
