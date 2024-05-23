@@ -6,6 +6,7 @@ import abc
 import itertools
 import ctypes
 import platform
+import os
 from pathlib import Path
 from typing import Iterable, List, Optional, Union
 
@@ -114,7 +115,12 @@ def get_all_devices() -> Iterable[Device]:
             if not child.name.startswith(("sd", "nvme")):
                 continue
 
-            yield get_device(Path("/dev") / child.name)
+            # In the new kernel, nvme device may has a character device like 
+            # nvme0c0n1 (/sys/block/nvme0c0n1), but it is not in the directo
+            # -ry /dev/.
+            device_path = Path("/dev") / child.name
+            if os.path.exists(device_path):
+                yield get_device(device_path)
     elif system == "Windows":
         k32 = ctypes.WinDLL("kernel32", use_last_error=True)
 
