@@ -31,7 +31,7 @@ class LinuxSCSIDevice(SCSIDevice):
         self,
         direction: Direction,
         command: ctypes.Structure,
-        data: Union[ctypes.Array, ctypes.Structure],
+        data: Union[ctypes.Array, ctypes.Structure, None],
         *,
         timeout: int = 3000,
     ):
@@ -44,6 +44,9 @@ class LinuxSCSIDevice(SCSIDevice):
                 ctypes.sizeof(DescriptorFormatSense),
             ),
         )
+
+        if data is None:
+            data = ctypes.create_string_buffer(0)
 
         sg_io_header = SGIOHeader(
             interface_id=83,  # Always 'S'
