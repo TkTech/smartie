@@ -31,7 +31,7 @@ class LinuxSCSIDevice(SCSIDevice):
         self,
         direction: Direction,
         command: ctypes.Structure,
-        data: Union[ctypes.Array, ctypes.Structure],
+        data: Union[ctypes.Array, ctypes.Structure, None],
         *,
         timeout: int = 3000,
     ):

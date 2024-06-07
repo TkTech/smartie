@@ -64,7 +64,7 @@ class SCSIDevice(Device, abc.ABC):
         self,
         direction: structures.Direction,
         command: ctypes.Structure,
-        data: Union[ctypes.Array, ctypes.Structure],
+        data: Union[ctypes.Array, ctypes.Structure, None],
         *,
         timeout: int = 3000,
     ):
