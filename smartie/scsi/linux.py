@@ -45,6 +45,9 @@ class LinuxSCSIDevice(SCSIDevice):
             ),
         )
 
+        if data is None:
+            data = ctypes.create_string_buffer(0)
+
         sg_io_header = SGIOHeader(
             interface_id=83,  # Always 'S'
             dxfer_direction=direction,

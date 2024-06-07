@@ -121,6 +121,7 @@ class Direction(enum.IntEnum):
         map them for other platforms.
     """
 
+    NONE = -1
     TO = -2
     FROM = -3
 

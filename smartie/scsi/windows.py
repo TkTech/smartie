@@ -55,10 +55,13 @@ class WindowsSCSIDevice(SCSIDevice):
             bytearray(command).ljust(16, b"\x00")  # noqa
         )
 
+        if data is None:
+            data = ctypes.create_string_buffer(0)
+
         header_with_buffer = SCSIPassThroughDirectWithBuffer(
             sptd=SCSIPassThroughDirect(
                 length=ctypes.sizeof(SCSIPassThroughDirect),
-                data_in={Direction.TO: 0, Direction.FROM: 1}.get(direction),
+                data_in={Direction.TO: 0, Direction.FROM: 1, Direction.NONE: 2}.get(direction),
                 data_transfer_length=ctypes.sizeof(data),
                 data_buffer=ctypes.addressof(data),
                 cdb_length=ctypes.sizeof(command),
