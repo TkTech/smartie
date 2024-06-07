@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "smartie"
-version = "2.1.1"
+version = "2.1.2"
 description = "A pure-python S.M.A.R.T library."
 authors = ["Tyler Kennedy <tk@tkte.ch>"]
 license = "MIT"
