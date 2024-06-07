@@ -46,7 +46,7 @@ class WindowsSCSIDevice(SCSIDevice):
         command: ctypes.Structure,
         data: Union[ctypes.Array, ctypes.Structure],
         *,
-        timeout: int = 3000,
+        timeout: int = 3,
     ):
         # On Windows, the command block is always 16 bytes, but we may be
         # sending a smaller command. We use a temporary mutable bytearray for
