@@ -139,6 +139,19 @@ OS X explicitly denies access to SCSI/ATA pass-through, _except_ for IDENTITY
 and some SMART-related commands, so this is all we can support. Work for OS X
 is currently in-progress.
 
+| RAID/HBA Adapter   | OS under test| SCSI Supported | ATA Supported |
+|--------------------|--------------|----------------|---------------|
+| Broadcom RAID 9440 | CentOS 8.4   | Yes            | Yes           |
+| Broadcom RAID 9560 | CentOS 8.4   | Yes            | Yes           |
+| Broadcom HBA  9500 | CentOS 8.4   | Yes            | Yes           |
+| ThinkSystem   930  | CentOS 8.4   | Yes            | Yes           |
+| ThinkSystem   940  | CentOS 8.4   | Yes            | Yes           |
+| ThinkSystem   4350 | CentOS 8.4   | Yes            | Yes           |
+| ThinkSystem   5350 | CentOS 8.4   | Yes            | Yes           |
+
+Only inquiry, identify and smart commands are tested, and the tests use the latest driver from 
+vendor support web. If it does not work in your environment, open an [issue][].
+
 ## Installation
 SMARTie currently requires Python 3.8 or greater.
 
