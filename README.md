@@ -42,7 +42,7 @@ with get_device('\\.\PhysicalDrive0') as device:
     # The structure that will be populated with the response.
     inquiry = structures.InquiryResponse()
   
-    sense = device.issue_command(
+    response = device.issue_command(
         structures.Direction.FROM,
         structures.InquiryCommand(
             operation_code=structures.OperationCode.INQUIRY,
@@ -51,7 +51,8 @@ with get_device('\\.\PhysicalDrive0') as device:
         inquiry
     )
   
-    print(inquiry.product_identification)
+    if response:
+      print(inquiry.product_identification)
 ```
 
 Or send an NVME `IDENTIFY` command:
