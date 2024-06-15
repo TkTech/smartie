@@ -115,7 +115,7 @@ def get_all_devices() -> Iterable[Device]:
             if not child.name.startswith(("sd", "nvme")):
                 continue
 
-            # In the new kernel, nvme device may has a character device like 
+            # In the new kernel, nvme device may has a character device like
             # nvme0c0n1 (/sys/block/nvme0c0n1), but it is not in the directo
             # -ry /dev/.
             device_path = Path("/dev") / child.name

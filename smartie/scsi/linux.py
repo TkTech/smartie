@@ -2,7 +2,7 @@ import ctypes
 import os
 from typing import Union
 
-from smartie.scsi import SCSIDevice
+from smartie.scsi import SCSIDevice, SCSIResponse
 from smartie.platforms.linux import get_libc
 from smartie.scsi.structures import (
     DescriptorFormatSense,
@@ -10,6 +10,7 @@ from smartie.scsi.structures import (
     IOCTL_SG_IO,
     SGIOHeader,
     Direction,
+    StatusCode,
 )
 
 
@@ -34,7 +35,7 @@ class LinuxSCSIDevice(SCSIDevice):
         data: Union[ctypes.Array, ctypes.Structure, None],
         *,
         timeout: int = 3000,
-    ):
+    ) -> SCSIResponse:
         # The Sense response can be in multiple formats, and we won't know
         # what it is until we see the first byte.
         raw_sense = ctypes.create_string_buffer(
@@ -69,4 +70,13 @@ class LinuxSCSIDevice(SCSIDevice):
         if result != 0:
             raise OSError(ctypes.get_errno())
 
-        return self.parse_sense(raw_sense.raw)
+        return SCSIResponse(
+            succeeded=(
+                sg_io_header.status == StatusCode.GOOD
+                or sg_io_header.status == StatusCode.CONDITION_GOOD
+            ),
+            sense=self.parse_sense(raw_sense.raw),
+            platform_header=sg_io_header,
+            command=command,
+            bytes_transferred=sg_io_header.dxfer_len - sg_io_header.resid,
+        )
