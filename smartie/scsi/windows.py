@@ -70,7 +70,7 @@ class WindowsSCSIDevice(SCSIDevice):
                 data_buffer=ctypes.addressof(data),
                 cdb_length=ctypes.sizeof(command),
                 cdb=cdb,
-                timeout_value=timeout,
+                timeout_value=max(timeout // 1000, 1),
                 sense_info_length=SCSIPassThroughDirectWithBuffer.sense.size,
                 sense_info_offset=(
                     SCSIPassThroughDirectWithBuffer.sense.offset
