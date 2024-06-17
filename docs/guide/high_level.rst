@@ -10,7 +10,7 @@ underlying implementation:
 
     import smartie.device
 
-    with smartie.device.Device("/dev/sdc") as device:
+    with smartie.device.get_device("/dev/sdc") as device:
         print(device.model)
         print(device.serial)
         print(device.temperature)
