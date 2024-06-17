@@ -151,9 +151,8 @@ is currently in-progress.
 
 Only inquiry, identify and smart commands are tested, and the tests use the latest driver from 
 vendor support web. If it does not work in your environment, open an [issue][]. The compatibility
-should be same with [pydiskcmd](https://github.com/jackeichen/pydiskcmd?tab=readme-ov-file#raid
-hba-support). And find the test methmod [here](https://github.com/jackeichen/pydiskcmd/blob/main
-/raid_support_matrix_with_smartie.txt).
+should be same with [pydiskcmd](https://github.com/jackeichen/pydiskcmd?tab=readme-ov-file#raidhba-support). 
+And find the test methmod [here](https://github.com/jackeichen/pydiskcmd/blob/main/raid_support_matrix_with_smartie.txt).
 
 ## Installation
 SMARTie currently requires Python 3.8 or greater.
