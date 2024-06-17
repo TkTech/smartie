@@ -12,18 +12,30 @@ from typing import Iterable, List, Optional, Union
 
 
 class Device(abc.ABC):
+    """
+    A Device represents a high-level abstraction over a system block
+    device.
+
+
+    .. note::
+
+        Typically, an end user will never instantiate a Device directly, but
+        instead use the :meth:`get_device()` function to get a `Device`
+        instance for a given path. This function will automatically determine
+        the correct subclass to use based on the platform and device type.
+
+    :param path: The filesystem path to the device (such as /dev/sda).
+    """
+
     path: str
     fd: Optional[int]
 
     def __init__(self, path: Union[Path, str]):
-        """
-        A Device represents a high-level abstraction over a system block
-        device.
-
-        :param path: The filesystem path to the device (such as /dev/sda).
-        """
         self.path = str(path)
         self.fd = None
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(path={self.path!r})"
 
     @property
     def model(self) -> Optional[str]:
@@ -48,6 +60,9 @@ class Device(abc.ABC):
 
     @property
     def smart_table(self):
+        """
+        Returns the SMART table for the device, if available.
+        """
         return {}
 
     def get_filters(self) -> List[str]:
@@ -59,11 +74,11 @@ class Device(abc.ABC):
 
     @abc.abstractmethod
     def __enter__(self):
-        raise NotImplementedError()
+        pass
 
     @abc.abstractmethod
     def __exit__(self, exc_type, exc_val, exc_tb):
-        raise NotImplementedError()
+        pass
 
 
 def get_device(path: Union[Path, str]) -> Device:
@@ -71,6 +86,11 @@ def get_device(path: Union[Path, str]) -> Device:
     Returns a Device instance for the given path. This is a convenience
     function for the Device constructor which tries to automatically
     determine the correct subclass to use.
+
+    .. code-block:: python
+
+        with get_device("/dev/sda") as device:
+            print(device.model, device.serial)
 
     :param path: The filesystem path to the device (such as /dev/sda).
     """
@@ -96,6 +116,12 @@ def get_device(path: Union[Path, str]) -> Device:
 def get_all_devices() -> Iterable[Device]:
     """
     Yields all the devices detected on the host.
+
+    .. code-block:: python
+
+        for device in get_all_devices():
+            with device:
+                print(device.model, device.serial)
     """
     system = platform.system()
     if system == "Linux":

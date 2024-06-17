@@ -2,143 +2,14 @@
 
 # SMARTie
 
-This is a pure-python, 0-dependency library for getting basic disk information such as model,
-serial number, disk health, temperature, and SMART data. It supports both SCSI/ATA and NVMe devices.
+This is a pure-python, 0-dependency library for getting basic disk information
+such as model, serial number, disk health, temperature, and SMART data. It
+supports both SCSI/ATA and NVMe devices.
 
-It provides a high-level abstraction to enumerate devices and retrieve basic
-details, a low-level interface for sending raw SCSI/ATA commands, and a
-command-line tool for quickly getting information about your disks.
+## Documentation
 
-## Usage
-
-### API Usage
-
-High-level usage is simple:
-
-```python
-from smartie.device import get_all_devices
-
-for device in get_all_devices():
-    # open the device first
-    with device as d:
-        print(d.path)
-        print(d.model)
-        print(d.serial)
-        print(d.temperature)
-
-        for attribute in d.smart_table.values():
-            print(attribute.name, attribute.current_value)
-```
-
-Drop down a level if you want and send raw SCSI commands, such as an `INQUIRY`:
-
-```python
-import ctypes
-
-from smartie.scsi import structures
-from smartie.device import get_device
-
-with get_device('\\.\PhysicalDrive0') as device:
-    # The structure that will be populated with the response.
-    inquiry = structures.InquiryResponse()
-  
-    response = device.issue_command(
-        structures.Direction.FROM,
-        structures.InquiryCommand(
-            operation_code=structures.OperationCode.INQUIRY,
-            allocation_length=ctypes.sizeof(inquiry)
-        ),
-        inquiry
-    )
-  
-    if response:
-      print(inquiry.product_identification)
-```
-
-Or send an NVME `IDENTIFY` command:
-
-```python
-import ctypes
-
-from smartie.nvme import structures
-from smartie.device import get_device
-
-with get_device('/dev/nvme0') as device:
-    # The structure that will be populated with the response.
-    data = structures.NVMEIdentifyResponse()
-    device.issue_admin_command(
-        structures.NVMEAdminCommand(
-            opcode=structures.NVMEAdminCommands.IDENTIFY,
-            addr=ctypes.addressof(data),
-            data_len=ctypes.sizeof(data),
-            cdw10=1
-        )
-    )
-    print(data.model_number)
-```
-
-### Command Line Usage
-
-Want to get JSON output to use with other programs? Use the command-line tools under
-`smartie api`, such as `list` to enumerate devices:
-
-```
-> sudo smartie api list
-[
-    {
-        "model": "WD_BLACK SN770 2TB",
-        "path": "/dev/nvme0n1",
-        "serial": "<redacted>",
-        "temperature": 52
-    },
-    {
-        "model": "Samsung SSD 860 EVO 1TB",
-        "path": "/dev/sdb",
-        "serial": "<redacted>",
-        "temperature": 27
-    },
-    {
-        "model": "Samsung SSD 860 EVO 1TB",
-        "path": "/dev/sdc",
-        "serial": "<redacted>",
-        "temperature": 28
-    },
-    {
-        "model": "WD_BLACK SN770 2TB",
-        "path": "/dev/nvme1n1",
-        "serial": "<redacted>",
-        "temperature": 46
-    },
-    {
-        "model": "Samsung SSD 860 EVO 1TB",
-        "path": "/dev/sda",
-        "serial": "<redacted>",
-        "temperature": 26
-    }
-]
-```
-
-Are you a human and just want to see your disk details? Take a look at
-`smartie enumerate` and `smartie details`:
-
-![cli_details_scsi.png](misc/cli_details_scsi.png)
-
-How about a developer trying to build a tool? You can use `smartie dump` to get
-access to raw responses from the disk as a table or binary:
-
-![cli_dump_nvme.png](misc/cli_dump_nvme.png)
-
-## Support
-
-| OS      | SCSI/ATA Supported | NVME Supported | Notes                                      |
-|---------|--------------------|----------------|--------------------------------------------|
-| Linux   | Yes                | Yes            | SG_IO v3 (Linux 2.6+)                      |
-| Windows | Yes                | In-progress    |                                            |
-| OS X    | In-progress*       | N/A            | *IDENTITY and SMART-related commands only. |
-
-OS X explicitly denies access to SCSI/ATA pass-through, _except_ for IDENTITY
-and some SMART-related commands, so this is all we can support. Work for OS X
-is currently in-progress.
+Read the getting started guide and API documentation at
+https://tkte.ch/smartie/.
 
 ## Installation
 SMARTie currently requires Python 3.8 or greater.

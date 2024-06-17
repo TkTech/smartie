@@ -10,3 +10,4 @@ _build/
 bin/
 *.idea/
 .dcignore
+docs/_build
