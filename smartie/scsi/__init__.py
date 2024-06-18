@@ -1,12 +1,11 @@
-__all__ = ("SCSIDevice",)
+__all__ = ("SCSIDevice", "SCSIResponse")
 
 import abc
 import ctypes
-from dataclasses import replace
-from typing import Dict, List, Optional, Tuple, Union
+from dataclasses import replace, dataclass
+from typing import Dict, List, Optional, Tuple, Union, Any
 
 import smartie.structures
-from smartie import util
 from smartie.database import SMARTAttribute, get_drive_entry
 from smartie.device import Device
 from smartie.errors import SenseError
@@ -27,13 +26,48 @@ from smartie.scsi.structures import (
     OperationCode,
     SmartDataResponse,
     SmartThresholdResponse,
+    Command12,
 )
 from smartie.structures import swap_bytes
 
 
+@dataclass
+class SCSIResponse:
+    """
+    Common response object for SCSI commands.
+
+    This object attempts to encapsulate the response from an SCSI command in a
+    platform-agnostic way. It contains the sense data, the command that was
+    issued, and whether the command succeeded or not.
+
+    For additional platform-specific information, the `platform_header`
+    attribute contains the platform-specific header that was used to issue the
+    command.
+    """
+
+    #: Whether the command succeeded. If None, the status is unknown.
+    succeeded: Optional[bool]
+    #: The sense data returned by the device.
+    sense: Optional[Union[FixedFormatSense, DescriptorFormatSense]]
+    #: The command issued to the device.
+    command: Union[Command16, Command12]
+    #: The actual number of bytes transferred.
+    bytes_transferred: Optional[int]
+
+    #: The platform-specific header that was used to issue the command.
+    #: For example this may be an :class:`SCSIPassThroughDirectWithBuffer` on
+    #: Windows.
+    platform_header: Any
+
+    def __bool__(self):
+        return self.succeeded
+
+
 class SCSIDevice(Device, abc.ABC):
     @classmethod
-    def parse_sense(cls, sense_blob):
+    def parse_sense(
+        cls, sense_blob
+    ) -> Optional[Union[FixedFormatSense, DescriptorFormatSense]]:
         """
         Parses the sense response from an SCSI command, raising a
         :class:`smartie.errors.SenseError` if an error occurred.
@@ -67,7 +101,7 @@ class SCSIDevice(Device, abc.ABC):
         data: Union[ctypes.Array, ctypes.Structure, None],
         *,
         timeout: int = 3000,
-    ):
+    ) -> SCSIResponse:
         """
         Issues an SCSI passthrough command to the disk.
 
@@ -79,9 +113,9 @@ class SCSIDevice(Device, abc.ABC):
         """
         raise NotImplementedError()
 
-    def inquiry(self):
+    def inquiry(self) -> Tuple[InquiryResponse, SCSIResponse]:
         """
-        Issues an SCSI INQUIRY command and returns a tuple of (result, sense).
+        Issues a standard SCSI INQUIRY command.
         """
         inquiry = InquiryResponse()
 
@@ -89,13 +123,18 @@ class SCSIDevice(Device, abc.ABC):
             operation_code=OperationCode.INQUIRY, allocation_length=96
         )
 
-        sense = self.issue_command(Direction.FROM, inquiry_command, inquiry)
+        response = self.issue_command(Direction.FROM, inquiry_command, inquiry)
 
-        return inquiry, sense
+        return inquiry, response
 
-    def identify(self, try_atapi_on_failure=True):
+    def identify(
+        self, try_atapi_on_failure=True
+    ) -> Tuple[IdentifyResponse, SCSIResponse]:
         """
-        Issues an ATA IDENTIFY command and returns a tuple of (result, sense).
+        Issues a standard ATA IDENTIFY command.
+
+        :param try_atapi_on_failure: If True, will try an ATAPI IDENTIFY command
+                                        if the ATA IDENTIFY command fails.
         """
         identity = ctypes.create_string_buffer(b"\x00", 512)
 
@@ -112,8 +151,8 @@ class SCSIDevice(Device, abc.ABC):
         )
 
         try:
-            sense = self.issue_command(Direction.FROM, command16, identity)
-        except SenseError as err:
+            response = self.issue_command(Direction.FROM, command16, identity)
+        except SenseError:
             # If an error occurred, we try to see if this is really an ATAPI
             # device, such as a CD-ROM. We can handle the response exactly
             # the same, it's just a different command.
@@ -121,21 +160,21 @@ class SCSIDevice(Device, abc.ABC):
                 raise
 
             command16.command = ATAPICommands.IDENTIFY
-            sense = self.issue_command(Direction.FROM, command16, identity)
+            response = self.issue_command(Direction.FROM, command16, identity)
 
-        return IdentifyResponse.from_buffer(identity), sense
+        return IdentifyResponse.from_buffer(identity), response
 
     @property
     def model(self) -> Optional[str]:
         """
         Returns the model name of the device.
         """
-        identity, sense = self.identify()
+        identity, response = self.identify()
         v = swap_bytes(identity.model_number).strip(b" \x00").decode()
         # If we didn't get anything at all back from an ATA IDENTIFY, try an
         # old fashion SCSI INQUIRY.
         if not v:
-            inquiry, sense = self.inquiry()
+            inquiry, response = self.inquiry()
             v = (
                 bytearray(inquiry.product_identification)
                 .strip(b" \x00")
@@ -148,12 +187,12 @@ class SCSIDevice(Device, abc.ABC):
         """
         Returns the serial number of the device.
         """
-        identity, sense = self.identify()
+        identity, response = self.identify()
         v = swap_bytes(identity.serial_number).strip(b" \x00").decode()
         # If we didn't get anything at all back from an ATA IDENTIFY, try an
         # old fashion SCSI INQUIRY.
         if not v:
-            inquiry, sense = self.inquiry()
+            inquiry, response = self.inquiry()
             v = bytearray(inquiry.vendor_specific_1).strip(b" \x00").decode()
         return v
 
@@ -180,10 +219,9 @@ class SCSIDevice(Device, abc.ABC):
         inquiry, sense = self.inquiry()
         return DeviceType(inquiry.peripheral_device_type)
 
-    def smart_thresholds(self) -> Tuple[SmartThresholdResponse, SenseError]:
+    def smart_thresholds(self) -> Tuple[SmartThresholdResponse, SCSIResponse]:
         """
-        Issues an ATA SMART READ_THRESHOLDS command and returns a tuple of
-        (result, sense).
+        Issues an ATA SMART READ_THRESHOLDS command.
         """
         thresholds = SmartThresholdResponse()
 
@@ -202,13 +240,12 @@ class SCSIDevice(Device, abc.ABC):
             ),
         ).set_lba(0xC24F00)
 
-        sense = self.issue_command(Direction.FROM, command16, thresholds)
-        return thresholds, sense
+        response = self.issue_command(Direction.FROM, command16, thresholds)
+        return thresholds, response
 
-    def smart(self) -> Tuple[SmartDataResponse, SenseError]:
+    def smart(self) -> Tuple[SmartDataResponse, SCSIResponse]:
         """
-        Issues an ATA SMART READ_DATA command and returns a tuple of
-        (result, sense).
+        Issues an ATA SMART READ_DATA command.
         """
         smart = SmartDataResponse()
 
@@ -227,8 +264,8 @@ class SCSIDevice(Device, abc.ABC):
             ),
         ).set_lba(0xC24F00)
 
-        sense = self.issue_command(Direction.FROM, command16, smart)
-        return smart, sense
+        response = self.issue_command(Direction.FROM, command16, smart)
+        return smart, response
 
     def get_filters(self) -> List[str]:
         return ["type:ata", f"model:{self.model}"]

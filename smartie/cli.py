@@ -69,6 +69,12 @@ def print_structure(structure: ctypes.Structure, *, indent=0):
                 name,
                 Group(print_structure(value, indent=indent + 2)),
             )
+        elif value is None:
+            t.add_row(
+                f"[{offset:03}:{offset + bitcount:03}]",
+                name,
+                "None",
+            )
         else:
             t.add_row(
                 f"[{offset:03}:{offset + bitcount:03}]",

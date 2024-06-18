@@ -2,7 +2,7 @@ on:
   workflow_dispatch:
   release:
     types:
-      - created
+      - published
 
 name: Release
 
@@ -33,3 +33,32 @@ jobs:
       run: |
         poetry config pypi-token.pypi $PYPI_TOKEN
         poetry publish --build
+        
+  build_documentation:
+    name: Building & uploading documentation.
+    needs: [sdist]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setting up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install Poetry
+      run: pip install poetry
+
+    - name: Installing Package
+      run: poetry install --no-interaction --with dev
+
+    - name: Installing extras
+      run: pip install ghp-import
+
+    - name: Building documentation
+      run: |
+        cd docs && poetry run make clean && poetry run make html
+
+    - name: Publishing documentation
+      run: |
+        poetry run ghp-import -f -n -p docs/_build/html

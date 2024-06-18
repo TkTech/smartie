@@ -1,7 +1,7 @@
 import ctypes
 from typing import Union
 
-from smartie.scsi import SCSIDevice
+from smartie.scsi import SCSIDevice, SCSIResponse
 from smartie.platforms.win32 import get_kernel32
 from smartie.scsi.structures import (
     Direction,
@@ -47,7 +47,7 @@ class WindowsSCSIDevice(SCSIDevice):
         data: Union[ctypes.Array, ctypes.Structure, None],
         *,
         timeout: int = 3000,
-    ):
+    ) -> SCSIResponse:
         # On Windows, the command block is always 16 bytes, but we may be
         # sending a smaller command. We use a temporary mutable bytearray for
         # this.
@@ -61,12 +61,16 @@ class WindowsSCSIDevice(SCSIDevice):
         header_with_buffer = SCSIPassThroughDirectWithBuffer(
             sptd=SCSIPassThroughDirect(
                 length=ctypes.sizeof(SCSIPassThroughDirect),
-                data_in={Direction.TO: 0, Direction.FROM: 1, Direction.NONE: 2}.get(direction),
+                data_in={
+                    Direction.TO: 0,
+                    Direction.FROM: 1,
+                    Direction.NONE: 2,
+                }.get(direction),
                 data_transfer_length=ctypes.sizeof(data),
                 data_buffer=ctypes.addressof(data),
                 cdb_length=ctypes.sizeof(command),
                 cdb=cdb,
-                timeout_value=timeout,
+                timeout_value=max(timeout // 1000, 1),
                 sense_info_length=SCSIPassThroughDirectWithBuffer.sense.size,
                 sense_info_offset=(
                     SCSIPassThroughDirectWithBuffer.sense.offset
@@ -90,4 +94,13 @@ class WindowsSCSIDevice(SCSIDevice):
         if result == 0:
             raise ctypes.WinError(ctypes.get_last_error())
 
-        return header_with_buffer.sense
+        return SCSIResponse(
+            succeeded=(
+                header_with_buffer.sptd.scsi_status == 0
+                or header_with_buffer.sptd.scsi_status == 2
+            ),
+            sense=self.parse_sense(bytearray(header_with_buffer.sense)),
+            platform_header=header_with_buffer,
+            command=command,
+            bytes_transferred=header_with_buffer.sptd.data_transfer_length,
+        )
