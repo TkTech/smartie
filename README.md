@@ -11,6 +11,21 @@ supports both SCSI/ATA and NVMe devices.
 Read the getting started guide and API documentation at
 https://tkte.ch/smartie/.
 
+| RAID/HBA Adapter   | OS under test| SCSI Supported | ATA Supported |
+|--------------------|--------------|----------------|---------------|
+| Broadcom RAID 9440 | CentOS 8.4   | Yes            | Yes           |
+| Broadcom RAID 9560 | CentOS 8.4   | Yes            | Yes           |
+| Broadcom HBA  9500 | CentOS 8.4   | Yes            | Yes           |
+| ThinkSystem   930  | CentOS 8.4   | Yes            | Yes           |
+| ThinkSystem   940  | CentOS 8.4   | Yes            | Yes           |
+| ThinkSystem   4350 | CentOS 8.4   | Yes            | Yes           |
+| ThinkSystem   5350 | CentOS 8.4   | Yes            | Yes           |
+
+Only inquiry, identify and smart commands are tested, and the tests use the latest driver from 
+vendor support web. If it does not work in your environment, open an [issue][]. The compatibility
+should be same with [pydiskcmd](https://github.com/jackeichen/pydiskcmd?tab=readme-ov-file#raidhba-support). 
+And find the test methmod [here](https://github.com/jackeichen/pydiskcmd/blob/main/raid_support_matrix_with_smartie.txt).
+
 ## Installation
 SMARTie currently requires Python 3.8 or greater.
 
