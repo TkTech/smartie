@@ -6,6 +6,9 @@ on:
 name: Release
 jobs:
   build:
+    permissions:
+      id-token: write
+      pages: write
     uses: tktech/python-standard/.github/workflows/release.yml@main
     with:
       use_poetry: true
