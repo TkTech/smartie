@@ -1,7 +1,5 @@
-name: Tests
-
 on: [push]
-
+name: Tests
 jobs:
   build:
     uses: tktech/python-standard/.github/workflows/test.yml@main
