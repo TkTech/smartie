@@ -12,3 +12,5 @@ jobs:
       use_sphinx: true
       python_version: '3.11'
       platform: 'ubuntu-latest'
+      secrets:
+        PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
