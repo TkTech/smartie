@@ -159,7 +159,7 @@ def details_command(path: str):
             smart_table.add_column("Name", style="magenta")
             smart_table.add_column("Value", style="green", justify="right")
 
-            smart = device.smart()
+            smart,_ = device.smart()
 
             # We only show a selection of attributes, as the full list is
             # not terribly useful.
@@ -262,7 +262,7 @@ def dump_command(path: str, command: str, display: str = "pretty"):
                 console.print("Command unknown or unsupported by this device.")
                 return
 
-            structure = result()
+            structure = result()[0]
         else:
             raise NotImplementedError("Unknown device type.")
 
