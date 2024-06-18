@@ -7,6 +7,10 @@ from smartie.nvme.structures import IOCTL_NVME_ADMIN_CMD, NVMEAdminCommand
 
 
 class LinuxNVMEDevice(NVMEDevice):
+    """
+    Represents an NVMe device on a Linux system.
+    """
+
     def __enter__(self):
         if self.fd is not None:
             raise IOError("Device already open.")
