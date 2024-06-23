@@ -8,7 +8,7 @@ from typing import Dict, List, Optional, Tuple, Union, Any
 import smartie.structures
 from smartie.database import SMARTAttribute, get_drive_entry
 from smartie.device import Device
-from smartie.errors import SenseError
+from smartie.scsi.errors import SenseError
 from smartie.scsi.structures import (
     ATACommands,
     ATAPICommands,
@@ -96,7 +96,7 @@ class SCSIDevice(Device, abc.ABC):
 
     def issue_command(
         self,
-        direction: structures.Direction,
+        direction: Direction,
         command: ctypes.Structure,
         data: Union[ctypes.Array, ctypes.Structure, None],
         *,

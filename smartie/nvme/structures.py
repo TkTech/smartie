@@ -40,6 +40,7 @@ class NVMEAdminCommand(ctypes.Structure):
         ("result", ctypes.c_uint32),
     ]
 
+
 class NVMeCQEStatusField(ctypes.Structure):
     """
     The format of NVMe Completion Queue Entry Status Field
