@@ -2,8 +2,8 @@ import ctypes
 import os
 
 from smartie.nvme import (
-    NVMEDevice, 
-    NVMeResponse, 
+    NVMEDevice,
+    NVMeResponse,
     local_byteorder,
 )
 from smartie.platforms.linux import get_libc
@@ -34,12 +34,12 @@ class LinuxNVMEDevice(NVMEDevice):
         )
 
         return NVMeResponse(
-            succeeded=(
-                result == 0
-            ),
+            succeeded=(result == 0),
             command_spec=command.result,
-            status_field=self.parse_status_filed(result.to_bytes(2, byteorder=local_byteorder)),
+            status_field=self.parse_status_field(
+                result.to_bytes(2, byteorder=local_byteorder)
+            ),
             command=command,
-            bytes_transferred=None, # Not Used
-            platform_header=None,   # Not Used
+            bytes_transferred=None,
+            platform_header=None,
         )

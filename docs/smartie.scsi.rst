@@ -15,3 +15,4 @@ Submodules
    smartie.scsi.linux
    smartie.scsi.structures
    smartie.scsi.windows
+   smartie.scsi.errors

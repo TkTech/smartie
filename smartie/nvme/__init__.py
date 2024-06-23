@@ -60,24 +60,22 @@ class NVMeResponse:
 
 class NVMEDevice(Device, abc.ABC):
     @classmethod
-    def parse_status_filed(cls, status_blob) -> Optional[NVMeCQEStatusField]:
+    def parse_status_field(cls, status_blob) -> Optional[NVMeCQEStatusField]:
         """
-        Parses the command status filed from an NVMe command, raising a
-        :class:`smartie.errors.SenseError` if an error occurred.
-
-        Will return either a :class:`structures.NVMeCQEStatusField`.
+        Parses the command status field from an NVMe command, raising a
+        :class:`smartie.nvme.errors.NVMeStatusFieldError` if an error occurred.
 
         :param status_blob: A bytes/bytearray (or similar) object containing
                             the unparsed sense response.
         """
-        status_filed = NVMeCQEStatusField.from_buffer_copy(status_blob)
-        if status_filed.status_code != 0 or status_filed.status_code_type != 0:
+        status_field = NVMeCQEStatusField.from_buffer_copy(status_blob)
+        if status_field.status_code != 0 or status_field.status_code_type != 0:
             raise NVMeStatusFieldError(
-                status_filed.status_code,
-                status_filed.status_code_type,
-                status_filed=status_filed,
+                status_field.status_code,
+                status_field.status_code_type,
+                status_field=status_field,
             )
-        return status_filed
+        return status_field
 
     @abstractmethod
     def issue_admin_command(self, command):
