@@ -77,7 +77,6 @@ def pprint_structure(s: ctypes.Structure):
     Debugging utility method to pretty-print a `ctypes.Structure`.
     """
     offset = 0
-    bit = 0
 
     for field in s._fields_:  # noqa
         if len(field) == 3:

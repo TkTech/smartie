@@ -41,6 +41,20 @@ class NVMEAdminCommand(ctypes.Structure):
     ]
 
 
+class NVMeCQEStatusField(ctypes.Structure):
+    """
+    The format of NVMe Completion Queue Entry Status Field
+    """
+
+    _fields_ = [
+        ("status_code", ctypes.c_ubyte),
+        ("status_code_type", ctypes.c_ubyte, 3),
+        ("cmd_retry_delay", ctypes.c_ubyte, 2),
+        ("more", ctypes.c_ubyte, 1),
+        ("do_not_retry", ctypes.c_ubyte, 1),
+    ]
+
+
 class NVMEIdentifyResponse(ctypes.Structure):
     _fields_ = [
         ("vendor_id", ctypes.c_uint16),

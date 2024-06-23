@@ -24,6 +24,5 @@ Submodules
    smartie.cli
    smartie.database
    smartie.device
-   smartie.errors
    smartie.structures
    smartie.util

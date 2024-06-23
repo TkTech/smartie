@@ -14,3 +14,5 @@ Submodules
 
    smartie.nvme.linux
    smartie.nvme.structures
+   smartie.nvme.errors
+   smartie.nvme.constants
