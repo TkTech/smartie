@@ -85,10 +85,10 @@ from a device:
 
   with get_device('/dev/nvme0') as device:
       # The structure that will be populated with the response.
-      data = structures.NVMEIdentifyResponse()
+      data = structures.NVMeIdentifyResponse()
       device.issue_admin_command(
-          structures.NVMEAdminCommand(
-              opcode=structures.NVMEAdminCommands.IDENTIFY,
+          structures.NVMeAdminCommand(
+              opcode=structures.NVMeAdminCommands.IDENTIFY,
               addr=ctypes.addressof(data),
               data_len=ctypes.sizeof(data),
               cdw10=1
@@ -108,7 +108,7 @@ Supported Platforms
    * - OS
      - Device Discovery
      - SCSI/ATA Supported
-     - NVME Supported
+     - NVMe Supported
    * - Linux
      - Yes
      - Yes

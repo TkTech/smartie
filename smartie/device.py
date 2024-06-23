@@ -103,11 +103,11 @@ def get_device(path: Union[Path, str]) -> Device:
 
         return WindowsSCSIDevice(path)
     elif system == "Linux":
-        from smartie.nvme.linux import LinuxNVMEDevice
+        from smartie.nvme.linux import LinuxNVMeDevice
         from smartie.scsi.linux import LinuxSCSIDevice
 
         if "nvme" in str(path):
-            return LinuxNVMEDevice(path)
+            return LinuxNVMeDevice(path)
         return LinuxSCSIDevice(path)
     else:
         raise NotImplementedError("Device not implemented for this platform.")

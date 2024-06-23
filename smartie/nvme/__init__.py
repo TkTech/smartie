@@ -1,4 +1,4 @@
-__all__ = ("NVMEDevice",)
+__all__ = ("NVMeDevice",)
 import abc
 import sys
 import ctypes
@@ -9,9 +9,9 @@ from typing import Optional, Tuple, Union, Any
 from smartie.device import Device
 from smartie.nvme.errors import NVMeStatusFieldError
 from smartie.nvme.structures import (
-    NVMEAdminCommand,
-    NVMEAdminCommands,
-    NVMEIdentifyResponse,
+    NVMeAdminCommand,
+    NVMeAdminCommands,
+    NVMeIdentifyResponse,
     NVMeCQEStatusField,
     SMARTPageResponse,
 )
@@ -43,7 +43,7 @@ class NVMeResponse:
     #: The status field data returned by the device.
     status_field: Optional[NVMeCQEStatusField]
     #: The command issued to the device.
-    command: Union[NVMEAdminCommand,]
+    command: Union[NVMeAdminCommand,]
     #: Keep aligned with SCSIResponse. Not used for now.
     #: The actual number of bytes transferred.
     bytes_transferred: Optional[int]
@@ -58,7 +58,7 @@ class NVMeResponse:
         return self.succeeded
 
 
-class NVMEDevice(Device, abc.ABC):
+class NVMeDevice(Device, abc.ABC):
     @classmethod
     def parse_status_field(cls, status_blob) -> Optional[NVMeCQEStatusField]:
         """
@@ -81,15 +81,15 @@ class NVMEDevice(Device, abc.ABC):
     def issue_admin_command(self, command):
         pass
 
-    def identify(self) -> Tuple[NVMEIdentifyResponse, NVMeResponse]:
+    def identify(self) -> Tuple[NVMeIdentifyResponse, NVMeResponse]:
         """
         Returns the parsed IDENTIFY results for CNS 01h, which contains
         the controller information.
         """
-        data = NVMEIdentifyResponse()
+        data = NVMeIdentifyResponse()
         response = self.issue_admin_command(
-            NVMEAdminCommand(
-                opcode=NVMEAdminCommands.IDENTIFY,
+            NVMeAdminCommand(
+                opcode=NVMeAdminCommands.IDENTIFY,
                 addr=ctypes.addressof(data),
                 data_len=ctypes.sizeof(data),
                 cdw10=1,
@@ -116,8 +116,8 @@ class NVMEDevice(Device, abc.ABC):
         self, log_page_id: int, data: ctypes.Structure
     ) -> tuple[ctypes.Structure, NVMeResponse]:
         response = self.issue_admin_command(
-            NVMEAdminCommand(
-                opcode=NVMEAdminCommands.GET_LOG_PAGE,
+            NVMeAdminCommand(
+                opcode=NVMeAdminCommands.GET_LOG_PAGE,
                 addr=ctypes.addressof(data),
                 data_len=ctypes.sizeof(data),
                 nsid=0xFFFFFFFF,

@@ -2,15 +2,15 @@ import ctypes
 import os
 
 from smartie.nvme import (
-    NVMEDevice,
+    NVMeDevice,
     NVMeResponse,
     local_byteorder,
 )
 from smartie.platforms.linux import get_libc
-from smartie.nvme.structures import IOCTL_NVME_ADMIN_CMD, NVMEAdminCommand
+from smartie.nvme.structures import IOCTL_NVMe_ADMIN_CMD, NVMeAdminCommand
 
 
-class LinuxNVMEDevice(NVMEDevice):
+class LinuxNVMeDevice(NVMeDevice):
     """
     Represents an NVMe device on a Linux system.
     """
@@ -28,9 +28,9 @@ class LinuxNVMEDevice(NVMEDevice):
             self.fd = None
         return False
 
-    def issue_admin_command(self, command: NVMEAdminCommand) -> NVMeResponse:
+    def issue_admin_command(self, command: NVMeAdminCommand) -> NVMeResponse:
         result = get_libc().ioctl(
-            self.fd, IOCTL_NVME_ADMIN_CMD, ctypes.byref(command)
+            self.fd, IOCTL_NVMe_ADMIN_CMD, ctypes.byref(command)
         )
 
         return NVMeResponse(

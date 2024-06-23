@@ -1,6 +1,6 @@
 """
 This file contains the various low-level structure definitions used for sending
-and receiving NVME commands, as well as the structures required for
+and receiving NVMe commands, as well as the structures required for
 platform-specific APIs.
 """
 import ctypes
@@ -9,15 +9,15 @@ import enum
 from smartie.structures import c_uint128
 
 #: IOCTL for NVMe Admin commands on Linux.
-IOCTL_NVME_ADMIN_CMD = 0xC0484E41
+IOCTL_NVMe_ADMIN_CMD = 0xC0484E41
 
 
-class NVMEAdminCommands(enum.IntEnum):
+class NVMeAdminCommands(enum.IntEnum):
     GET_LOG_PAGE = 0x02
     IDENTIFY = 0x06
 
 
-class NVMEAdminCommand(ctypes.Structure):
+class NVMeAdminCommand(ctypes.Structure):
     _pack_ = 1
     _fields_ = [
         ("opcode", ctypes.c_ubyte),
@@ -55,7 +55,7 @@ class NVMeCQEStatusField(ctypes.Structure):
     ]
 
 
-class NVMEIdentifyResponse(ctypes.Structure):
+class NVMeIdentifyResponse(ctypes.Structure):
     _fields_ = [
         ("vendor_id", ctypes.c_uint16),
         ("ssvid", ctypes.c_uint16),

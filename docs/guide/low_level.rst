@@ -21,12 +21,12 @@ type of device you have:
 
   from smartie.device import get_device
   from smartie.scsi import SCSIDevice
-  from smartie.nvme import NVMEDevice
+  from smartie.nvme import NVMeDevice
 
   with get_device('\\\\.\\PhysicalDrive0') as device:
       if isinstance(device, SCSIDevice):
           print('SCSI device')
-      elif isinstance(device, NVMEDevice):
+      elif isinstance(device, NVMeDevice):
           print('NVMe device')
       else:
           print('Unknown device type')
@@ -83,10 +83,10 @@ To send an NVMe IDENTIFY command to a device:
 
   with get_device('/dev/nvme0') as device:
       # The structure that will be populated with the response.
-      data = structures.NVMEIdentifyResponse()
+      data = structures.NVMeIdentifyResponse()
       device.issue_admin_command(
-          structures.NVMEAdminCommand(
-              opcode=structures.NVMEAdminCommands.IDENTIFY,
+          structures.NVMeAdminCommand(
+              opcode=structures.NVMeAdminCommands.IDENTIFY,
               addr=ctypes.addressof(data),
               data_len=ctypes.sizeof(data),
               cdw10=1

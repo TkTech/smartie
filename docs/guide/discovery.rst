@@ -24,10 +24,10 @@ For our example system, this would give us:
 
 .. code-block:: python
 
-    LinuxNVMEDevice(path="/dev/nvme0n1")
+    LinuxNVMeDevice(path="/dev/nvme0n1")
     LinuxSCSIDevice(path="/dev/sdb")
     LinuxSCSIDevice(path="/dev/sdc")
-    LinuxNVMEDevice(path="/dev/nvme1n1")
+    LinuxNVMeDevice(path="/dev/nvme1n1")
     LinuxSCSIDevice(path="/dev/sda")
 
 

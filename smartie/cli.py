@@ -9,7 +9,7 @@ from rich.table import Table
 
 from smartie.database import DRIVE_DATABASE, get_matching_drive_entries
 from smartie.device import get_all_devices, get_device
-from smartie.nvme import NVMEDevice
+from smartie.nvme import NVMeDevice
 from smartie.scsi import SCSIDevice
 from smartie.structures import c_uint128, embed_bytes
 from smartie.util import grouper_it
@@ -155,11 +155,11 @@ def details_command(path: str):
                     str(entry.threshold),
                     entry.unit.name,
                 )
-        elif isinstance(device, NVMEDevice):
+        elif isinstance(device, NVMeDevice):
             smart_table.add_column("Name", style="magenta")
             smart_table.add_column("Value", style="green", justify="right")
 
-            smart,_ = device.smart()
+            smart, _ = device.smart()
 
             # We only show a selection of attributes, as the full list is
             # not terribly useful.
@@ -254,7 +254,7 @@ def dump_command(path: str, command: str, display: str = "pretty"):
                 return
 
             structure = result()[0]
-        elif isinstance(device, NVMEDevice):
+        elif isinstance(device, NVMeDevice):
             result = {"identify": device.identify, "smart": device.smart}.get(
                 command
             )
@@ -396,7 +396,7 @@ def api_get_command(path: str):
                     "unit": entry.unit.name,
                     "flags": entry.flags,
                 }
-        elif isinstance(device, NVMEDevice):
+        elif isinstance(device, NVMeDevice):
             result["smart"] = device.smart_table
 
     print(json.dumps(result, indent=4, sort_keys=True))
