@@ -297,7 +297,7 @@ class NVMeStatusFieldError(Exception):
             ),
             (
                 0,
-                0,
+                0x22,
             ): (
                 "Transient Transport Error: A transient transport error was"
                 " detected. If the command is retried on the same controller,"
