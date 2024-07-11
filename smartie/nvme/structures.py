@@ -120,3 +120,72 @@ class SMARTPageResponse(ctypes.Structure):
         ("total_time_for_thermal_management", ctypes.c_uint32 * 2),
         ("reserved_2", ctypes.c_ubyte * 280),
     ]
+
+
+## Bellow structures are used by windows nvme command ##
+class StoragePropertyQuery(ctypes.Structure):
+    """
+    StoragePropertyQuery structure.
+
+    From https://learn.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-storage_property_query
+    """
+
+    _pack_ = 1
+    _fields_ = [
+        ("PropertyId", ctypes.c_uint32),
+        ("QueryType", ctypes.c_uint32),
+    ]
+
+
+class StorageProtocolSpecificData(ctypes.Structure):
+    """
+    StoragePropertyQuery structure. structure.
+
+    https://learn.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-storage_protocol_specific_data
+    """
+    _pack_ = 1
+    _fields_ = [
+        ("ProtocolType", ctypes.c_uint32),
+        ("DataType", ctypes.c_uint32),
+        ("ProtocolDataRequestValue", ctypes.c_uint32),
+        ("ProtocolDataRequestSubValue", ctypes.c_uint32),
+        ("ProtocolDataOffset", ctypes.c_uint32),
+        ("ProtocolDataLength", ctypes.c_uint32),
+        ("FixedProtocolReturnData", ctypes.c_uint32),
+        ("ProtocolDataRequestSubValue2", ctypes.c_uint32),
+        ("ProtocolDataRequestSubValue3", ctypes.c_uint32),
+        ("ProtocolDataRequestSubValue4", ctypes.c_uint32),
+    ]
+
+
+class NVMeSpecificDataQueryHeader(ctypes.Structure):
+    _pack_ = 1
+    _fields_ = [
+        ("storage_property_query", StoragePropertyQuery),
+        ("storage_protocol_specific_data", StorageProtocolSpecificData),
+    ]
+
+
+def GetNVMeSpecificDataQueryWithData(data_length):
+    class Query(ctypes.Structure):
+        _pack_ = 1
+        _fields_ = [
+            ("command_header", NVMeSpecificDataQueryHeader),
+            ("data", ctypes.c_ubyte * data_length),
+        ]
+    return Query
+
+
+class STORAGE_PROTOCOL_DATA_DESCRIPTOR(ctypes.Structure):
+    _fields_ = [
+        ('Version', ctypes.c_uint32),
+        ('Size', ctypes.c_uint32),
+        ('storage_protocol_specific_data', StorageProtocolSpecificData),
+    ]
+    _pack_ = 1
+
+
+class BytesReturnedStruc(ctypes.Structure):
+    _pack_ = 1
+    _fields_ = [("return_bytes", ctypes.c_uint32),]
+

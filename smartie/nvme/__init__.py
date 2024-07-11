@@ -43,15 +43,15 @@ class NVMeResponse:
     #: The status field data returned by the device.
     status_field: Optional[NVMeCQEStatusField]
     #: The command issued to the device.
-    command: Union[NVMeAdminCommand,]
-    #: Keep aligned with SCSIResponse. Not used for now.
+    command: Any
     #: The actual number of bytes transferred.
+    #: In Linux, just keep aligned with SCSIResponse. Not used for now.
     bytes_transferred: Optional[int]
 
-    #: Keep aligned with SCSIResponse. Not used for now.
     #: The platform-specific header that was used to issue the command.
     #: For example this may be an :class:`SCSIPassThroughDirectWithBuffer` on
     #: Windows.
+    #: In Linux, just keep aligned with SCSIResponse. Not used for now.
     platform_header: Any
 
     def __bool__(self):
