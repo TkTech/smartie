@@ -8,6 +8,7 @@ from smartie.nvme import (
 )
 from smartie.nvme.structures import (
     NVMeAdminCommand, 
+    NVMeAdminCommands,
     StoragePropertyQuery,
     StorageProtocolSpecificData,
     NVMeSpecificDataQueryHeader,
@@ -62,7 +63,8 @@ class WindowsNVMeDevice(NVMeDevice):
         # 1, data from device to host
         # 2, non data transfer
         direction = 2 # default none data transfer
-        if command.opcode in (0x02, 0x06):
+        if command.opcode in (NVMeAdminCommands.GET_LOG_PAGE.value, 
+                              NVMeAdminCommands.IDENTIFY.value):
             direction = 1
             property_query = StoragePropertyQuery()
             protocol_specific_data = StorageProtocolSpecificData()
@@ -72,7 +74,7 @@ class WindowsNVMeDevice(NVMeDevice):
             protocol_specific_data.ProtocolDataOffset = ctypes.sizeof(StorageProtocolSpecificData)
             protocol_specific_data.ProtocolDataLength = command.data_len
             # specific settings
-            if command.opcode == 0x02:   # Get Log page
+            if command.opcode == NVMeAdminCommands.GET_LOG_PAGE.value:   # Get Log page
                 property_query.PropertyId = 0x32  # StorageDeviceProtocolSpecificProperty
                 protocol_specific_data.DataType = 0x02 # NVMeDataTypeLogPage
                 protocol_specific_data.ProtocolDataRequestValue = command.cdw10 & 0xFF  # Log Page Identifier (LID)
@@ -83,7 +85,7 @@ class WindowsNVMeDevice(NVMeDevice):
                     (command.cdw10 >> 15) & 0x01 +               # bit 0: Retain Asynchronous Event (RAE)
                     ((command.cdw10 >> 8) & 0x0F) << 1           # bit 1-4: Log Specific Field (LSP)
                 )
-            elif command.opcode == 0x06: # Identify
+            elif command.opcode == NVMeAdminCommands.IDENTIFY.value: # Identify
                 property_query.PropertyId = 0x31  # StorageAdapterProtocolSpecificProperty
                 protocol_specific_data.DataType = 0x01 # NVMeDataTypeIdentify
                 protocol_specific_data.ProtocolDataRequestValue = command.cdw10 & 0xFF  # Controller or Namespace Structure (CNS):
