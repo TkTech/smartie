@@ -1,0 +1,1627 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#" /><link rel="search" title="Search" href="search.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.08.06 --><title>Index - SMARTie</title>
+<link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">SMARTie</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">SMARTie</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="guide/discovery.html">Device Discovery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide/high_level.html">High-level API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide/low_level.html">Low-level API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide/cli.html">CLI</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="smartie.html">SMARTie API</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of SMARTie API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="smartie.nvme.html">smartie.nvme package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of smartie.nvme package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="smartie.nvme.linux.html">smartie.nvme.linux module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="smartie.nvme.structures.html">smartie.nvme.structures module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="smartie.nvme.errors.html">smartie.nvme.errors module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="smartie.nvme.constants.html">smartie.nvme.constants package</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="smartie.scsi.html">smartie.scsi package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of smartie.scsi package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="smartie.scsi.linux.html">smartie.scsi.linux module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="smartie.scsi.structures.html">smartie.scsi.structures module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="smartie.scsi.windows.html">smartie.scsi.windows module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="smartie.scsi.errors.html">smartie.scis.errors module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="smartie.cli.html">smartie.cli module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="smartie.database.html">smartie.database module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="smartie.device.html">smartie.device module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="smartie.structures.html">smartie.structures module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="smartie.util.html">smartie.util module</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          
+<section class="genindex-section">
+  <h1 id="index">Index</h1>
+  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#O"><strong>O</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a> | <a href="#V"><strong>V</strong></a> | <a href="#W"><strong>W</strong></a> | <a href="#Z"><strong>Z</strong></a></div>
+</section>
+<section id="A" class="genindex-section">
+  <h2>A</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.additional_length">additional_length (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.DescriptorFormatSense.additional_sense_code">additional_sense_code (smartie.scsi.structures.DescriptorFormatSense attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.additional_sense_code">(smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.DescriptorFormatSense.additional_sense_code_qualifier">additional_sense_code_qualifier (smartie.scsi.structures.DescriptorFormatSense attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.additional_sense_code_qualifier">(smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.additional_sense_length">additional_sense_length (smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.addr">addr (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryCommand.allocation_length">allocation_length (smartie.scsi.structures.InquiryCommand attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATACommands">ATACommands (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAPICommands">ATAPICommands (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAProtocol">ATAProtocol (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATASmartFeature">ATASmartFeature (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartThresholdEntry.attribute_id">attribute_id (smartie.scsi.structures.SmartThresholdEntry attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.attributes">attributes (smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTCriticalWarning.available_spare">available_spare (smartie.nvme.structures.SMARTCriticalWarning attribute)</a>
+
+        <ul>
+          <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.available_spare">(smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.available_spare_threshold">available_spare_threshold (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="B" class="genindex-section">
+  <h2>B</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.StatusCode.BUSY">BUSY (smartie.scsi.structures.StatusCode attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.byt_blok">byt_blok (smartie.scsi.structures.CommandFlags attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.nvme.html#smartie.nvme.NVMeResponse.bytes_transferred">bytes_transferred (smartie.nvme.NVMeResponse attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.html#smartie.scsi.SCSIResponse.bytes_transferred">(smartie.scsi.SCSIResponse attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="C" class="genindex-section">
+  <h2>C</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.structures.html#smartie.structures.c_uint128">c_uint128 (class in smartie.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirect.cdb">cdb (smartie.scsi.structures.SCSIPassThroughDirect attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirect.cdb_length">cdb_length (smartie.scsi.structures.SCSIPassThroughDirect attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.DeviceType.CDROM">CDROM (smartie.scsi.structures.DeviceType attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.cdw10">cdw10 (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.cdw11">cdw11 (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.cdw12">cdw12 (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.cdw13">cdw13 (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.cdw14">cdw14 (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.cdw15">cdw15 (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.cdw2">cdw2 (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.cdw3">cdw3 (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.Units.CELSIUS">CELSIUS (smartie.database.Units attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.StatusCode.CHECK_CONDITION">CHECK_CONDITION (smartie.scsi.structures.StatusCode attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartThresholdResponse.checksum">checksum (smartie.scsi.structures.SmartThresholdResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.ck_cond">ck_cond (smartie.scsi.structures.CommandFlags attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.cmd_len">cmd_len (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.cmd_que">cmd_que (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeCQEStatusField.cmd_retry_delay">cmd_retry_delay (smartie.nvme.structures.NVMeCQEStatusField attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.cmdp">cmdp (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.nvme.html#smartie.nvme.NVMeResponse.command">command (smartie.nvme.NVMeResponse attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.html#smartie.scsi.SCSIResponse.command">(smartie.scsi.SCSIResponse attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.command">(smartie.scsi.structures.Command12 attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.command">(smartie.scsi.structures.Command16 attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12">Command12 (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16">Command16 (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.OperationCode.COMMAND_12">COMMAND_12 (smartie.scsi.structures.OperationCode attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.OperationCode.COMMAND_16">COMMAND_16 (smartie.scsi.structures.OperationCode attribute)</a>
+</li>
+        <li><a href="smartie.nvme.html#smartie.nvme.NVMeResponse.command_spec">command_spec (smartie.nvme.NVMeResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.command_specific_information">command_specific_information (smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags">CommandFlags (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.Length">CommandFlags.Length (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.OffLine">CommandFlags.OffLine (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.StatusCode.CONDITION_GOOD">CONDITION_GOOD (smartie.scsi.structures.StatusCode attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.control">control (smartie.scsi.structures.Command12 attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.control">(smartie.scsi.structures.Command16 attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryCommand.control">(smartie.scsi.structures.InquiryCommand attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.controller_busy_time">controller_busy_time (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.conveyance_self_test_recommended_time">conveyance_self_test_recommended_time (smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.Units.COUNT">COUNT (smartie.database.Units attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.critical_temp_time">critical_temp_time (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.critical_warning">critical_warning (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataEntry.current">current (smartie.scsi.structures.SmartDataEntry attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SenseErrorCode.CURRENT_ERROR">CURRENT_ERROR (smartie.scsi.structures.SenseErrorCode attribute)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.SMARTAttribute.current_value">current_value (smartie.database.SMARTAttribute attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="D" class="genindex-section">
+  <h2>D</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirect.data_buffer">data_buffer (smartie.scsi.structures.SCSIPassThroughDirect attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.data_checksum_structure">data_checksum_structure (smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirect.data_in">data_in (smartie.scsi.structures.SCSIPassThroughDirect attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.data_len">data_len (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirect.data_transfer_length">data_transfer_length (smartie.scsi.structures.SCSIPassThroughDirect attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.data_units_read">data_units_read (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.data_units_written">data_units_written (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SenseErrorCode.DEFERRED_ERROR">DEFERRED_ERROR (smartie.scsi.structures.SenseErrorCode attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTCriticalWarning.degraded_nvm">degraded_nvm (smartie.nvme.structures.SMARTCriticalWarning attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.DescriptorFormatSense">DescriptorFormatSense (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.device.html#smartie.device.Device">Device (class in smartie.device)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.device">device (smartie.scsi.structures.Command12 attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.device">(smartie.scsi.structures.Command16 attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAProtocol.DEVICE_DIAGNOSTIC">DEVICE_DIAGNOSTIC (smartie.scsi.structures.ATAProtocol attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAProtocol.DEVICE_RESET">DEVICE_RESET (smartie.scsi.structures.ATAProtocol attribute)</a>
+</li>
+        <li><a href="smartie.scsi.html#smartie.scsi.SCSIDevice.device_type">device_type (smartie.scsi.SCSIDevice property)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IdentifyResponse.device_type">(smartie.scsi.structures.IdentifyResponse attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.DeviceType">DeviceType (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.DeviceType.DIRECT_ACCESS_BLOCK_DEVICE">DIRECT_ACCESS_BLOCK_DEVICE (smartie.scsi.structures.DeviceType attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Direction">Direction (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAProtocol.DMA">DMA (smartie.scsi.structures.ATAProtocol attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAProtocol.DMA_QUEUED">DMA_QUEUED (smartie.scsi.structures.ATAProtocol attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeCQEStatusField.do_not_retry">do_not_retry (smartie.nvme.structures.NVMeCQEStatusField attribute)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.DriveEntry">DriveEntry (class in smartie.database)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.driver_status">driver_status (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.duration">duration (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.dxfer_direction">dxfer_direction (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.dxfer_len">dxfer_len (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.dxferp">dxferp (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="E" class="genindex-section">
+  <h2>E</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.structures.html#smartie.structures.embed_bytes">embed_bytes() (in module smartie.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.enc_serv">enc_serv (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.endurance_group_critical_warning_summary">endurance_group_critical_warning_summary (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartThresholdResponse.entries">entries (smartie.scsi.structures.SmartThresholdResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.eom">eom (smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.DescriptorFormatSense.error_code">error_code (smartie.scsi.structures.DescriptorFormatSense attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.error_code">(smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.error_logging_capability">error_logging_capability (smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+        <li><a href="smartie.nvme.errors.html#smartie.nvme.errors.NVMeStatusFieldError.error_msg">error_msg (smartie.nvme.errors.NVMeStatusFieldError property)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.errors.html#smartie.scsi.errors.SenseError.error_msg">(smartie.scsi.errors.SenseError property)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.extended_self_test_recommended_time">extended_self_test_recommended_time (smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.extended_self_test_recommended_time_wide">extended_self_test_recommended_time_wide (smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="F" class="genindex-section">
+  <h2>F</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.device.html#smartie.device.Device.fd">fd (smartie.device.Device attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.features">features (smartie.scsi.structures.Command12 attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.features">(smartie.scsi.structures.Command16 attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.field_replaceable_unit_code">field_replaceable_unit_code (smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.filemark">filemark (smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirectWithBuffer.filler">filler (smartie.scsi.structures.SCSIPassThroughDirectWithBuffer attribute)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.DriveEntry.filters">filters (smartie.database.DriveEntry attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeIdentifyResponse.firmware_revision">firmware_revision (smartie.nvme.structures.NVMeIdentifyResponse attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IdentifyResponse.firmware_revision">(smartie.scsi.structures.IdentifyResponse attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IdentifyResponse.fixed_device">fixed_device (smartie.scsi.structures.IdentifyResponse attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense">FixedFormatSense (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.SMARTAttribute.flags">flags (smartie.database.SMARTAttribute attribute)</a>
+
+        <ul>
+          <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.flags">(smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.flags">(smartie.scsi.structures.Command12 attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.flags">(smartie.scsi.structures.Command16 attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.flags">(smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataEntry.flags">(smartie.scsi.structures.SmartDataEntry attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.OffLine.FOURTEEN_SECONDS">FOURTEEN_SECONDS (smartie.scsi.structures.CommandFlags.OffLine attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAProtocol.FPDMA">FPDMA (smartie.scsi.structures.ATAProtocol attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Direction.FROM">FROM (smartie.scsi.structures.Direction attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="G" class="genindex-section">
+  <h2>G</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.device.html#smartie.device.get_all_devices">get_all_devices() (in module smartie.device)</a>
+</li>
+        <li><a href="smartie.device.html#smartie.device.get_device">get_device() (in module smartie.device)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.get_drive_entry">get_drive_entry() (in module smartie.database)</a>
+</li>
+        <li><a href="smartie.device.html#smartie.device.Device.get_filters">get_filters() (smartie.device.Device method)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.html#smartie.scsi.SCSIDevice.get_filters">(smartie.scsi.SCSIDevice method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommands.GET_LOG_PAGE">GET_LOG_PAGE (smartie.nvme.structures.NVMeAdminCommands attribute)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.get_matching_drive_entries">get_matching_drive_entries() (in module smartie.database)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.StatusCode.GOOD">GOOD (smartie.scsi.structures.StatusCode attribute)</a>
+</li>
+        <li><a href="smartie.util.html#smartie.util.grouper_it">grouper_it() (in module smartie.util)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="H" class="genindex-section">
+  <h2>H</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAProtocol.HARD_RESET">HARD_RESET (smartie.scsi.structures.ATAProtocol attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.hi_sup">hi_sup (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.structures.html#smartie.structures.c_uint128.high">high (smartie.structures.c_uint128 attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.host_read_commands">host_read_commands (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.host_status">host_status (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.host_write_commands">host_write_commands (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.hot_pluggable">hot_pluggable (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.Units.HOURS">HOURS (smartie.database.Units attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="I" class="genindex-section">
+  <h2>I</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.database.html#smartie.database.SMARTAttribute.id">id (smartie.database.SMARTAttribute attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataEntry.id">(smartie.scsi.structures.SmartDataEntry attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommands.IDENTIFY">IDENTIFY (smartie.nvme.structures.NVMeAdminCommands attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATACommands.IDENTIFY">(smartie.scsi.structures.ATACommands attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAPICommands.IDENTIFY">(smartie.scsi.structures.ATAPICommands attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.nvme.html#smartie.nvme.NVMeDevice.identify">identify() (smartie.nvme.NVMeDevice method)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.html#smartie.scsi.SCSIDevice.identify">(smartie.scsi.SCSIDevice method)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IdentifyResponse">IdentifyResponse (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.ili">ili (smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.Length.IN_FEATURE">IN_FEATURE (smartie.scsi.structures.CommandFlags.Length attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.Length.IN_SECTOR_COUNT">IN_SECTOR_COUNT (smartie.scsi.structures.CommandFlags.Length attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.Length.IN_STPSIU">IN_STPSIU (smartie.scsi.structures.CommandFlags.Length attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.info">info (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.information">information (smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.OperationCode.INQUIRY">INQUIRY (smartie.scsi.structures.OperationCode attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.html#smartie.scsi.SCSIDevice.inquiry">inquiry() (smartie.scsi.SCSIDevice method)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryCommand">InquiryCommand (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse">InquiryResponse (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.interface_id">interface_id (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.StatusCode.INTERMEDIATE_C_GOOD">INTERMEDIATE_C_GOOD (smartie.scsi.structures.StatusCode attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.StatusCode.INTERMEDIATE_GOOD">INTERMEDIATE_GOOD (smartie.scsi.structures.StatusCode attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.IOCTL_NVMe_ADMIN_CMD">IOCTL_NVMe_ADMIN_CMD (in module smartie.nvme.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IOCTL_SCSI_PASS_THROUGH_DIRECT">IOCTL_SCSI_PASS_THROUGH_DIRECT (in module smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IOCTL_SG_IO">IOCTL_SG_IO (in module smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.iovec_count">iovec_count (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.nvme.linux.html#smartie.nvme.linux.LinuxNVMeDevice.issue_admin_command">issue_admin_command() (smartie.nvme.linux.LinuxNVMeDevice method)</a>
+
+        <ul>
+          <li><a href="smartie.nvme.html#smartie.nvme.NVMeDevice.issue_admin_command">(smartie.nvme.NVMeDevice method)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.linux.html#smartie.scsi.linux.LinuxSCSIDevice.issue_command">issue_command() (smartie.scsi.linux.LinuxSCSIDevice method)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.html#smartie.scsi.SCSIDevice.issue_command">(smartie.scsi.SCSIDevice method)</a>
+</li>
+          <li><a href="smartie.scsi.windows.html#smartie.scsi.windows.WindowsSCSIDevice.issue_command">(smartie.scsi.windows.WindowsSCSIDevice method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="L" class="genindex-section">
+  <h2>L</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.lba_high">lba_high (smartie.scsi.structures.Command12 attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.lba_high">(smartie.scsi.structures.Command16 attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.lba_high_high">lba_high_high (smartie.scsi.structures.Command16 attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.lba_high_low">lba_high_low (smartie.scsi.structures.Command16 attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.lba_high_mid">lba_high_mid (smartie.scsi.structures.Command16 attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.lba_low">lba_low (smartie.scsi.structures.Command12 attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.lba_low">(smartie.scsi.structures.Command16 attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.lba_mid">lba_mid (smartie.scsi.structures.Command12 attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.lba_mid">(smartie.scsi.structures.Command16 attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirect.length">length (smartie.scsi.structures.SCSIPassThroughDirect attribute)</a>
+</li>
+        <li><a href="smartie.nvme.linux.html#smartie.nvme.linux.LinuxNVMeDevice">LinuxNVMeDevice (class in smartie.nvme.linux)</a>
+</li>
+        <li><a href="smartie.scsi.linux.html#smartie.scsi.linux.LinuxSCSIDevice">LinuxSCSIDevice (class in smartie.scsi.linux)</a>
+</li>
+        <li><a href="smartie.structures.html#smartie.structures.c_uint128.low">low (smartie.structures.c_uint128 attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.lu_cong">lu_cong (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryCommand.lun">lun (smartie.scsi.structures.InquiryCommand attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirect.lun">(smartie.scsi.structures.SCSIPassThroughDirect attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="M" class="genindex-section">
+  <h2>M</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.masked_status">masked_status (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.media_errors">media_errors (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.metadata">metadata (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.metadata_len">metadata_len (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.Units.MILLISECONDS">MILLISECONDS (smartie.database.Units attribute)</a>
+</li>
+        <li><a href="smartie.device.html#smartie.device.Device.model">model (smartie.device.Device property)</a>
+
+        <ul>
+          <li><a href="smartie.nvme.html#smartie.nvme.NVMeDevice.model">(smartie.nvme.NVMeDevice property)</a>
+</li>
+          <li><a href="smartie.scsi.html#smartie.scsi.SCSIDevice.model">(smartie.scsi.SCSIDevice property)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeIdentifyResponse.model_number">model_number (smartie.nvme.structures.NVMeIdentifyResponse attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IdentifyResponse.model_number">(smartie.scsi.structures.IdentifyResponse attribute)</a>
+</li>
+        </ul></li>
+        <li>
+    module
+
+        <ul>
+          <li><a href="smartie.html#module-smartie">smartie</a>
+</li>
+          <li><a href="smartie.cli.html#module-smartie.cli">smartie.cli</a>
+</li>
+          <li><a href="smartie.database.html#module-smartie.database">smartie.database</a>
+</li>
+          <li><a href="smartie.device.html#module-smartie.device">smartie.device</a>
+</li>
+          <li><a href="smartie.nvme.html#module-smartie.nvme">smartie.nvme</a>
+</li>
+          <li><a href="smartie.nvme.constants.html#module-smartie.nvme.constants">smartie.nvme.constants</a>
+</li>
+          <li><a href="smartie.nvme.errors.html#module-smartie.nvme.errors">smartie.nvme.errors</a>
+</li>
+          <li><a href="smartie.nvme.linux.html#module-smartie.nvme.linux">smartie.nvme.linux</a>
+</li>
+          <li><a href="smartie.nvme.structures.html#module-smartie.nvme.structures">smartie.nvme.structures</a>
+</li>
+          <li><a href="smartie.scsi.html#module-smartie.scsi">smartie.scsi</a>
+</li>
+          <li><a href="smartie.scsi.errors.html#module-smartie.scsi.errors">smartie.scsi.errors</a>
+</li>
+          <li><a href="smartie.scsi.linux.html#module-smartie.scsi.linux">smartie.scsi.linux</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#module-smartie.scsi.structures">smartie.scsi.structures</a>
+</li>
+          <li><a href="smartie.scsi.windows.html#module-smartie.scsi.windows">smartie.scsi.windows</a>
+</li>
+          <li><a href="smartie.structures.html#module-smartie.structures">smartie.structures</a>
+</li>
+          <li><a href="smartie.util.html#module-smartie.util">smartie.util</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeCQEStatusField.more">more (smartie.nvme.structures.NVMeCQEStatusField attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.msg_status">msg_status (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.multi_p">multi_p (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.mx_sb_len">mx_sb_len (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="N" class="genindex-section">
+  <h2>N</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.database.html#smartie.database.DriveEntry.name">name (smartie.database.DriveEntry attribute)</a>
+
+        <ul>
+          <li><a href="smartie.database.html#smartie.database.SMARTAttribute.name">(smartie.database.SMARTAttribute attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAProtocol.NON_DATA">NON_DATA (smartie.scsi.structures.ATAProtocol attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Direction.NONE">NONE (smartie.scsi.structures.Direction attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.norm_aca">norm_aca (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.DriveEntry.notes">notes (smartie.database.DriveEntry attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.nsid">nsid (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.num_err_log_entries">num_err_log_entries (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.nvme.constants.html#smartie.nvme.constants.NVMe_STATUS_FIELD">NVMe_STATUS_FIELD (in module smartie.nvme.constants)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand">NVMeAdminCommand (class in smartie.nvme.structures)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommands">NVMeAdminCommands (class in smartie.nvme.structures)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeCQEStatusField">NVMeCQEStatusField (class in smartie.nvme.structures)</a>
+</li>
+        <li><a href="smartie.nvme.html#smartie.nvme.NVMeDevice">NVMeDevice (class in smartie.nvme)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeIdentifyResponse">NVMeIdentifyResponse (class in smartie.nvme.structures)</a>
+</li>
+        <li><a href="smartie.nvme.html#smartie.nvme.NVMeResponse">NVMeResponse (class in smartie.nvme)</a>
+</li>
+        <li><a href="smartie.nvme.errors.html#smartie.nvme.errors.NVMeStatusFieldError">NVMeStatusFieldError</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="O" class="genindex-section">
+  <h2>O</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.obsolete_1">obsolete_1 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.obsolete_2">obsolete_2 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.obsolete_3">obsolete_3 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.obsolete_4">obsolete_4 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.obsolete_5">obsolete_5 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.obsolete_6">obsolete_6 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.obsolete_7">obsolete_7 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.obsolete_8">obsolete_8 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.off_line">off_line (smartie.scsi.structures.CommandFlags attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.offline_data_collection_capability">offline_data_collection_capability (smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.offline_data_collection_status">offline_data_collection_status (smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.opcode">opcode (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.operation_code">operation_code (smartie.scsi.structures.Command12 attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.operation_code">(smartie.scsi.structures.Command16 attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryCommand.operation_code">(smartie.scsi.structures.InquiryCommand attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.OperationCode">OperationCode (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.DeviceType.OPTICAL_CARD_RW">OPTICAL_CARD_RW (smartie.scsi.structures.DeviceType attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.DeviceType.OPTICAL_MEMORY_DEVICE">OPTICAL_MEMORY_DEVICE (smartie.scsi.structures.DeviceType attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="P" class="genindex-section">
+  <h2>P</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.database.html#smartie.database.SMARTAttribute.p_value">p_value (smartie.database.SMARTAttribute property)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.SMARTAttribute.p_worst_value">p_worst_value (smartie.database.SMARTAttribute property)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.pack_id">pack_id (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IdentifyResponse.padding_1">padding_1 (smartie.scsi.structures.IdentifyResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IdentifyResponse.padding_2">padding_2 (smartie.scsi.structures.IdentifyResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryCommand.page_code">page_code (smartie.scsi.structures.InquiryCommand attribute)</a>
+</li>
+        <li><a href="smartie.scsi.html#smartie.scsi.SCSIDevice.parse_sense">parse_sense() (smartie.scsi.SCSIDevice class method)</a>
+</li>
+        <li><a href="smartie.nvme.html#smartie.nvme.NVMeDevice.parse_status_field">parse_status_field() (smartie.nvme.NVMeDevice class method)</a>
+</li>
+        <li><a href="smartie.device.html#smartie.device.Device.path">path (smartie.device.Device attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirect.path_id">path_id (smartie.scsi.structures.SCSIPassThroughDirect attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.percent_used">percent_used (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.peripheral_device_type">peripheral_device_type (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.peripheral_qualifier">peripheral_qualifier (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAProtocol.PIO_DATA_IN">PIO_DATA_IN (smartie.scsi.structures.ATAProtocol attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAProtocol.PIO_DATA_OUT">PIO_DATA_OUT (smartie.scsi.structures.ATAProtocol attribute)</a>
+</li>
+        <li><a href="smartie.nvme.html#smartie.nvme.NVMeResponse.platform_header">platform_header (smartie.nvme.NVMeResponse attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.html#smartie.scsi.SCSIResponse.platform_header">(smartie.scsi.SCSIResponse attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.power_cycles">power_cycles (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.power_on_hours">power_on_hours (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.structures.html#smartie.structures.pprint_structure">pprint_structure() (in module smartie.structures)</a>
+</li>
+        <li><a href="smartie.cli.html#smartie.cli.print_structure">print_structure() (in module smartie.cli)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.SMARTAttribute.processor">processor (smartie.database.SMARTAttribute attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.product_identification">product_identification (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.product_revision_level">product_revision_level (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.protect">protect (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.protocol">protocol (smartie.scsi.structures.Command12 attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.protocol">(smartie.scsi.structures.Command16 attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="R" class="genindex-section">
+  <h2>R</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.DeviceType.RAID_CONTROLLER">RAID_CONTROLLER (smartie.scsi.structures.DeviceType attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATACommands.READ_DATA">READ_DATA (smartie.scsi.structures.ATACommands attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATACommands.READ_LOG">READ_LOG (smartie.scsi.structures.ATACommands attribute)</a>
+</li>
+        <li><a href="smartie.nvme.html#smartie.nvme.NVMeDevice.read_log_page">read_log_page() (smartie.nvme.NVMeDevice method)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTCriticalWarning.read_only">read_only (smartie.nvme.structures.SMARTCriticalWarning attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IdentifyResponse.removable_media">removable_media (smartie.scsi.structures.IdentifyResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.StatusCode.RESERVATION_CONFLICT">RESERVATION_CONFLICT (smartie.scsi.structures.StatusCode attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataEntry.reserved">reserved (smartie.scsi.structures.SmartDataEntry attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.reserved_1">reserved_1 (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+
+        <ul>
+          <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTCriticalWarning.reserved_1">(smartie.nvme.structures.SMARTCriticalWarning attribute)</a>
+</li>
+          <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.reserved_1">(smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.reserved_1">(smartie.scsi.structures.Command12 attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.reserved_1">(smartie.scsi.structures.CommandFlags attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.DescriptorFormatSense.reserved_1">(smartie.scsi.structures.DescriptorFormatSense attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.reserved_1">(smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IdentifyResponse.reserved_1">(smartie.scsi.structures.IdentifyResponse attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryCommand.reserved_1">(smartie.scsi.structures.InquiryCommand attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.reserved_1">(smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.reserved_1">(smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartThresholdEntry.reserved_1">(smartie.scsi.structures.SmartThresholdEntry attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartThresholdResponse.reserved_1">(smartie.scsi.structures.SmartThresholdResponse attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.reserved_10">reserved_10 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.reserved_11">reserved_11 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.reserved_2">reserved_2 (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.reserved_2">(smartie.scsi.structures.Command12 attribute)</a>
+</li>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.reserved_2">(smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.reserved_3">reserved_3 (smartie.scsi.structures.Command12 attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.reserved_3">(smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.reserved_4">reserved_4 (smartie.scsi.structures.Command12 attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.reserved_4">(smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.reserved_5">reserved_5 (smartie.scsi.structures.Command12 attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.reserved_5">(smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.reserved_6">reserved_6 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.reserved_7">reserved_7 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.reserved_8">reserved_8 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.reserved_9">reserved_9 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.resid">resid (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.response_data_format">response_data_format (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IdentifyResponse.response_incomplete">response_incomplete (smartie.scsi.structures.IdentifyResponse attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.result">result (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IdentifyResponse.retired_1">retired_1 (smartie.scsi.structures.IdentifyResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IdentifyResponse.retired_2">retired_2 (smartie.scsi.structures.IdentifyResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IdentifyResponse.retired_3">retired_3 (smartie.scsi.structures.IdentifyResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAProtocol.RETURN_RESPONSE_INFORMATION">RETURN_RESPONSE_INFORMATION (smartie.scsi.structures.ATAProtocol attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATACommands.RETURN_STATUS">RETURN_STATUS (smartie.scsi.structures.ATACommands attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartThresholdResponse.revision_number">revision_number (smartie.scsi.structures.SmartThresholdResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.rmb">rmb (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="S" class="genindex-section">
+  <h2>S</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.sb_len_wr">sb_len_wr (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.sbp">sbp (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.sccs">sccs (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirect.scsi_status">scsi_status (smartie.scsi.structures.SCSIPassThroughDirect attribute)</a>
+</li>
+        <li><a href="smartie.scsi.html#smartie.scsi.SCSIDevice">SCSIDevice (class in smartie.scsi)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirect">SCSIPassThroughDirect (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirectWithBuffer">SCSIPassThroughDirectWithBuffer (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.html#smartie.scsi.SCSIResponse">SCSIResponse (class in smartie.scsi)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command12.sector_count">sector_count (smartie.scsi.structures.Command12 attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.sector_count">(smartie.scsi.structures.Command16 attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.segment_number">segment_number (smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.self_test_execution_status_buyte">self_test_execution_status_buyte (smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.html#smartie.scsi.SCSIResponse.sense">sense (smartie.scsi.SCSIResponse attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirectWithBuffer.sense">(smartie.scsi.structures.SCSIPassThroughDirectWithBuffer attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirect.sense_info_length">sense_info_length (smartie.scsi.structures.SCSIPassThroughDirect attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirect.sense_info_offset">sense_info_offset (smartie.scsi.structures.SCSIPassThroughDirect attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.DescriptorFormatSense.sense_key">sense_key (smartie.scsi.structures.DescriptorFormatSense attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.sense_key">(smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.sense_key_specific">sense_key_specific (smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+        <li><a href="smartie.scsi.errors.html#smartie.scsi.errors.SenseError">SenseError</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SenseErrorCode">SenseErrorCode (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.DeviceType.SEQUENTIAL_ACCESS_DEVICE">SEQUENTIAL_ACCESS_DEVICE (smartie.scsi.structures.DeviceType attribute)</a>
+</li>
+        <li><a href="smartie.device.html#smartie.device.Device.serial">serial (smartie.device.Device property)</a>
+
+        <ul>
+          <li><a href="smartie.nvme.html#smartie.nvme.NVMeDevice.serial">(smartie.nvme.NVMeDevice property)</a>
+</li>
+          <li><a href="smartie.scsi.html#smartie.scsi.SCSIDevice.serial">(smartie.scsi.SCSIDevice property)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeIdentifyResponse.serial_number">serial_number (smartie.nvme.structures.NVMeIdentifyResponse attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.IdentifyResponse.serial_number">(smartie.scsi.structures.IdentifyResponse attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Command16.set_lba">set_lba() (smartie.scsi.structures.Command16 method)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader">SGIOHeader (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.short_self_test_recommended_time">short_self_test_recommended_time (smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.OffLine.SIX_SECONDS">SIX_SECONDS (smartie.scsi.structures.CommandFlags.OffLine attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATACommands.SMART">SMART (smartie.scsi.structures.ATACommands attribute)</a>
+</li>
+        <li><a href="smartie.nvme.html#smartie.nvme.NVMeDevice.smart">smart() (smartie.nvme.NVMeDevice method)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.html#smartie.scsi.SCSIDevice.smart">(smartie.scsi.SCSIDevice method)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.database.html#smartie.database.DriveEntry.smart_attributes">smart_attributes (smartie.database.DriveEntry attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.smart_capability">smart_capability (smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATASmartFeature.SMART_DISABLE_OPERATIONS">SMART_DISABLE_OPERATIONS (smartie.scsi.structures.ATASmartFeature attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATASmartFeature.SMART_ENABLE_OPERATIONS">SMART_ENABLE_OPERATIONS (smartie.scsi.structures.ATASmartFeature attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATASmartFeature.SMART_EXECUTE_OFF_LINE_IMMEDIATE">SMART_EXECUTE_OFF_LINE_IMMEDIATE (smartie.scsi.structures.ATASmartFeature attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATASmartFeature.SMART_READ_DATA">SMART_READ_DATA (smartie.scsi.structures.ATASmartFeature attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATASmartFeature.SMART_READ_LOG">SMART_READ_LOG (smartie.scsi.structures.ATASmartFeature attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATASmartFeature.SMART_READ_THRESHOLDS">SMART_READ_THRESHOLDS (smartie.scsi.structures.ATASmartFeature attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATASmartFeature.SMART_RETURN_STATUS">SMART_RETURN_STATUS (smartie.scsi.structures.ATASmartFeature attribute)</a>
+</li>
+        <li><a href="smartie.device.html#smartie.device.Device.smart_table">smart_table (smartie.device.Device property)</a>
+
+        <ul>
+          <li><a href="smartie.nvme.html#smartie.nvme.NVMeDevice.smart_table">(smartie.nvme.NVMeDevice property)</a>
+</li>
+          <li><a href="smartie.scsi.html#smartie.scsi.SCSIDevice.smart_table">(smartie.scsi.SCSIDevice property)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.html#smartie.scsi.SCSIDevice.smart_thresholds">smart_thresholds() (smartie.scsi.SCSIDevice method)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATASmartFeature.SMART_TOGGLE_ATTRIBUTE_AUTOSAVE">SMART_TOGGLE_ATTRIBUTE_AUTOSAVE (smartie.scsi.structures.ATASmartFeature attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATASmartFeature.SMART_WRITE_LOG">SMART_WRITE_LOG (smartie.scsi.structures.ATASmartFeature attribute)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.SMARTAttribute">SMARTAttribute (class in smartie.database)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTCriticalWarning">SMARTCriticalWarning (class in smartie.nvme.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataEntry">SmartDataEntry (class in smartie.scsi.structures)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse">SmartDataResponse (class in smartie.scsi.structures)</a>
+</li>
+        <li>
+    smartie
+
+        <ul>
+          <li><a href="smartie.html#module-smartie">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.cli
+
+        <ul>
+          <li><a href="smartie.cli.html#module-smartie.cli">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.database
+
+        <ul>
+          <li><a href="smartie.database.html#module-smartie.database">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.device
+
+        <ul>
+          <li><a href="smartie.device.html#module-smartie.device">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.nvme
+
+        <ul>
+          <li><a href="smartie.nvme.html#module-smartie.nvme">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.nvme.constants
+
+        <ul>
+          <li><a href="smartie.nvme.constants.html#module-smartie.nvme.constants">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.nvme.errors
+
+        <ul>
+          <li><a href="smartie.nvme.errors.html#module-smartie.nvme.errors">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.nvme.linux
+
+        <ul>
+          <li><a href="smartie.nvme.linux.html#module-smartie.nvme.linux">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.nvme.structures
+
+        <ul>
+          <li><a href="smartie.nvme.structures.html#module-smartie.nvme.structures">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.scsi
+
+        <ul>
+          <li><a href="smartie.scsi.html#module-smartie.scsi">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.scsi.errors
+
+        <ul>
+          <li><a href="smartie.scsi.errors.html#module-smartie.scsi.errors">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.scsi.linux
+
+        <ul>
+          <li><a href="smartie.scsi.linux.html#module-smartie.scsi.linux">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.scsi.structures
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#module-smartie.scsi.structures">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.scsi.windows
+
+        <ul>
+          <li><a href="smartie.scsi.windows.html#module-smartie.scsi.windows">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.structures
+
+        <ul>
+          <li><a href="smartie.structures.html#module-smartie.structures">module</a>
+</li>
+        </ul></li>
+        <li>
+    smartie.util
+
+        <ul>
+          <li><a href="smartie.util.html#module-smartie.util">module</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse">SMARTPageResponse (class in smartie.nvme.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartThresholdEntry">SmartThresholdEntry (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartThresholdResponse">SmartThresholdResponse (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirectWithBuffer.sptd">sptd (smartie.scsi.structures.SCSIPassThroughDirectWithBuffer attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAProtocol.SRST">SRST (smartie.scsi.structures.ATAProtocol attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeIdentifyResponse.ssvid">ssvid (smartie.nvme.structures.NVMeIdentifyResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.status">status (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.nvme.errors.html#smartie.nvme.errors.NVMeStatusFieldError.status_code">status_code (smartie.nvme.errors.NVMeStatusFieldError attribute)</a>
+
+        <ul>
+          <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeCQEStatusField.status_code">(smartie.nvme.structures.NVMeCQEStatusField attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.nvme.errors.html#smartie.nvme.errors.NVMeStatusFieldError.status_code_type">status_code_type (smartie.nvme.errors.NVMeStatusFieldError attribute)</a>
+
+        <ul>
+          <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeCQEStatusField.status_code_type">(smartie.nvme.structures.NVMeCQEStatusField attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.nvme.html#smartie.nvme.NVMeResponse.status_field">status_field (smartie.nvme.NVMeResponse attribute)</a>
+</li>
+        <li><a href="smartie.nvme.errors.html#smartie.nvme.errors.NVMeStatusFieldError.status_filed">status_filed (smartie.nvme.errors.NVMeStatusFieldError attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.StatusCode">StatusCode (class in smartie.scsi.structures)</a>
+</li>
+        <li><a href="smartie.structures.html#smartie.structures.structure_to_dict">structure_to_dict() (in module smartie.structures)</a>
+</li>
+        <li><a href="smartie.nvme.html#smartie.nvme.NVMeResponse.succeeded">succeeded (smartie.nvme.NVMeResponse attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.html#smartie.scsi.SCSIResponse.succeeded">(smartie.scsi.SCSIResponse attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.structures.html#smartie.structures.swap_bytes">swap_bytes() (in module smartie.structures)</a>
+</li>
+        <li><a href="smartie.structures.html#smartie.structures.swap_int">swap_int() (in module smartie.structures)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="T" class="genindex-section">
+  <h2>T</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.t10_vendor_identification">t10_vendor_identification (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.t_dir">t_dir (smartie.scsi.structures.CommandFlags attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.t_length">t_length (smartie.scsi.structures.CommandFlags attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirect.target_id">target_id (smartie.scsi.structures.SCSIPassThroughDirect attribute)</a>
+</li>
+        <li><a href="smartie.device.html#smartie.device.Device.temperature">temperature (smartie.device.Device property)</a>
+
+        <ul>
+          <li><a href="smartie.nvme.html#smartie.nvme.NVMeDevice.temperature">(smartie.nvme.NVMeDevice property)</a>
+</li>
+          <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTCriticalWarning.temperature">(smartie.nvme.structures.SMARTCriticalWarning attribute)</a>
+</li>
+          <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.temperature">(smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+          <li><a href="smartie.scsi.html#smartie.scsi.SCSIDevice.temperature">(smartie.scsi.SCSIDevice property)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.temperature_sensors">temperature_sensors (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.thermal_transition_counts">thermal_transition_counts (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.three_pc">three_pc (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.SMARTAttribute.threshold">threshold (smartie.database.SMARTAttribute attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.timeout">timeout (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeAdminCommand.timeout_ms">timeout_ms (smartie.nvme.structures.NVMeAdminCommand attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SCSIPassThroughDirect.timeout_value">timeout_value (smartie.scsi.structures.SCSIPassThroughDirect attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.Direction.TO">TO (smartie.scsi.structures.Direction attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.total_time_for_thermal_management">total_time_for_thermal_management (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.tpgs">tpgs (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.OffLine.TWO_SECONDS">TWO_SECONDS (smartie.scsi.structures.CommandFlags.OffLine attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="U" class="genindex-section">
+  <h2>U</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAProtocol.UDMA_DATA_IN">UDMA_DATA_IN (smartie.scsi.structures.ATAProtocol attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.ATAProtocol.UDMA_DATA_OUT">UDMA_DATA_OUT (smartie.scsi.structures.ATAProtocol attribute)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.SMARTAttribute.unit">unit (smartie.database.SMARTAttribute attribute)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.Units">Units (class in smartie.database)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.database.html#smartie.database.Units.UNKNOWN">UNKNOWN (smartie.database.Units attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeIdentifyResponse.unknown">unknown (smartie.nvme.structures.NVMeIdentifyResponse attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.unsafe_shutdowns">unsafe_shutdowns (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SGIOHeader.usr_ptr">usr_ptr (smartie.scsi.structures.SGIOHeader attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="V" class="genindex-section">
+  <h2>V</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.DescriptorFormatSense.valid">valid (smartie.scsi.structures.DescriptorFormatSense attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.FixedFormatSense.valid">(smartie.scsi.structures.FixedFormatSense attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartThresholdEntry.value">value (smartie.scsi.structures.SmartThresholdEntry attribute)</a>
+
+        <ul>
+          <li><a href="smartie.structures.html#smartie.structures.c_uint128.value">(smartie.structures.c_uint128 property)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.NVMeIdentifyResponse.vendor_id">vendor_id (smartie.nvme.structures.NVMeIdentifyResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.vendor_specific_1">vendor_specific_1 (smartie.scsi.structures.InquiryResponse attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataEntry.vendor_specific_1">(smartie.scsi.structures.SmartDataEntry attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.vendor_specific_2">vendor_specific_2 (smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.vendor_specific_3">vendor_specific_3 (smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.vendor_specific_4">vendor_specific_4 (smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.version">version (smartie.scsi.structures.InquiryResponse attribute)</a>
+
+        <ul>
+          <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataResponse.version">(smartie.scsi.structures.SmartDataResponse attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.version_descriptors">version_descriptors (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTCriticalWarning.volatile_memory_backup">volatile_memory_backup (smartie.nvme.structures.SMARTCriticalWarning attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.vs_1">vs_1 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.InquiryResponse.vs_2">vs_2 (smartie.scsi.structures.InquiryResponse attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="W" class="genindex-section">
+  <h2>W</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.nvme.structures.html#smartie.nvme.structures.SMARTPageResponse.warning_temp_time">warning_temp_time (smartie.nvme.structures.SMARTPageResponse attribute)</a>
+</li>
+        <li><a href="smartie.scsi.windows.html#smartie.scsi.windows.WindowsSCSIDevice">WindowsSCSIDevice (class in smartie.scsi.windows)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.SmartDataEntry.worst">worst (smartie.scsi.structures.SmartDataEntry attribute)</a>
+</li>
+        <li><a href="smartie.database.html#smartie.database.SMARTAttribute.worst_value">worst_value (smartie.database.SMARTAttribute attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="Z" class="genindex-section">
+  <h2>Z</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="smartie.scsi.structures.html#smartie.scsi.structures.CommandFlags.OffLine.ZERO_SECONDS">ZERO_SECONDS (smartie.scsi.structures.CommandFlags.OffLine attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, Tyler Kennedy
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

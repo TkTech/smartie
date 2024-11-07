@@ -1,0 +1,614 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.08.06 -->
+        <title>smartie.scsi - SMARTie</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">SMARTie</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">SMARTie</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/discovery.html">Device Discovery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/high_level.html">High-level API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/low_level.html">Low-level API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/cli.html">CLI</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../smartie.html">SMARTie API</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of SMARTie API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../smartie.nvme.html">smartie.nvme package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of smartie.nvme package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../smartie.nvme.linux.html">smartie.nvme.linux module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../smartie.nvme.structures.html">smartie.nvme.structures module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../smartie.nvme.errors.html">smartie.nvme.errors module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../smartie.nvme.constants.html">smartie.nvme.constants package</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../smartie.scsi.html">smartie.scsi package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of smartie.scsi package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../smartie.scsi.linux.html">smartie.scsi.linux module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../smartie.scsi.structures.html">smartie.scsi.structures module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../smartie.scsi.windows.html">smartie.scsi.windows module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../smartie.scsi.errors.html">smartie.scis.errors module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../smartie.cli.html">smartie.cli module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../smartie.database.html">smartie.database module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../smartie.device.html">smartie.device module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../smartie.structures.html">smartie.structures module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../smartie.util.html">smartie.util module</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for smartie.scsi</h1><div class="highlight"><pre>
+<span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;SCSIDevice&quot;</span><span class="p">,</span> <span class="s2">&quot;SCSIResponse&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">ctypes</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">replace</span><span class="p">,</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">import</span> <span class="nn">smartie.structures</span>
+<span class="kn">from</span> <span class="nn">smartie.database</span> <span class="kn">import</span> <span class="n">SMARTAttribute</span><span class="p">,</span> <span class="n">get_drive_entry</span>
+<span class="kn">from</span> <span class="nn">smartie.device</span> <span class="kn">import</span> <span class="n">Device</span>
+<span class="kn">from</span> <span class="nn">smartie.scsi.errors</span> <span class="kn">import</span> <span class="n">SenseError</span>
+<span class="kn">from</span> <span class="nn">smartie.scsi.structures</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ATACommands</span><span class="p">,</span>
+    <span class="n">ATAPICommands</span><span class="p">,</span>
+    <span class="n">ATAProtocol</span><span class="p">,</span>
+    <span class="n">ATASmartFeature</span><span class="p">,</span>
+    <span class="n">Command16</span><span class="p">,</span>
+    <span class="n">CommandFlags</span><span class="p">,</span>
+    <span class="n">DescriptorFormatSense</span><span class="p">,</span>
+    <span class="n">DeviceType</span><span class="p">,</span>
+    <span class="n">Direction</span><span class="p">,</span>
+    <span class="n">FixedFormatSense</span><span class="p">,</span>
+    <span class="n">IdentifyResponse</span><span class="p">,</span>
+    <span class="n">InquiryCommand</span><span class="p">,</span>
+    <span class="n">InquiryResponse</span><span class="p">,</span>
+    <span class="n">OperationCode</span><span class="p">,</span>
+    <span class="n">SmartDataResponse</span><span class="p">,</span>
+    <span class="n">SmartThresholdResponse</span><span class="p">,</span>
+    <span class="n">Command12</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">smartie.structures</span> <span class="kn">import</span> <span class="n">swap_bytes</span>
+
+
+<div class="viewcode-block" id="SCSIResponse"><a class="viewcode-back" href="../../smartie.scsi.html#smartie.scsi.SCSIResponse">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SCSIResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Common response object for SCSI commands.</span>
+
+<span class="sd">    This object attempts to encapsulate the response from an SCSI command in a</span>
+<span class="sd">    platform-agnostic way. It contains the sense data, the command that was</span>
+<span class="sd">    issued, and whether the command succeeded or not.</span>
+
+<span class="sd">    For additional platform-specific information, the `platform_header`</span>
+<span class="sd">    attribute contains the platform-specific header that was used to issue the</span>
+<span class="sd">    command.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: Whether the command succeeded. If None, the status is unknown.</span>
+    <span class="n">succeeded</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+    <span class="c1">#: The sense data returned by the device.</span>
+    <span class="n">sense</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">FixedFormatSense</span><span class="p">,</span> <span class="n">DescriptorFormatSense</span><span class="p">]]</span>
+    <span class="c1">#: The command issued to the device.</span>
+    <span class="n">command</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Command16</span><span class="p">,</span> <span class="n">Command12</span><span class="p">]</span>
+    <span class="c1">#: The actual number of bytes transferred.</span>
+    <span class="n">bytes_transferred</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+
+    <span class="c1">#: The platform-specific header that was used to issue the command.</span>
+    <span class="c1">#: For example this may be an :class:`SCSIPassThroughDirectWithBuffer` on</span>
+    <span class="c1">#: Windows.</span>
+    <span class="n">platform_header</span><span class="p">:</span> <span class="n">Any</span>
+
+    <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">succeeded</span></div>
+
+
+<div class="viewcode-block" id="SCSIDevice"><a class="viewcode-back" href="../../smartie.scsi.html#smartie.scsi.SCSIDevice">[docs]</a><span class="k">class</span> <span class="nc">SCSIDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="SCSIDevice.parse_sense"><a class="viewcode-back" href="../../smartie.scsi.html#smartie.scsi.SCSIDevice.parse_sense">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">parse_sense</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">sense_blob</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">FixedFormatSense</span><span class="p">,</span> <span class="n">DescriptorFormatSense</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses the sense response from an SCSI command, raising a</span>
+<span class="sd">        :class:`smartie.errors.SenseError` if an error occurred.</span>
+
+<span class="sd">        Will return either a :class:`structures.FixedFormatSense` or a</span>
+<span class="sd">        :class:`structures.DescriptorFormatSense` depending on the error code.</span>
+
+<span class="sd">        :param sense_blob: A bytearray (or similar) object containing the</span>
+<span class="sd">                           unparsed sense response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">error_code</span> <span class="o">=</span> <span class="n">sense_blob</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x7F</span>
+        <span class="k">if</span> <span class="n">error_code</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">error_code</span> <span class="ow">in</span> <span class="p">(</span><span class="mh">0x70</span><span class="p">,</span> <span class="mh">0x71</span><span class="p">):</span>
+            <span class="n">sense</span> <span class="o">=</span> <span class="n">FixedFormatSense</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="n">sense_blob</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sense</span><span class="o">.</span><span class="n">sense_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x0F</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">SenseError</span><span class="p">(</span><span class="n">sense</span><span class="o">.</span><span class="n">sense_key</span><span class="p">,</span> <span class="n">sense</span><span class="o">=</span><span class="n">sense</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sense</span>
+        <span class="k">elif</span> <span class="n">error_code</span> <span class="ow">in</span> <span class="p">(</span><span class="mh">0x72</span><span class="p">,</span> <span class="mh">0x73</span><span class="p">):</span>
+            <span class="n">sense</span> <span class="o">=</span> <span class="n">DescriptorFormatSense</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="n">sense_blob</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sense</span><span class="o">.</span><span class="n">sense_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x0F</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">SenseError</span><span class="p">(</span><span class="n">sense</span><span class="o">.</span><span class="n">sense_key</span><span class="p">,</span> <span class="n">sense</span><span class="o">=</span><span class="n">sense</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sense</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SenseError</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sense</span><span class="o">=</span><span class="n">sense_blob</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SCSIDevice.issue_command"><a class="viewcode-back" href="../../smartie.scsi.html#smartie.scsi.SCSIDevice.issue_command">[docs]</a>    <span class="k">def</span> <span class="nf">issue_command</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">direction</span><span class="p">:</span> <span class="n">Direction</span><span class="p">,</span>
+        <span class="n">command</span><span class="p">:</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">Structure</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ctypes</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">Structure</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3000</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SCSIResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Issues an SCSI passthrough command to the disk.</span>
+
+<span class="sd">        :param direction: Direction for this command.</span>
+<span class="sd">        :param command: Command to be sent to the device.</span>
+<span class="sd">        :param data: Command data to be sent/received to/from the device.</span>
+<span class="sd">        :param timeout: Timeout in milliseconds. Setting this to MAX_INT</span>
+<span class="sd">                        results in no timeout.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SCSIDevice.inquiry"><a class="viewcode-back" href="../../smartie.scsi.html#smartie.scsi.SCSIDevice.inquiry">[docs]</a>    <span class="k">def</span> <span class="nf">inquiry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">InquiryResponse</span><span class="p">,</span> <span class="n">SCSIResponse</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Issues a standard SCSI INQUIRY command.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inquiry</span> <span class="o">=</span> <span class="n">InquiryResponse</span><span class="p">()</span>
+
+        <span class="n">inquiry_command</span> <span class="o">=</span> <span class="n">InquiryCommand</span><span class="p">(</span>
+            <span class="n">operation_code</span><span class="o">=</span><span class="n">OperationCode</span><span class="o">.</span><span class="n">INQUIRY</span><span class="p">,</span> <span class="n">allocation_length</span><span class="o">=</span><span class="mi">96</span>
+        <span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">issue_command</span><span class="p">(</span><span class="n">Direction</span><span class="o">.</span><span class="n">FROM</span><span class="p">,</span> <span class="n">inquiry_command</span><span class="p">,</span> <span class="n">inquiry</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">inquiry</span><span class="p">,</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="SCSIDevice.identify"><a class="viewcode-back" href="../../smartie.scsi.html#smartie.scsi.SCSIDevice.identify">[docs]</a>    <span class="k">def</span> <span class="nf">identify</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">try_atapi_on_failure</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">IdentifyResponse</span><span class="p">,</span> <span class="n">SCSIResponse</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Issues a standard ATA IDENTIFY command.</span>
+
+<span class="sd">        :param try_atapi_on_failure: If True, will try an ATAPI IDENTIFY command</span>
+<span class="sd">                                        if the ATA IDENTIFY command fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">identity</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">create_string_buffer</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
+
+        <span class="n">command16</span> <span class="o">=</span> <span class="n">Command16</span><span class="p">(</span>
+            <span class="n">operation_code</span><span class="o">=</span><span class="n">OperationCode</span><span class="o">.</span><span class="n">COMMAND_16</span><span class="p">,</span>
+            <span class="n">protocol</span><span class="o">=</span><span class="n">ATAProtocol</span><span class="o">.</span><span class="n">PIO_DATA_IN</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">flags</span><span class="o">=</span><span class="n">CommandFlags</span><span class="p">(</span>
+                <span class="n">t_length</span><span class="o">=</span><span class="n">CommandFlags</span><span class="o">.</span><span class="n">Length</span><span class="o">.</span><span class="n">IN_SECTOR_COUNT</span><span class="p">,</span>
+                <span class="n">byt_blok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">t_dir</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">ck_cond</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">command</span><span class="o">=</span><span class="n">ATACommands</span><span class="o">.</span><span class="n">IDENTIFY</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">issue_command</span><span class="p">(</span><span class="n">Direction</span><span class="o">.</span><span class="n">FROM</span><span class="p">,</span> <span class="n">command16</span><span class="p">,</span> <span class="n">identity</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">SenseError</span><span class="p">:</span>
+            <span class="c1"># If an error occurred, we try to see if this is really an ATAPI</span>
+            <span class="c1"># device, such as a CD-ROM. We can handle the response exactly</span>
+            <span class="c1"># the same, it&#39;s just a different command.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">try_atapi_on_failure</span><span class="p">:</span>
+                <span class="k">raise</span>
+
+            <span class="n">command16</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">ATAPICommands</span><span class="o">.</span><span class="n">IDENTIFY</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">issue_command</span><span class="p">(</span><span class="n">Direction</span><span class="o">.</span><span class="n">FROM</span><span class="p">,</span> <span class="n">command16</span><span class="p">,</span> <span class="n">identity</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">IdentifyResponse</span><span class="o">.</span><span class="n">from_buffer</span><span class="p">(</span><span class="n">identity</span><span class="p">),</span> <span class="n">response</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the model name of the device.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">identity</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">identify</span><span class="p">()</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">swap_bytes</span><span class="p">(</span><span class="n">identity</span><span class="o">.</span><span class="n">model_number</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot; </span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="c1"># If we didn&#39;t get anything at all back from an ATA IDENTIFY, try an</span>
+        <span class="c1"># old fashion SCSI INQUIRY.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">v</span><span class="p">:</span>
+            <span class="n">inquiry</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inquiry</span><span class="p">()</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">bytearray</span><span class="p">(</span><span class="n">inquiry</span><span class="o">.</span><span class="n">product_identification</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot; </span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">serial</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the serial number of the device.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">identity</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">identify</span><span class="p">()</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">swap_bytes</span><span class="p">(</span><span class="n">identity</span><span class="o">.</span><span class="n">serial_number</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot; </span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="c1"># If we didn&#39;t get anything at all back from an ATA IDENTIFY, try an</span>
+        <span class="c1"># old fashion SCSI INQUIRY.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">v</span><span class="p">:</span>
+            <span class="n">inquiry</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inquiry</span><span class="p">()</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">inquiry</span><span class="o">.</span><span class="n">vendor_specific_1</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot; </span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the temperature of the device in degrees Celsius.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">smart_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">smart_table</span>
+
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">smart_table</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mh">0xBE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">temp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">temp</span><span class="o">.</span><span class="n">p_value</span>
+
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">smart_table</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mh">0xC2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">temp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">temp</span><span class="o">.</span><span class="n">p_value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">device_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the device&#39;s type, if available.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inquiry</span><span class="p">,</span> <span class="n">sense</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inquiry</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">DeviceType</span><span class="p">(</span><span class="n">inquiry</span><span class="o">.</span><span class="n">peripheral_device_type</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SCSIDevice.smart_thresholds"><a class="viewcode-back" href="../../smartie.scsi.html#smartie.scsi.SCSIDevice.smart_thresholds">[docs]</a>    <span class="k">def</span> <span class="nf">smart_thresholds</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">SmartThresholdResponse</span><span class="p">,</span> <span class="n">SCSIResponse</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Issues an ATA SMART READ_THRESHOLDS command.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">thresholds</span> <span class="o">=</span> <span class="n">SmartThresholdResponse</span><span class="p">()</span>
+
+        <span class="n">command16</span> <span class="o">=</span> <span class="n">Command16</span><span class="p">(</span>
+            <span class="n">operation_code</span><span class="o">=</span><span class="n">OperationCode</span><span class="o">.</span><span class="n">COMMAND_16</span><span class="p">,</span>
+            <span class="n">protocol</span><span class="o">=</span><span class="n">ATAProtocol</span><span class="o">.</span><span class="n">PIO_DATA_IN</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="n">ATACommands</span><span class="o">.</span><span class="n">SMART</span><span class="p">,</span>
+            <span class="n">flags</span><span class="o">=</span><span class="n">CommandFlags</span><span class="p">(</span>
+                <span class="n">t_length</span><span class="o">=</span><span class="n">CommandFlags</span><span class="o">.</span><span class="n">Length</span><span class="o">.</span><span class="n">IN_SECTOR_COUNT</span><span class="p">,</span>
+                <span class="n">byt_blok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">t_dir</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">ck_cond</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">features</span><span class="o">=</span><span class="n">smartie</span><span class="o">.</span><span class="n">structures</span><span class="o">.</span><span class="n">swap_int</span><span class="p">(</span>
+                <span class="mi">2</span><span class="p">,</span> <span class="n">ATASmartFeature</span><span class="o">.</span><span class="n">SMART_READ_THRESHOLDS</span>
+            <span class="p">),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">set_lba</span><span class="p">(</span><span class="mh">0xC24F00</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">issue_command</span><span class="p">(</span><span class="n">Direction</span><span class="o">.</span><span class="n">FROM</span><span class="p">,</span> <span class="n">command16</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">thresholds</span><span class="p">,</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="SCSIDevice.smart"><a class="viewcode-back" href="../../smartie.scsi.html#smartie.scsi.SCSIDevice.smart">[docs]</a>    <span class="k">def</span> <span class="nf">smart</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">SmartDataResponse</span><span class="p">,</span> <span class="n">SCSIResponse</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Issues an ATA SMART READ_DATA command.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">smart</span> <span class="o">=</span> <span class="n">SmartDataResponse</span><span class="p">()</span>
+
+        <span class="n">command16</span> <span class="o">=</span> <span class="n">Command16</span><span class="p">(</span>
+            <span class="n">operation_code</span><span class="o">=</span><span class="n">OperationCode</span><span class="o">.</span><span class="n">COMMAND_16</span><span class="p">,</span>
+            <span class="n">protocol</span><span class="o">=</span><span class="n">ATAProtocol</span><span class="o">.</span><span class="n">PIO_DATA_IN</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="n">ATACommands</span><span class="o">.</span><span class="n">SMART</span><span class="p">,</span>
+            <span class="n">flags</span><span class="o">=</span><span class="n">CommandFlags</span><span class="p">(</span>
+                <span class="n">t_length</span><span class="o">=</span><span class="n">CommandFlags</span><span class="o">.</span><span class="n">Length</span><span class="o">.</span><span class="n">IN_SECTOR_COUNT</span><span class="p">,</span>
+                <span class="n">byt_blok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">t_dir</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">ck_cond</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">features</span><span class="o">=</span><span class="n">smartie</span><span class="o">.</span><span class="n">structures</span><span class="o">.</span><span class="n">swap_int</span><span class="p">(</span>
+                <span class="mi">2</span><span class="p">,</span> <span class="n">ATASmartFeature</span><span class="o">.</span><span class="n">SMART_READ_DATA</span>
+            <span class="p">),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">set_lba</span><span class="p">(</span><span class="mh">0xC24F00</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">issue_command</span><span class="p">(</span><span class="n">Direction</span><span class="o">.</span><span class="n">FROM</span><span class="p">,</span> <span class="n">command16</span><span class="p">,</span> <span class="n">smart</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">smart</span><span class="p">,</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="SCSIDevice.get_filters"><a class="viewcode-back" href="../../smartie.scsi.html#smartie.scsi.SCSIDevice.get_filters">[docs]</a>    <span class="k">def</span> <span class="nf">get_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;type:ata&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;model:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">smart_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">SMARTAttribute</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a parsed and processed dictionary of SMART attributes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">drive_entry</span> <span class="o">=</span> <span class="n">get_drive_entry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_filters</span><span class="p">())</span>
+
+        <span class="n">thresholds</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">smart_thresholds</span><span class="p">()</span>
+        <span class="n">p_thresholds</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">attribute_id</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">p_thresholds</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">attribute_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="n">smart</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">smart</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">smart</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">result</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span>
+                <span class="n">drive_entry</span><span class="o">.</span><span class="n">smart_attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                    <span class="n">SMARTAttribute</span><span class="p">(</span>
+                        <span class="s2">&quot;UNKNOWN&quot;</span><span class="p">,</span>
+                        <span class="nb">id</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                        <span class="n">flags</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">flags</span><span class="p">,</span>
+                        <span class="n">current_value</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">current</span><span class="p">,</span>
+                        <span class="n">worst_value</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">worst</span><span class="p">,</span>
+                        <span class="n">threshold</span><span class="o">=</span><span class="n">p_thresholds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+                    <span class="p">),</span>
+                <span class="p">),</span>
+                <span class="n">flags</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">flags</span><span class="p">,</span>
+                <span class="n">current_value</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">current</span><span class="p">,</span>
+                <span class="n">worst_value</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">worst</span><span class="p">,</span>
+                <span class="n">threshold</span><span class="o">=</span><span class="n">p_thresholds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, Tyler Kennedy
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>
