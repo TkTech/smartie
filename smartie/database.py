@@ -16,6 +16,7 @@ of what SMART data actually means.
     database, please do so by submitting a pull request on GitHub.
 
 """
+
 import enum
 import re
 from dataclasses import field, dataclass

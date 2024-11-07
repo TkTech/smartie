@@ -6,6 +6,7 @@ platform-specific APIs.
 Where reasonable, the names of fields have been taken from the specifications
 to ease reference searches.
 """
+
 import ctypes
 import enum
 

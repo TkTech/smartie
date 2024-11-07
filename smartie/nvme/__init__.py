@@ -1,4 +1,4 @@
-__all__ = ("NVMeDevice",)
+__all__ = ("NVMeDevice", "NVMeResponse", "local_byteorder")
 import abc
 import sys
 import ctypes

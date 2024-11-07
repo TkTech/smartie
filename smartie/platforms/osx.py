@@ -1,6 +1,7 @@
 """
 Ancillary support functions for OS X.
 """
+
 import ctypes
 
 iokit = ctypes.CDLL(
