@@ -1,12 +1,40 @@
-on: [push]
-name: Tests
+name: tests
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+
 jobs:
-  build:
-    uses: tktech/python-standard/.github/workflows/test.yml@main
-    with:
-      use_poetry: true
-      use_sphinx: true
-      use_black: true
-      python_version: '3.11'
-      platform: 'ubuntu-latest'
-      black_path: 'smartie'
+  test:
+    name: Running tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+      env:
+        OS: ubuntu-latest
+        PYTHON: ${{ matrix.python-version }}
+
+    steps:
+      - uses: actions/checkout@v4.1.6
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5.1.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Installing dependencies (Python)
+        run: uv sync --all-extras
+
+      - name: Running tests
+        run: uv run pytest
+
+      - name: Building docs
+        run: cd docs && uv run make clean html
