@@ -135,7 +135,7 @@ def details_command(path: str):
     with get_device(path) as device:
         details_table.add_row("Model Number", device.model)
         details_table.add_row("Serial Number", device.serial)
-        details_table.add_row("Temperature", f"{device.temperature}°C")
+        details_table.add_row("Temperature", f"{device.temperature}C")
 
         smart_table = Table(title="SMART Attributes", title_style="magenta")
         if isinstance(device, SCSIDevice):
@@ -168,7 +168,7 @@ def details_command(path: str):
                 print_structure(smart.critical_warning),
             )
             smart_table.add_row(
-                "Temperature", f"{smart.temperature - 273.15:.2f}°C"
+                "Temperature", f"{smart.temperature - 273.15:.2f}C"
             )
             smart_table.add_row("Available Spare", f"{smart.available_spare}%")
             smart_table.add_row(
@@ -211,7 +211,7 @@ def details_command(path: str):
 
             for i, sensor in enumerate(smart.temperature_sensors):
                 if sensor != 0x00:
-                    temp_table.add_row(str(i), f"{int(sensor - 273.15)}°C")
+                    temp_table.add_row(str(i), f"{int(sensor - 273.15)}C")
 
             smart_table.add_row("Temperature Sensors", temp_table)
 
