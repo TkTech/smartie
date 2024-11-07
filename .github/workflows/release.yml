@@ -23,14 +23,6 @@ jobs:
     - name: Install uv
       run: pip install uv
 
-    - name: Installing dependencies (Node)
-      working-directory: chancy/plugins/api/ui
-      run: npm install
-
-    - name: Building UI
-      working-directory: chancy/plugins/api/ui
-      run: npm run build
-
     - name: Publishing
       env:
         TWINE_USERNAME: __token__
