@@ -8,7 +8,6 @@ from smartie.nvme import (
 )
 from smartie.platforms.linux import get_libc
 from smartie.nvme.structures import IOCTL_NVMe_ADMIN_CMD, NVMeAdminCommand
-from smartie.structures import pprint_structure
 
 
 class LinuxNVMeDevice(NVMeDevice):
