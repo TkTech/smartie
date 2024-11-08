@@ -100,9 +100,20 @@ def get_device(path: Union[Path, str]) -> Device:
     # all platforms.
     system = platform.system()
     if system == "Windows":
+        from smartie.nvme.windows import WindowsNVMeDevice
         from smartie.scsi.windows import WindowsSCSIDevice
 
-        return WindowsSCSIDevice(path)
+        # how to check a device is nvme or scsi
+        # some nvme device is scsi-compatible, but scsi device is not 
+        # nvme-compatible. So first to send nvme identify, treat it as
+        # a nvme device if command success, otherwise a scsi device
+        device = WindowsNVMeDevice(path)
+        try:
+            with device:
+                device.identify()
+        except Exception as e:
+            device = WindowsSCSIDevice(path)
+        return device
     elif system == "Linux":
         from smartie.nvme.linux import LinuxNVMeDevice
         from smartie.scsi.linux import LinuxSCSIDevice
