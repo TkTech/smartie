@@ -2,6 +2,7 @@
 High-level abstractions for enumerating devices and getting basic device
 information.
 """
+
 import abc
 import itertools
 import ctypes
@@ -201,7 +202,9 @@ def get_all_devices() -> Iterable[Device]:
         )
 
         result = iokit.IOServiceGetMatchingServices(
-            0, query, ctypes.byref(io_iterator)  # kIOMasterPortDefault
+            0,
+            query,
+            ctypes.byref(io_iterator),  # kIOMasterPortDefault
         )
 
         if result != 0:

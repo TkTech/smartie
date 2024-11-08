@@ -3,6 +3,7 @@ This file contains the various low-level structure definitions used for sending
 and receiving NVMe commands, as well as the structures required for
 platform-specific APIs.
 """
+
 import ctypes
 import enum
 

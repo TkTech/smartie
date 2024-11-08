@@ -1,6 +1,7 @@
 """
 Ancillary support functions for Linux.
 """
+
 import ctypes
 from functools import cache
 

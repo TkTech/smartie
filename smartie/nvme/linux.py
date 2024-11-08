@@ -33,12 +33,19 @@ class LinuxNVMeDevice(NVMeDevice):
             self.fd, IOCTL_NVMe_ADMIN_CMD, ctypes.byref(command)
         )
 
+        # Most commonly because the caller doesn't have root.
+        if result < 0:
+            raise OSError(f"NVMe Admin command failed with error {result}")
+
+        # Status is in the upper 16 bits of the result
+        status_field = self.parse_status_field(
+            command.result.to_bytes(2, local_byteorder)
+        )
+
         return NVMeResponse(
-            succeeded=(result == 0),
+            succeeded=status_field.status_code == 0,
             command_spec=command.result,
-            status_field=self.parse_status_field(
-                result.to_bytes(2, byteorder=local_byteorder)
-            ),
+            status_field=status_field,
             command=command,
             bytes_transferred=None,
             platform_header=None,

@@ -1,6 +1,7 @@
 """
 Constants used when working with NVMe devices.
 """
+
 #: The known possible status field values for an NVMe command.
 NVMe_STATUS_FIELD: dict[tuple[int, int], str] = {
     (
