@@ -96,13 +96,20 @@ class WindowsNVMeDevice(NVMeDevice):
             if (
                 property_query.PropertyId == 0x31
                 and protocol_specific_data.DataType == 0x02
+                and protocol_specific_data.ProtocolDataLength < 512
             ):
-                # For now, it will never go into here, just a hint
+                # TODO: may fix the IOCTL_Request to 512 in future
+                # protocol_specific_data.ProtocolDataLength = 512
                 raise
             command_header = NVMeSpecificDataQueryHeader(
                 storage_property_query=property_query,
                 storage_protocol_specific_data=protocol_specific_data,
             )
+            # In nvme spec 1.4c, the data length should be dword aligned
+            if (protocol_specific_data.ProtocolDataLength % 4):
+                # TODO: may fix the IOCTL_Request to dword aligned in future
+                # protocol_specific_data.ProtocolDataLength = (protocol_specific_data.ProtocolDataLength + 3) & ~3
+                raise
             # the needed structures
             raw_cdb = GetNVMeSpecificDataQueryWithData(command.data_len)(command_header=command_header)
             IOCTL_Request = 0x2D1400 # NVMe Admin Command
