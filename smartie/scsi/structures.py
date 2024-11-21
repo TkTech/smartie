@@ -291,7 +291,7 @@ class Command12(ctypes.Structure):
     ]
 
 
-class Command16(ctypes.Structure):
+class Command16(ctypes.BigEndianStructure):
     """
     A 16-byte SCSI/ATA passthrough command.
 

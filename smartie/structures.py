@@ -40,12 +40,6 @@ def swap_bytes(src):
     return src
 
 
-def swap_int(c: int, n: int) -> int:
-    return int.from_bytes(
-        n.to_bytes(c, byteorder="little"), byteorder="big", signed=False
-    )
-
-
 def embed_bytes(data: bytes, *, indent=0, char="    ", max_width=80) -> str:
     """
     Pretty-prints `data` in such a way that it can be embedded cleanly in
