@@ -89,10 +89,10 @@ class WindowsSCSIDevice(SCSIDevice):
             None,
         )
 
-        self.parse_sense(bytearray(header_with_buffer.sense))
-
         if result == 0:
             raise ctypes.WinError(ctypes.get_last_error())
+        
+        self.parse_sense(bytearray(header_with_buffer.sense))
 
         return SCSIResponse(
             succeeded=(
