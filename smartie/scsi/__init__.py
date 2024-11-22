@@ -235,9 +235,7 @@ class SCSIDevice(Device, abc.ABC):
                 t_dir=True,
                 ck_cond=True,
             ),
-            features=smartie.structures.swap_int(
-                2, ATASmartFeature.SMART_READ_THRESHOLDS
-            ),
+            features=ATASmartFeature.SMART_READ_THRESHOLDS,
         ).set_lba(0xC24F00)
 
         response = self.issue_command(Direction.FROM, command16, thresholds)
@@ -259,9 +257,7 @@ class SCSIDevice(Device, abc.ABC):
                 t_dir=True,
                 ck_cond=True,
             ),
-            features=smartie.structures.swap_int(
-                2, ATASmartFeature.SMART_READ_DATA
-            ),
+            features=ATASmartFeature.SMART_READ_DATA,
         ).set_lba(0xC24F00)
 
         response = self.issue_command(Direction.FROM, command16, smart)
