@@ -276,19 +276,24 @@ class Command12(ctypes.Structure):
         ("protocol", ctypes.c_ubyte),
         ("flags", CommandFlags),
         ("features", ctypes.c_ubyte),
-        ("reserved_1", ctypes.c_ubyte, 1),
-        ("sector_count", ctypes.c_ubyte, 7),
-        ("reserved_2", ctypes.c_ubyte, 1),
-        ("lba_low", ctypes.c_ubyte, 7),
-        ("reserved_3", ctypes.c_ubyte, 1),
-        ("lba_mid", ctypes.c_ubyte, 7),
-        ("reserved_4", ctypes.c_ubyte, 1),
-        ("lba_high", ctypes.c_ubyte, 7),
+        ("sector_count", ctypes.c_ubyte),
+        ("lba_low", ctypes.c_ubyte),
+        ("lba_mid", ctypes.c_ubyte),
+        ("lba_high", ctypes.c_ubyte),
         ("device", ctypes.c_ubyte),
         ("command", ctypes.c_ubyte),
-        ("reserved_5", ctypes.c_ubyte),
+        ("reserved", ctypes.c_ubyte),
         ("control", ctypes.c_ubyte),
     ]
+
+    @property
+    def lba(self):
+        return self.lba_low | (self.lba_mid << 8) | (self.lba_high << 16)
+
+    @lba.setter
+    def lba(self, lba: int):
+        self.lba_low, self.lba_mid, self.lba_high = \
+            lba.to_bytes(3, byteorder="little")
 
 
 class Command16(ctypes.BigEndianStructure):
