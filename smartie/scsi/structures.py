@@ -273,7 +273,9 @@ class Command12(ctypes.Structure):
     _pack_ = 1
     _fields_ = [
         ("operation_code", ctypes.c_ubyte),
-        ("protocol", ctypes.c_ubyte),
+        ("reserved_1", ctypes.c_ubyte, 1),
+        ("protocol", ctypes.c_ubyte, 4),
+        ("multiple_count", ctypes.c_ubyte, 3),
         ("flags", CommandFlags),
         ("features", ctypes.c_ubyte),
         ("sector_count", ctypes.c_ubyte),
@@ -282,7 +284,7 @@ class Command12(ctypes.Structure):
         ("lba_high", ctypes.c_ubyte),
         ("device", ctypes.c_ubyte),
         ("command", ctypes.c_ubyte),
-        ("reserved", ctypes.c_ubyte),
+        ("reserved_2", ctypes.c_ubyte),
         ("control", ctypes.c_ubyte),
     ]
 
@@ -309,7 +311,9 @@ class Command16(ctypes.BigEndianStructure):
     _pack_ = 1
     _fields_ = [
         ("operation_code", ctypes.c_ubyte),
-        ("protocol", ctypes.c_ubyte),
+        ("extend", ctypes.c_ubyte, 1),
+        ("protocol", ctypes.c_ubyte, 4),
+        ("multiple_count", ctypes.c_ubyte, 3),
         ("flags", CommandFlags),
         ("features", ctypes.c_ushort),
         ("sector_count", ctypes.c_ushort),
@@ -324,16 +328,22 @@ class Command16(ctypes.BigEndianStructure):
         ("control", ctypes.c_ubyte),
     ]
 
-    def set_lba(self, lba: int):
-        lba = lba.to_bytes(6, byteorder="little")
-        self.lba_high_low = lba[3]
-        self.lba_low = lba[0]
-        self.lba_high_mid = lba[4]
-        self.lba_mid = lba[1]
-        self.lba_high_high = lba[5]
-        self.lba_high = lba[2]
+    @property
+    def lba(self):
+        lba = self.lba_low | (self.lba_mid << 8) | (self.lba_high << 16)
+        if not self.extend:
+            return lba
+        lba = lba | (self.lba_high_low << 24) | (self.lba_high_mid << 32) | \
+            (self.lba_high_high << 40)
+        return lba
 
-        return self
+    @lba.setter
+    def lba(self, lba: int):
+        self.lba_low, self.lba_mid, self.lba_high, \
+        self.lba_high_low, self.lba_high_mid, self.lba_high_high = \
+            lba.to_bytes(6, byteorder="little")
+
+        self.extend = lba > 0xFFFFFF
 
 
 class SGIOHeader(ctypes.Structure):

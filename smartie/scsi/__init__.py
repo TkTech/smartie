@@ -140,7 +140,7 @@ class SCSIDevice(Device, abc.ABC):
 
         command16 = Command16(
             operation_code=OperationCode.COMMAND_16,
-            protocol=ATAProtocol.PIO_DATA_IN << 1,
+            protocol=ATAProtocol.PIO_DATA_IN,
             flags=CommandFlags(
                 t_length=CommandFlags.Length.IN_SECTOR_COUNT,
                 byt_blok=True,
@@ -227,7 +227,7 @@ class SCSIDevice(Device, abc.ABC):
 
         command16 = Command16(
             operation_code=OperationCode.COMMAND_16,
-            protocol=ATAProtocol.PIO_DATA_IN << 1,
+            protocol=ATAProtocol.PIO_DATA_IN,
             command=ATACommands.SMART,
             flags=CommandFlags(
                 t_length=CommandFlags.Length.IN_SECTOR_COUNT,
@@ -236,7 +236,8 @@ class SCSIDevice(Device, abc.ABC):
                 ck_cond=True,
             ),
             features=ATASmartFeature.SMART_READ_THRESHOLDS,
-        ).set_lba(0xC24F00)
+        )
+        command16.lba = 0xC24F00
 
         response = self.issue_command(Direction.FROM, command16, thresholds)
         return thresholds, response
@@ -249,7 +250,7 @@ class SCSIDevice(Device, abc.ABC):
 
         command16 = Command16(
             operation_code=OperationCode.COMMAND_16,
-            protocol=ATAProtocol.PIO_DATA_IN << 1,
+            protocol=ATAProtocol.PIO_DATA_IN,
             command=ATACommands.SMART,
             flags=CommandFlags(
                 t_length=CommandFlags.Length.IN_SECTOR_COUNT,
@@ -258,7 +259,8 @@ class SCSIDevice(Device, abc.ABC):
                 ck_cond=True,
             ),
             features=ATASmartFeature.SMART_READ_DATA,
-        ).set_lba(0xC24F00)
+        )
+        command16.lba = 0xC24F00
 
         response = self.issue_command(Direction.FROM, command16, smart)
         return smart, response
